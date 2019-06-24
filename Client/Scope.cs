@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
 
 namespace SharpChatwork
@@ -104,8 +105,43 @@ namespace SharpChatwork
     {
         public static string ToURLArg(this ScopeType type)
         {
-            // TODO implement
-            return string.Empty;
+            // extract name value pair
+            var enumValues = Enum.GetValues(typeof(ScopeType)).OfType<ScopeType>();
+            var enumNames = enumValues.Select(m => FindAttribute<EnumAliasAttribute>(m));
+            var input = (long)type;
+            var enumNameValues = enumNames
+                .Zip(enumValues, (m, n) => new { m.AliasName, Value = n })
+                .Where(m => ((long)m.Value & input) != 0);
+
+            var lastValue = 0L;
+            List<string> resultScopes = new List<string>();
+
+            // escape _all child
+            foreach(var item in enumNameValues)
+            {
+                if((lastValue & (long)item.Value) != 0)
+                {
+                    continue;
+                }
+                lastValue = (int)item.Value;
+                resultScopes.Add(item.AliasName);
+            }
+
+            return string.Join(';', resultScopes);
+        }
+        private static AttributeT FindAttribute<AttributeT>(ScopeType type) where AttributeT : Attribute
+        {
+            var fieldInfo = typeof(ScopeType).GetField(type.ToString());
+            var attributes = fieldInfo
+                .GetCustomAttributes(typeof(AttributeT), false)
+                .Cast<AttributeT>();
+
+            if (attributes == null)
+                return null;
+            if (!attributes.Any())
+                return null;
+
+            return attributes.First();
         }
     }
 }

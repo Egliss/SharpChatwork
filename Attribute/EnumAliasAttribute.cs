@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+
 namespace SharpChatwork
 {
     public class EnumAliasAttribute : Attribute
@@ -19,14 +20,13 @@ namespace SharpChatwork
                 .GetCustomAttributes(typeof(EnumAliasAttribute), false)
                 .Cast<EnumAliasAttribute>()
                 .FirstOrDefault();
+
+            // use default name
             if (i == null)
-            {
                 return Enum.GetName(value.GetType(), value);
-            }
+            // use alias
             else
-            {
                 return i.AliasName;
-            }
         }
     }
 }
