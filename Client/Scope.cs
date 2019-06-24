@@ -8,8 +8,8 @@ using System.Text;
 namespace SharpChatwork
 {
     /// <summary>
-    /// APIアクセスのスコープです<para/>
-    /// http://developer.chatwork.com/ja/oauth.html#secAppendix を基に実装されています
+    /// API access scopes <para/>
+    /// implement from here http://developer.chatwork.com/ja/oauth.html#secAppendix 
     /// </summary>
     public enum ScopeType : long
     {
