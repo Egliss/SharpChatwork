@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
-using SharpChatwork.Client.Query.Rooms;
+using SharpChatwork.Query.Rooms;
 using SharpChatwork.Query;
+using SharpChatwork.Query.Me;
+using SharpChatwork.Query.My;
 
 namespace SharpChatwork
 {
@@ -21,6 +23,21 @@ namespace SharpChatwork
 
 
         Task<List<Room>> IChatworkClient.GetRooms()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Status> GetMyStatusAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<User> GetMeAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<List<Query.My.Task>> IChatworkClient.GetMyTasksAsync()
         {
             throw new NotImplementedException();
         }
