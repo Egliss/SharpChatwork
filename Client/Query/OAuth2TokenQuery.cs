@@ -20,13 +20,17 @@ namespace SharpChatwork.Client.Query
         public string code_verifier { get; set; } = string.Empty;
         public string refresh_token { get; set; } = string.Empty;
         public string scope { get; set; } = string.Empty;
-        // TODO implement
-        public ScopeType scopeType { set => this.scope = string.Empty; }
+
+        private ScopeType _scopeType = 0L;
+        public ScopeType scopeType
+        {
+            get => _scopeType;
+            set { _scopeType = value; scope = _scopeType.ToURLArg(); }
+        }
 
         public OAuth2TokenQuery(GrantType type)
         {
             this.grant_type = type.ToAliasOrDefault();
-
         }
     }
 }
