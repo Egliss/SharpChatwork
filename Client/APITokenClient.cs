@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using SharpChatwork.Query;
 
-namespace SharpChatwork.Client
+
+namespace SharpChatwork
 {
     public class AccessTokenBaseClient : IChatworkClient
     {
