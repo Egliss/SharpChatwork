@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SharpChatwork.Client.Query.Rooms;
 using SharpChatwork.Query;
 using System;
 using System.Collections.Generic;
@@ -6,11 +7,15 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Runtime.Serialization;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SharpChatwork
 {
+    [Serializable]
     public class OAuth2Client : IChatworkClient
     {
         public string clientKey { get; set; } = string.Empty;
@@ -23,6 +28,32 @@ namespace SharpChatwork
         private string redirectUri { get; set; } = string.Empty;
 
         private DateTime tokenQueryTime { get; set; } = DateTime.Now;
+
+        public OAuth2Client() { }
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue(nameof(this.clientKey), this.clientKey);
+            info.AddValue(nameof(this.secretKey), this.secretKey);
+            info.AddValue(nameof(this.oauth2Code), this.oauth2Code);
+            info.AddValue(nameof(this.accessToken), this.accessToken);
+            info.AddValue(nameof(this.refleshToken), this.refleshToken);
+            info.AddValue(nameof(this.tokenExpired), this.tokenExpired);
+            info.AddValue(nameof(this.tokenQueryTime), this.tokenQueryTime);
+            info.AddValue(nameof(this.redirectUri), this.redirectUri);
+            info.AddValue(nameof(this.scope), this.scope);
+        }
+        protected OAuth2Client(SerializationInfo info,StreamingContext context)
+        {
+            this.clientKey = info.GetString(nameof(this.clientKey));
+            this.secretKey = info.GetString(nameof(this.secretKey));
+            this.oauth2Code = info.GetString(nameof(this.oauth2Code));
+            this.accessToken = info.GetString(nameof(this.accessToken));
+            this.refleshToken = info.GetString(nameof(this.refleshToken));
+            this.tokenExpired = info.GetInt64(nameof(this.tokenExpired));
+            this.tokenQueryTime = info.GetDateTime(nameof(this.tokenQueryTime));
+            this.redirectUri = info.GetString(nameof(this.redirectUri));
+            this.scope = info.GetString(nameof(this.scope));
+        }
 
         public OAuth2ConcentQueryResult Authorization(OAuth2ConcentQuery query,string codeVerifer = "")
         {
@@ -87,19 +118,27 @@ namespace SharpChatwork
             }
         }
 
-        public IChatworkQueryResult Query(IChatworkQuery query)
+        public async Task<List<Room>> GetRooms()
         {
-            throw new NotImplementedException();
+            return await QueryAsync<List<Room>>(EndPoints.Rooms, HttpMethod.Get);
         }
-        public async Task<IChatworkQueryResult> QueryAsync(IChatworkQuery query)
+
+        private async Task<ResultT> QueryAsync<ResultT>(Uri uri, HttpMethod method)
         {
-            HttpWebRequest webRequest = (HttpWebRequest)HttpWebRequest.Create(query.endPoint);
-            var webResponse = await webRequest.GetResponseAsync();
-            using (StreamReader reader = new StreamReader(await webRequest.GetRequestStreamAsync()))
+            HttpRequestMessage request = new HttpRequestMessage
             {
-                //return JsonConvert.DeserializeObject<OAuth2TokenQueryResult>(reader.ReadToEnd());
+                Method = method,
+                RequestUri = uri,
+            };
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.accessToken);
+            HttpClient client = new HttpClient();
+            var result = await client.SendAsync(request);
+            using (StreamReader reader = new StreamReader(await result.Content.ReadAsStreamAsync(), Encoding.UTF8))
+            {
+                var text = Regex.Unescape(reader.ReadToEnd().Replace("\"", "\\\""));
+                var ret = JsonConvert.DeserializeObject<ResultT>(text);
+                return ret;
             }
-            return null;
         }
     }
 }
