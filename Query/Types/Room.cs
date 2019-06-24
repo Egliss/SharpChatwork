@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SharpChatwork.Client.Query.Rooms
+namespace SharpChatwork.Query.Types
 {
     public class Room
     {
