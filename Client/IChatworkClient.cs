@@ -1,4 +1,4 @@
-﻿using SharpChatwork.Client;
+﻿using SharpChatwork.Query;
 using System;
 using System.Collections.Generic;
 using System.Text;

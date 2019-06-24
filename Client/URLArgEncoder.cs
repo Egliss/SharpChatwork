@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace SharpChatwork.Client
+namespace SharpChatwork
 {
     class URLArgEncoder
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SharpChatwork.Client
+namespace SharpChatwork
 {
     public class ChatworkQueryInfo
     {
