@@ -18,11 +18,6 @@ namespace SharpChatwork
         }
 
 
-        Task<List<Room>> IChatworkClient.GetRooms()
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<Status> GetMyStatusAsync()
         {
             throw new NotImplementedException();
@@ -34,6 +29,31 @@ namespace SharpChatwork
         }
 
         Task<List<UserTask>> IChatworkClient.GetMyTasksAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Contact>> GetContactsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Room>> GetRoomsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<IncomingRequest>> GetIncomingRequestsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IncomingRequest> AcceptIncomingRequest(long requestId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task CancelIncomingRequestAsync(long requestId)
         {
             throw new NotImplementedException();
         }

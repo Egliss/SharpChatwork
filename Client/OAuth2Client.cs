@@ -117,10 +117,6 @@ namespace SharpChatwork
             }
         }
 
-        public async Task<List<Room>> GetRooms()
-        {
-            return await QueryAsync<List<Room>>(EndPoints.Rooms, HttpMethod.Get);
-        }
 
         private async Task<ResultT> QueryAsync<ResultT>(Uri uri, HttpMethod method)
         {
@@ -139,6 +135,17 @@ namespace SharpChatwork
                 return ret;
             }
         }
+        private async Task QueryNoReturnAsync(Uri uri, HttpMethod method)
+        {
+            HttpRequestMessage request = new HttpRequestMessage
+            {
+                Method = method,
+                RequestUri = uri,
+            };
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.accessToken);
+            HttpClient client = new HttpClient();
+            var result = await client.SendAsync(request);
+        }
 
         public async Task<Status> GetMyStatusAsync()
         {
@@ -147,11 +154,32 @@ namespace SharpChatwork
         public async Task<List<UserTask>> GetMyTasksAsync()
         {
             return await QueryAsync<List<UserTask>>(EndPoints.MyTasks, HttpMethod.Get);
-
         }
         public async Task<User> GetMeAsync()
         {
             return await QueryAsync<User>(EndPoints.Me, HttpMethod.Get);
+        }
+
+        public async Task<List<Contact>> GetContactsAsync()
+        {
+            return await QueryAsync<List<Contact>>(EndPoints.Contacts, HttpMethod.Get);
+        }
+        public async Task<List<Room>> GetRoomsAsync()
+        {
+            return await QueryAsync<List<Room>>(EndPoints.Rooms, HttpMethod.Get);
+        }
+
+        public async Task<List<IncomingRequest>> GetIncomingRequestsAsync()
+        {
+            return await QueryAsync<List<IncomingRequest>>(EndPoints.IncomingRequests, HttpMethod.Get);
+        }
+        public async Task<IncomingRequest> AcceptIncomingRequest(long requestId)
+        {
+            return await QueryAsync<IncomingRequest>(EndPoints.IncomingRequestsOf(requestId), HttpMethod.Post);
+        }
+        public async Task CancelIncomingRequestAsync(long requestId)
+        {
+            await QueryNoReturnAsync(EndPoints.IncomingRequestsOf(requestId), HttpMethod.Delete);
         }
     }
 }
