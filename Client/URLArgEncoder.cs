@@ -8,7 +8,7 @@ namespace SharpChatwork
 {
     class URLArgEncoder
     {
-        public static Dictionary<string, string> ToDictionary<T>(T input)
+        public static Dictionary<string, string> ToDictionary<T>(T input) where T : class
         {
             var type = typeof(T);
             return type.GetMembers()
@@ -29,7 +29,7 @@ namespace SharpChatwork
                     .Select(m => new KeyValuePair<string, string>(m.Key, m.Value.ToString())))
                 .ToDictionary(m => m.Key, n => n.Value);
         }
-        public static string ToURLArg<T>(T input)
+        public static string ToURLArg<T>(T input) where T : class
         {
             return "?" + string.Join("^&" , ToDictionary(input).Select(m => $"{m.Key}={m.Value}"));
         }
