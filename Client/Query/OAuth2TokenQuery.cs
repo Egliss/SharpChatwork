@@ -10,8 +10,8 @@ namespace SharpChatwork.Client.Query
         {
             [EnumAlias("authorization_code")]
             AuthroizationCode,
-            [EnumAlias("reflesh_token")]
-            RefleshToken,
+            [EnumAlias("refresh_token")]
+            RefreshToken,
         }
 
         public string grant_type { get; set; } = string.Empty;

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SharpChatwork.Client.Query
 {
-    class OAuth2ConcentQueryResult
+    public class OAuth2ConcentQueryResult
     {
         public string code { get; set; } = string.Empty;
         public string state { get; set; } = string.Empty;
