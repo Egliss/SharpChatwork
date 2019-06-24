@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SharpChatwork.Client
+namespace SharpChatwork
 {
     public class EndPoints
     {
@@ -11,6 +11,7 @@ namespace SharpChatwork.Client
         public static readonly Uri Me =                                     new Uri($@"https://api.chatwork.com/v2/me");
         public static readonly Uri MyStatus =                               new Uri($@"https://api.chatwork.com/v2/my/status");
         public static readonly Uri MyTasks =                                new Uri($@"https://api.chatwork.com/v2/my/tasks");
+        public static readonly Uri Rooms =                                  new Uri($@"https://api.chatwork.com/v2/Rooms");
         public static readonly Uri Contacts =                               new Uri($@"https://api.chatwork.com/v2/contacts");
         public static readonly Uri IncomingRequest =                        new Uri($@"https://api.chatwork.com/v2/incoming_requests");
 
