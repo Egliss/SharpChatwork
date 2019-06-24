@@ -1,9 +1,6 @@
-﻿using SharpChatwork.Query.My;
-using SharpChatwork.Query.Rooms;
-using System;
+﻿using SharpChatwork.Query.Types;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SharpChatwork
@@ -11,8 +8,8 @@ namespace SharpChatwork
     public interface IChatworkClient : ISerializable
     {
         Task<List<Room>> GetRooms();
-        Task<Query.Me.User> GetMeAsync();
-        Task<List<Query.My.Task>> GetMyTasksAsync();
+        Task<User> GetMeAsync();
+        Task<List<UserTask>> GetMyTasksAsync();
         Task<Status> GetMyStatusAsync();
     }
 }

@@ -1,12 +1,6 @@
-﻿using SharpChatwork.Query.Me;
-using SharpChatwork.Query.Rooms;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SharpChatwork.Query.My
+﻿namespace SharpChatwork.Query.Types
 {
-    public class Task
+    public class UserTask
     {
         public int task_id { get; set; }
         public Room room { get; set; }
