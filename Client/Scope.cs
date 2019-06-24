@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -90,7 +91,7 @@ namespace SharpChatwork
 
         [Description("自分のコンタクト、及びコンタクト承認依頼情報の取得/操作")]
         [EnumAlias("contacts.all:read_write")]
-        RoomsFilesRW = ContactsAllR | ContactsAllW,
+        ContactsAllRW = ContactsAllR | ContactsAllW,
 
         [Description("自分のコンタクト、及びコンタクト承認依頼情報の取得")]
         [EnumAlias("contacts.all:read")]
@@ -111,23 +112,23 @@ namespace SharpChatwork
             var input = (long)type;
             var enumNameValues = enumNames
                 .Zip(enumValues, (m, n) => new { m.AliasName, Value = n })
-                .Where(m => ((long)m.Value & input) != 0);
+                .Where(m => ((long)m.Value & input) != 0)
+                .Reverse();
 
-            var lastValue = 0L;
-            List<string> resultScopes = new List<string>();
+            List<Tuple<string, long>> resultScopes = new List<Tuple<string, long>>();
 
             // escape _all child
             foreach(var item in enumNameValues)
             {
-                if((lastValue & (long)item.Value) != 0)
+                if (resultScopes.Where(m => (m.Item2 & (long)item.Value) != 0).Any()) 
                 {
                     continue;
                 }
-                lastValue = (int)item.Value;
-                resultScopes.Add(item.AliasName);
+                resultScopes.Add(new Tuple<string, long>(item.AliasName, (long)item.Value));
             }
 
-            return string.Join(';', resultScopes);
+            // ascii 'SP'
+            return string.Join("%20", resultScopes.Select(m=>m.Item1));
         }
         private static AttributeT FindAttribute<AttributeT>(ScopeType type) where AttributeT : Attribute
         {
