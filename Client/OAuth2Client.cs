@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using SharpChatwork.Client.Query.Rooms;
+using SharpChatwork.Query.Rooms;
 using SharpChatwork.Query;
 using System;
 using System.Collections.Generic;
@@ -12,6 +12,8 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using SharpChatwork.Query.Me;
+using SharpChatwork.Query.My;
 
 namespace SharpChatwork
 {
@@ -139,6 +141,20 @@ namespace SharpChatwork
                 var ret = JsonConvert.DeserializeObject<ResultT>(text);
                 return ret;
             }
+        }
+
+        public async Task<Status> GetMyStatusAsync()
+        {
+            return await QueryAsync<Status>(EndPoints.MyStatus, HttpMethod.Get);
+        }
+        public async Task<List<Query.My.Task>> GetMyTasksAsync()
+        {
+            return await QueryAsync<List<Query.My.Task>>(EndPoints.MyTasks, HttpMethod.Get);
+
+        }
+        public async Task<User> GetMeAsync()
+        {
+            return await QueryAsync<User>(EndPoints.Me, HttpMethod.Get);
         }
     }
 }
