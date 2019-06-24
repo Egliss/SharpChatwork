@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SharpChatwork.Query.My
+namespace SharpChatwork.Query.Types
 {
     public class Status
     {

@@ -1,19 +1,16 @@
 ﻿using Newtonsoft.Json;
-using SharpChatwork.Query.Rooms;
+using SharpChatwork.Query.Types;
 using SharpChatwork.Query;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using SharpChatwork.Query.Me;
-using SharpChatwork.Query.My;
 
 namespace SharpChatwork
 {
@@ -147,9 +144,9 @@ namespace SharpChatwork
         {
             return await QueryAsync<Status>(EndPoints.MyStatus, HttpMethod.Get);
         }
-        public async Task<List<Query.My.Task>> GetMyTasksAsync()
+        public async Task<List<UserTask>> GetMyTasksAsync()
         {
-            return await QueryAsync<List<Query.My.Task>>(EndPoints.MyTasks, HttpMethod.Get);
+            return await QueryAsync<List<UserTask>>(EndPoints.MyTasks, HttpMethod.Get);
 
         }
         public async Task<User> GetMeAsync()

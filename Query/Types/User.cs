@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SharpChatwork.Query.Me
+namespace SharpChatwork.Query.Types
 {
     public class User
     {
