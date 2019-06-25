@@ -15,6 +15,7 @@ namespace SharpChatwork
         public static readonly Uri Contacts =                               new Uri($@"https://api.chatwork.com/v2/contacts");
         public static readonly Uri IncomingRequests =                       new Uri($@"https://api.chatwork.com/v2/incoming_requests");
 
+        public static Uri RoomOf(long roomId) =>                            new Uri($@"https://api.chatwork.com/v2/rooms/{roomId.ToString()}");
         public static Uri RoomMember(long roomId) =>                        new Uri($@"https://api.chatwork.com/v2/rooms/{roomId.ToString()}/members");
         public static Uri RoomMessages(long roomId) =>                      new Uri($@"https://api.chatwork.com/v2/rooms/{roomId.ToString()}/messages");
         public static Uri RoomMessagesOf(long roomId,long messageId) =>     new Uri($@"https://api.chatwork.com/v2/rooms/{roomId.ToString()}/messages/{messageId.ToString()}");
