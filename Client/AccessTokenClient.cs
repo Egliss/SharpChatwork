@@ -168,7 +168,42 @@ namespace SharpChatwork
             throw new NotImplementedException();
         }
 
+        Task<ElementId> IChatworkClient.CreateRoomsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<List<ElementId>> IChatworkClient.CreateRoomTaskAsync(long roomId)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<ElementId> IChatworkClient.RemoveRoomMessageAsync(long roomId, long messageId)
+        {
+            throw new NotImplementedException();
+        }
+
         Task<ElementId> IChatworkClient.SendRoomMessagesAsync(long roomId, string message, bool isSelfUnread)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<ElementId> IChatworkClient.UpdateRoomAsync(long roomId)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<ElementId> IChatworkClient.UpdateRoomMessageAsync(long roomId, long messageId)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<ElementId> IChatworkClient.UpdateRoomTaskAsync(long roomId, long taskId, TaskStateType state)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<ElementId> IChatworkClient.UploadRoomFileAsync(long roomId)
         {
             throw new NotImplementedException();
         }

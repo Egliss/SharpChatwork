@@ -214,15 +214,15 @@ namespace SharpChatwork
         {
             return await QueryAsync<List<Room>>(EndPoints.Rooms, HttpMethod.Get);
         }
-        public async Task<long> CreateRoomsAsync()
+        public async Task<ElementId> CreateRoomsAsync()
         {
-            throw new NotImplementedException();
+            return await QueryAsync<RoomId>(EndPoints.Rooms, HttpMethod.Get);
         }
         public async Task<Room> GetRoomAsync(long roomId)
         {
-            throw new NotImplementedException();
+            return await QueryAsync<Room>(EndPoints.RoomOf(roomId), HttpMethod.Get);
         }
-        public async Task<long> UpdateRoomAsync(long roomId)
+        public async Task<ElementId> UpdateRoomAsync(long roomId)
         {
             throw new NotImplementedException();
         }
@@ -242,9 +242,9 @@ namespace SharpChatwork
         {
             var data = new Dictionary<string, string>()
             {
-                { "force" ,  isForceMode.ToString()}
+                { "force" ,  ToIntBool(isForceMode).ToString()}
             };
-            return await this.QueryAsync<List<UserMessage>>(EndPoints.RoomMessages(roomId), HttpMethod.Post, data);
+            return await this.QueryAsync<List<UserMessage>>(EndPoints.RoomMessages(roomId), HttpMethod.Get, data);
         }
         public async Task<ElementId> SendRoomMessagesAsync(long roomId, string message, bool isSelfUnread)
         {
@@ -267,11 +267,11 @@ namespace SharpChatwork
         {
             throw new NotImplementedException();
         }
-        public async Task<long> UpdateRoomMessageAsync(long roomId, long messageId)
+        public async Task<ElementId> UpdateRoomMessageAsync(long roomId, long messageId)
         {
             throw new NotImplementedException();
         }
-        public async Task<long> RemoveRoomMessageAsync(long roomId, long messageId)
+        public async Task<ElementId> RemoveRoomMessageAsync(long roomId, long messageId)
         {
             throw new NotImplementedException();
         }
@@ -279,7 +279,7 @@ namespace SharpChatwork
         {
             throw new NotImplementedException();
         }
-        public async Task<List<long>> CreateRoomTaskAsync(long roomId)
+        public async Task<List<ElementId>> CreateRoomTaskAsync(long roomId)
         {
             throw new NotImplementedException();
         }
@@ -287,7 +287,7 @@ namespace SharpChatwork
         {
             throw new NotImplementedException();
         }
-        public async Task<long> UpdateRoomTaskAsync(long roomId, long taskId, TaskStateType state)
+        public async Task<ElementId> UpdateRoomTaskAsync(long roomId, long taskId, TaskStateType state)
         {
             throw new NotImplementedException();
         }
@@ -295,7 +295,7 @@ namespace SharpChatwork
         {
             throw new NotImplementedException();
         }
-        public async Task<long> UploadRoomFileAsync(long roomId)
+        public async Task<ElementId> UploadRoomFileAsync(long roomId)
         {
             throw new NotImplementedException();
         }
