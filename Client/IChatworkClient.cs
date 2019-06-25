@@ -13,9 +13,9 @@ namespace SharpChatwork
 
         Task<List<Contact>> GetContactsAsync();
 
-        Task<long> CreateRoomsAsync();
+        Task<ElementId> CreateRoomsAsync();
         Task<Room> GetRoomAsync(long roomId);
-        Task<long> UpdateRoomAsync(long roomId);
+        Task<ElementId> UpdateRoomAsync(long roomId);
         Task LeaveRoomAsync(long roomId);
         Task<List<User>> GetRoomMembersAsync(long roomId);
         Task<RoomMember> UpdateRoomMembersAsync(long roomId);
@@ -24,14 +24,14 @@ namespace SharpChatwork
         Task<MessageReadUnread> ReadRoomMessagesAsync(long roomId);
         Task<MessageReadUnread> UnReadRoomMessagesAsync(long roomId);
         Task<UserMessage> GetRoomMessageAsync(long roomId, long messageId);
-        Task<long> UpdateRoomMessageAsync(long roomId, long messageId);
-        Task<long> RemoveRoomMessageAsync(long roomId, long messageId);
+        Task<ElementId> UpdateRoomMessageAsync(long roomId, long messageId);
+        Task<ElementId> RemoveRoomMessageAsync(long roomId, long messageId);
         Task<List<Room>> GetRoomTasksAsync(long roomId);
-        Task<List<long>> CreateRoomTaskAsync(long roomId);
+        Task<List<ElementId>> CreateRoomTaskAsync(long roomId);
         Task<UserTask> GetRoomTaskAsync(long roomId, long taskId);
-        Task<long> UpdateRoomTaskAsync(long roomId, long taskId, TaskStateType state);
+        Task<ElementId> UpdateRoomTaskAsync(long roomId, long taskId, TaskStateType state);
         Task<List<UserFile>> GetRoomFilesAsync(long roomId);
-        Task<long> UploadRoomFileAsync(long roomId);
+        Task<ElementId> UploadRoomFileAsync(long roomId);
         Task<UserFile> GetRoomFileAsync(long roomId, long fileId, bool createDownloadLink);
         Task<UserTask> GetRoomInviteAsync(long roomId);
         Task<UserTask> CreateRoomInviteAsync(long roomId);
