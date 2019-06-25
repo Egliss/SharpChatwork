@@ -2,8 +2,10 @@
 {
     public enum TaskStateType
     {
+        [EnumAlias("open")]
         Open,
-        Close
+        [EnumAlias("done")]
+        Done
     }
 
     public class UserTask
