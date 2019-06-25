@@ -25,6 +25,7 @@ namespace SharpChatwork
         public static Uri RoomTasksOf(long roomId,long taskId) =>           new Uri($@"https://api.chatwork.com/v2/rooms/{roomId.ToString()}/tasks/{taskId.ToString()}");
         public static Uri RoomFiles(long roomId) =>                         new Uri($@"https://api.chatwork.com/v2/rooms/{roomId.ToString()}/files");
         public static Uri RoomFilesOf(long roomId, long fileId) =>          new Uri($@"https://api.chatwork.com/v2/rooms/{roomId.ToString()}/files/{fileId.ToString()}");
+        public static Uri RoomLink(long roomId) =>                          new Uri($@"https://api.chatwork.com/v2/rooms/{roomId.ToString()}/link");
         public static Uri IncomingRequestsOf(long requestId) =>             new Uri($@"https://api.chatwork.com/v2/incoming_requests/{requestId.ToString()}");
     }
 }
