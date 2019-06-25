@@ -138,7 +138,7 @@ namespace SharpChatwork
             HttpRequestMessage request = new HttpRequestMessage
             {
                 Method = method,
-                RequestUri = uri,
+                RequestUri = uri
             };
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.accessToken);
             request.Content = new FormUrlEncodedContent(data);
@@ -240,11 +240,10 @@ namespace SharpChatwork
         }
         public async Task<List<UserMessage>> GetRoomMessagesAsync(long roomId,bool isForceMode = false)
         {
-            var data = new Dictionary<string, string>()
-            {
-                { "force" ,  ToIntBool(isForceMode).ToString()}
-            };
-            return await this.QueryAsync<List<UserMessage>>(EndPoints.RoomMessages(roomId), HttpMethod.Get, data);
+            // TODO QueryAsync + data is error
+            // single arg is invalid ?
+            var uri = $"{EndPoints.RoomMessages(roomId)}?force={ToIntBool(isForceMode).ToString()}";
+            return await this.QueryAsync<List<UserMessage>>(new Uri(uri), HttpMethod.Get);
         }
         public async Task<ElementId> SendRoomMessagesAsync(long roomId, string message, bool isSelfUnread)
         {
