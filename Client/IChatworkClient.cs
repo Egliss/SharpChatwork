@@ -20,7 +20,7 @@ namespace SharpChatwork
         Task<List<User>> GetRoomMembersAsync(long roomId);
         Task<RoomMember> UpdateRoomMembersAsync(long roomId);
         Task<List<UserMessage>> GetRoomMessagesAsync(long roomId, bool isForceMode);
-        Task<long> SendRoomMessagesAsync(long roomId, string message, bool isSelfUnread);
+        Task<ElementId> SendRoomMessagesAsync(long roomId, string message, bool isSelfUnread);
         Task<MessageReadUnread> ReadRoomMessagesAsync(long roomId);
         Task<MessageReadUnread> UnReadRoomMessagesAsync(long roomId);
         Task<UserMessage> GetRoomMessageAsync(long roomId, long messageId);

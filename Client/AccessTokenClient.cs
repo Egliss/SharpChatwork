@@ -167,5 +167,10 @@ namespace SharpChatwork
         {
             throw new NotImplementedException();
         }
+
+        Task<ElementId> IChatworkClient.SendRoomMessagesAsync(long roomId, string message, bool isSelfUnread)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
