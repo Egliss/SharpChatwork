@@ -130,7 +130,7 @@ namespace SharpChatwork
             var result = await client.SendAsync(request);
             using (StreamReader reader = new StreamReader(await result.Content.ReadAsStreamAsync(), Encoding.UTF8))
             {
-                return Regex.Unescape(reader.ReadToEnd().Replace("\"", "\\\""));
+                return reader.ReadToEnd();
             }
         }
         private async Task<string> QueryRawTextAsync(Uri uri, HttpMethod method, Dictionary<string, string> data)
@@ -146,7 +146,7 @@ namespace SharpChatwork
             var result = await client.SendAsync(request);
             using (StreamReader reader = new StreamReader(await result.Content.ReadAsStreamAsync(), Encoding.UTF8))
             {
-                return Regex.Unescape(reader.ReadToEnd().Replace("\"", "\\\""));
+                return reader.ReadToEnd();
             }
         }
         private async Task<ResultT> QueryAsync<ResultT>(Uri uri, HttpMethod method)
