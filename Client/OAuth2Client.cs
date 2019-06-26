@@ -243,7 +243,7 @@ namespace SharpChatwork
         }
         public async Task<List<User>> GetRoomMembersAsync(long roomId)
         {
-            return await this.QueryAsync<List<User>>(EndPoints.Rooms, HttpMethod.Get);
+            return await this.QueryAsync<List<User>>(EndPoints.RoomMember(roomId), HttpMethod.Get);
         }
         public async Task<RoomMember> UpdateRoomMembersAsync(long roomId, IEnumerable<long> adminsMembers, IEnumerable<long> normalMembers, IEnumerable<long> readonlyMembers)
         {
@@ -254,7 +254,7 @@ namespace SharpChatwork
                 //{"members_member_ids",roomName },
                 //{"members_readonly_ids",preset.ToAliasOrDefault() }
             };
-            return await this.QueryAsync<RoomMember>(EndPoints.Rooms, HttpMethod.Get, data);
+            return await this.QueryAsync<RoomMember>(EndPoints.RoomMember(roomId), HttpMethod.Get, data);
         }
         public async Task<List<UserMessage>> GetRoomMessagesAsync(long roomId,bool isForceMode = false)
         {
