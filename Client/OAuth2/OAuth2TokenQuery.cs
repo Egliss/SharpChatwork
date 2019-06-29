@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SharpChatwork.Query
 {
-    public class OAuth2TokenQuery : IQueryScope
+    public class OAuth2TokenQuery
     {
         public enum GrantType
         {
