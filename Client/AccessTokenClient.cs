@@ -18,17 +18,22 @@ namespace SharpChatwork
             throw new NotImplementedException();
         }
 
-        public Task<UserTask> CreateRoomInviteAsync(long roomId)
+        public Task<InviteLink> CreateRoomInviteAsync(long roomId, string uniqueName, string description, bool requireAcceptance)
         {
             throw new NotImplementedException();
         }
 
-        public Task<long> CreateRoomsAsync()
+        public Task<ElementId> CreateRoomsAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<long>> CreateRoomTaskAsync(long roomId)
+        public Task<List<ElementId>> CreateRoomTaskAsync(long roomId, string taskText, long limit)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteRoomAsync(long roomId)
         {
             throw new NotImplementedException();
         }
@@ -78,12 +83,12 @@ namespace SharpChatwork
             throw new NotImplementedException();
         }
 
-        public Task<List<UserFile>> GetRoomFilesAsync(long roomId)
+        public Task<List<UserFile>> GetRoomFilesAsync(long roomId, long accountId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<UserTask> GetRoomInviteAsync(long roomId)
+        public Task<InviteLink> GetRoomInviteAsync(long roomId)
         {
             throw new NotImplementedException();
         }
@@ -98,7 +103,12 @@ namespace SharpChatwork
             throw new NotImplementedException();
         }
 
-        public Task<List<UserMessage>> GetRoomMessagesAsync(long roomId, bool isForceMode)
+        public Task<List<UserMessage>> GetRoomMessagesAsync(long roomId, bool isForceMode = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Room>> GetRoomsAsync()
         {
             throw new NotImplementedException();
         }
@@ -108,7 +118,7 @@ namespace SharpChatwork
             throw new NotImplementedException();
         }
 
-        public Task<List<Room>> GetRoomTasksAsync(long roomId)
+        public Task<List<UserTask>> GetRoomTasksAsync(long roomId, long accountId, long autherId, bool isDone = false)
         {
             throw new NotImplementedException();
         }
@@ -118,92 +128,52 @@ namespace SharpChatwork
             throw new NotImplementedException();
         }
 
-        public Task<MessageReadUnread> ReadRoomMessagesAsync(long roomId)
+        public Task<MessageReadUnread> ReadRoomMessagesAsync(long roomId, long messageId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<long> RemoveRoomMessageAsync(long roomId, long messageId)
+        public Task<ElementId> RemoveRoomMessageAsync(long roomId, long messageId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<long> SendRoomMessagesAsync(long roomId, string message, bool isSelfUnread)
+        public Task<ElementId> SendRoomMessagesAsync(long roomId, string message, bool isSelfUnread)
         {
             throw new NotImplementedException();
         }
 
-        public Task<MessageReadUnread> UnReadRoomMessagesAsync(long roomId)
+        public Task<MessageReadUnread> UnReadRoomMessagesAsync(long roomId, long messageId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<long> UpdateRoomAsync(long roomId)
+        public Task<ElementId> UpdateRoomAsync(long roomId, string roomName, string description, RoomIconPreset preset)
         {
             throw new NotImplementedException();
         }
 
-        public Task<UserTask> UpdateRoomInviteAsync(long roomId)
+        public Task<InviteLink> UpdateRoomInviteAsync(long roomId, string uniqueName, string description, bool requireAcceptance)
         {
             throw new NotImplementedException();
         }
 
-        public Task<RoomMember> UpdateRoomMembersAsync(long roomId)
+        public Task<RoomMember> UpdateRoomMembersAsync(long roomId, IEnumerable<long> adminsMembers, IEnumerable<long> normalMembers, IEnumerable<long> readonlyMembers)
         {
             throw new NotImplementedException();
         }
 
-        public Task<long> UpdateRoomMessageAsync(long roomId, long messageId)
+        public Task<ElementId> UpdateRoomMessageAsync(long roomId, long messageId, string message)
         {
             throw new NotImplementedException();
         }
 
-        public Task<long> UpdateRoomTaskAsync(long roomId, long taskId, TaskStateType state)
+        public Task<ElementId> UpdateRoomTaskAsync(long roomId, long taskId, TaskStateType state)
         {
             throw new NotImplementedException();
         }
 
-        public Task<long> UploadRoomFileAsync(long roomId)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<ElementId> IChatworkClient.CreateRoomsAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<List<ElementId>> IChatworkClient.CreateRoomTaskAsync(long roomId)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<ElementId> IChatworkClient.RemoveRoomMessageAsync(long roomId, long messageId)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<ElementId> IChatworkClient.SendRoomMessagesAsync(long roomId, string message, bool isSelfUnread)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<ElementId> IChatworkClient.UpdateRoomAsync(long roomId)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<ElementId> IChatworkClient.UpdateRoomMessageAsync(long roomId, long messageId)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<ElementId> IChatworkClient.UpdateRoomTaskAsync(long roomId, long taskId, TaskStateType state)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<ElementId> IChatworkClient.UploadRoomFileAsync(long roomId)
+        public Task<ElementId> UploadRoomFileAsync(long roomId)
         {
             throw new NotImplementedException();
         }
