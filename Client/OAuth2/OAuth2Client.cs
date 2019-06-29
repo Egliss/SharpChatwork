@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 namespace SharpChatwork
 {
     [Serializable]
-    public class OAuth2Client : IChatworkClient
+    public class OAuth2Client : ChatworkClient
     {
         public string clientKey { get; set; } = string.Empty;
         public string secretKey { get; set; } = string.Empty;
@@ -28,8 +28,12 @@ namespace SharpChatwork
 
         private DateTime tokenQueryTime { get; set; } = DateTime.Now;
 
-        public OAuth2Client() { }
-        public void GetObjectData(SerializationInfo info, StreamingContext context)
+		protected internal override string clientName => throw new NotImplementedException();
+
+		protected internal override AuthenticationHeaderValue authenticationHeader => throw new NotImplementedException();
+
+		public OAuth2Client() { }
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue(nameof(this.clientKey), this.clientKey);
             info.AddValue(nameof(this.secretKey), this.secretKey);
@@ -213,7 +217,7 @@ namespace SharpChatwork
         {
             return await QueryAsync<List<Room>>(EndPoints.Rooms, HttpMethod.Get);
         }
-        public async Task<ElementId> CreateRoomsAsync()
+        public async Task<ElementId> CreateRoomAsync()
         {
             return await QueryAsync<RoomId>(EndPoints.Rooms, HttpMethod.Get);
         }
@@ -270,7 +274,7 @@ namespace SharpChatwork
                 { "body" , message },
                 { "self_unread" , ToIntBool(isSelfUnread).ToString() }
             };
-            return await this.QueryAsync<MessageId>(EndPoints.RoomMessages(roomId), HttpMethod.Post, data);
+			return await this.QueryAsync<MessageId>(EndPoints.RoomMessages(roomId), HttpMethod.Post, data);
         }
         public async Task<MessageReadUnread> ReadRoomMessagesAsync(long roomId,long messageId)
         {
@@ -371,5 +375,5 @@ namespace SharpChatwork
         {
             await this.QueryNoReturnAsync(EndPoints.RoomLink(roomId), HttpMethod.Delete);
         }
-    }
+	}
 }
