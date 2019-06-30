@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharpChatwork.Client.Query
 {
-	public interface IContactQuery : IClientQuery
+	public interface IContactQuery
 	{
 		ValueTask<List<Contact>> GetAsync();
 	}
