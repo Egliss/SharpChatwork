@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharpChatwork.Client.Query
 {
-	public interface IRoomFileQuery : IClientQuery
+	public interface IRoomFileQuery
 	{
 		ValueTask<List<UserFile>> GetAllAsync(long roomId, long accountId);
 		ValueTask<ElementId> UploadAsync(long roomId);

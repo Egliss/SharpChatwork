@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharpChatwork.Client.Query
 {
-	public interface IMeQuery : IClientQuery
+	public interface IMeQuery
 	{
 		ValueTask<Status> GetMyStatusAsync();
 		ValueTask<List<UserTask>> GetMyTasksAsync();

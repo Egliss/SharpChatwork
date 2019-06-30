@@ -4,13 +4,13 @@ using System.Text;
 
 namespace SharpChatwork.Client.Query
 {
-	internal class ClientQuery : IClientQuery
+	internal class ClientQuery
 	{
 		public ClientQuery(IChatworkClient  client)
 		{
-			this.chatworkClient = client;
+			this.chatworkClient = client as ChatworkClient;
 		}
 
-		public IChatworkClient chatworkClient { get; private set; }
+		internal ChatworkClient chatworkClient { get; private set; }
 	}
 }

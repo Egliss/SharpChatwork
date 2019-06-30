@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using SharpChatwork.Query.Types;
@@ -12,19 +13,19 @@ namespace SharpChatwork.Client.Query
 		{
 		}
 
-		public ValueTask<Status> GetMyStatusAsync()
+		public async ValueTask<Status> GetMyStatusAsync()
 		{
-			throw new NotImplementedException();
-		}
+            return await this.chatworkClient.QueryAsync<Status>(EndPoints.MyStatus, HttpMethod.Get, new Dictionary<string, string>());
+        }
 
-		public ValueTask<List<UserTask>> GetMyTasksAsync()
+        public async ValueTask<List<UserTask>> GetMyTasksAsync()
 		{
-			throw new NotImplementedException();
-		}
+            return await this.chatworkClient.QueryAsync<List<UserTask>>(EndPoints.MyTasks, HttpMethod.Get, new Dictionary<string, string>());
+        }
 
-		public ValueTask<User> GetUserAsync()
+        public async ValueTask<User> GetUserAsync()
 		{
-			throw new NotImplementedException();
-		}
-	}
+            return await this.chatworkClient.QueryAsync<User>(EndPoints.Me, HttpMethod.Get, new Dictionary<string, string>());
+        }
+    }
 }

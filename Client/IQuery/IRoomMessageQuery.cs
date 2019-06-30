@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharpChatwork.Client.Query
 {
-	public interface IRoomMessageQuery : IClientQuery
+	public interface IRoomMessageQuery
 	{
 		ValueTask<ElementId> SendAsync(long roomId, string message, bool isSelfUnread);
 

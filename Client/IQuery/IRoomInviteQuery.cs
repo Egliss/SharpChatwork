@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharpChatwork.Client.Query
 {
-	public interface IRoomInviteQuery : IClientQuery
+	public interface IRoomInviteQuery
 	{
 		ValueTask<InviteLink> GetAsync(long roomId);
 		ValueTask<InviteLink> CreateAsync(long roomId, string uniqueName, string description, bool requireAcceptance);

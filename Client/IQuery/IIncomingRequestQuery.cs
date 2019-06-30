@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharpChatwork.Client.Query
 {
-	public interface IIncomingRequestQuery : IClientQuery
+	public interface IIncomingRequestQuery
 	{
 		ValueTask<List<IncomingRequest>> GetAsync();
 		ValueTask<IncomingRequest> AcceptAsync(long requestId);
