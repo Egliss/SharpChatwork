@@ -26,11 +26,19 @@ namespace SharpChatwork.Client.OAuth2
 		private string redirectUri { get; set; } = string.Empty;
 		private DateTime tokenQueryTime { get; set; } = DateTime.Now;
 
-		public override void GetObjectData(SerializationInfo info, StreamingContext context)
-		{
-			throw new NotImplementedException();
-		}
-		public OAuth2Client2() { }
+        public OAuth2Client2() { }
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            info.AddValue(nameof(this.clientKey), this.clientKey);
+            info.AddValue(nameof(this.secretKey), this.secretKey);
+            info.AddValue(nameof(this.oauth2Code), this.oauth2Code);
+            info.AddValue(nameof(this.accessToken), this.accessToken);
+            info.AddValue(nameof(this.refleshToken), this.refleshToken);
+            info.AddValue(nameof(this.tokenExpired), this.tokenExpired);
+            info.AddValue(nameof(this.tokenQueryTime), this.tokenQueryTime);
+            info.AddValue(nameof(this.redirectUri), this.redirectUri);
+            info.AddValue(nameof(this.scope), this.scope);
+        }
 		protected OAuth2Client2(SerializationInfo info, StreamingContext context)
 		{
 			this.clientKey = info.GetString(nameof(this.clientKey));
