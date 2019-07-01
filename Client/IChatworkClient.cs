@@ -13,19 +13,13 @@ namespace SharpChatwork
 {
     public interface IChatworkClient : ISerializable
 	{
-		IMeQuery me { get; }
+        IMeQuery me { get; }
 		IRoomQuery room { get; }
 		IContactQuery contact { get; }
 		IIncomingRequestQuery incomingRequest { get; }
 	}
-	internal interface IInternalChatworkClient
-	{
-		ValueTask<string> QueryTextAsync(Uri uri, HttpMethod method, Dictionary<string, string> data);
-		ValueTask<ReturnT> QueryAsync<ReturnT>(Uri uri, HttpMethod method, Dictionary<string, string> data);
-		ValueTask QueryAsync(Uri uri, HttpMethod method, Dictionary<string, string> data);
-	}
 
-	internal abstract class ChatworkClient : IChatworkClient, IInternalChatworkClient
+	public abstract class ChatworkClient : IChatworkClient
 	{
 		public ChatworkClient()
 		{
@@ -35,17 +29,16 @@ namespace SharpChatwork
 			this.incomingRequest = new IncomingRequestQuery(this);
 		}
 
-		protected abstract string clientName { get; }
-
 		public IMeQuery me { get; private set; }
 		public IRoomQuery room { get; private set; }
 		public IContactQuery contact { get; private set; }
 		public IIncomingRequestQuery incomingRequest { get; private set; }
 
-		public abstract void GetObjectData(SerializationInfo info, StreamingContext context);
+        internal abstract string clientName { get; }
+		internal abstract ValueTask<string> QueryTextAsync(Uri uri, HttpMethod method, Dictionary<string, string> data);
+		internal abstract ValueTask<ReturnT> QueryAsync<ReturnT>(Uri uri, HttpMethod method, Dictionary<string, string> data);
+		internal abstract ValueTask QueryAsync(Uri uri, HttpMethod method, Dictionary<string, string> data);
 
-		public abstract ValueTask<string> QueryTextAsync(Uri uri, HttpMethod method, Dictionary<string, string> data);
-		public abstract ValueTask<ReturnT> QueryAsync<ReturnT>(Uri uri, HttpMethod method, Dictionary<string, string> data);
-		public abstract ValueTask QueryAsync(Uri uri, HttpMethod method, Dictionary<string, string> data);
-	}
+        public abstract void GetObjectData(SerializationInfo info, StreamingContext context);
+    }
 }
