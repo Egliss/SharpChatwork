@@ -33,5 +33,12 @@ namespace SharpChatwork
         {
             return "?" + string.Join("^&" , ToDictionary(input).Select(m => $"{m.Key}={m.Value}"));
         }
+
+        public static int BoolToInt(bool value)
+        {
+            if (value)
+                return 1;
+            return 0;
+        }
     }
 }
