@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using SharpChatwork.Query.Types;
+using SharpChatwork.Query.Types.Ids;
 
 namespace SharpChatwork.Client.Query
 {
@@ -23,34 +25,42 @@ namespace SharpChatwork.Client.Query
 		public IRoomFileQuery file { get; private set; }
 		public IRoomTaskQuery task { get; private set; }
 
-		public ValueTask<ElementId> CreateAsync()
+		public async ValueTask<ElementId> CreateAsync()
 		{
-			throw new NotImplementedException();
-		}
+            return await this.chatworkClient.QueryAsync<RoomId>(EndPoints.Rooms, HttpMethod.Get,new Dictionary<string, string>());
+        }
 
-		public ValueTask DeleteAsync(long roomId)
+        public async ValueTask DeleteAsync(long roomId)
 		{
-			throw new NotImplementedException();
-		}
+            var uri = $"{EndPoints.RoomMessages(roomId)}?action_type=delete";
+            await this.chatworkClient.QueryAsync<RoomId>(new Uri(uri), HttpMethod.Post,new Dictionary<string, string>());
+        }
 
-		public ValueTask<List<Room>> GetAllAsync()
+		public async ValueTask<List<Room>> GetAllAsync()
 		{
-			throw new NotImplementedException();
-		}
+            return await this.chatworkClient.QueryAsync<List<Room>>(EndPoints.Rooms, HttpMethod.Get,new Dictionary<string, string>());
+        }
 
-		public ValueTask<Room> GetAsync(long roomId)
+        public async ValueTask<Room> GetAsync(long roomId)
 		{
-			throw new NotImplementedException();
-		}
+            return await this.chatworkClient.QueryAsync<Room>(EndPoints.RoomOf(roomId), HttpMethod.Get,new Dictionary<string, string>());
+        }
 
-		public ValueTask LeaveAsync(long roomId)
-		{
-			throw new NotImplementedException();
-		}
+        public async ValueTask LeaveAsync(long roomId)
+        {
+            var uri = $"{EndPoints.RoomMessages(roomId)}?action_type=leave";
+            await this.chatworkClient.QueryAsync<RoomId>(new Uri(uri), HttpMethod.Post, new Dictionary<string, string>());
+        }
 
-		public ValueTask<ElementId> UpdateAsync(long roomId, string roomName, string description, RoomIconPreset preset)
+		public async ValueTask<ElementId> UpdateAsync(long roomId, string roomName, string description, RoomIconPreset preset)
 		{
-			throw new NotImplementedException();
-		}
+            var data = new Dictionary<string, string>()
+            {
+                {"name",roomName },
+                {"description",roomName },
+                {"icon_preset",preset.ToAliasOrDefault() }
+            };
+            return await this.chatworkClient.QueryAsync<RoomId>(EndPoints.RoomOf(roomId), HttpMethod.Post, data);
+        }
 	}
 }

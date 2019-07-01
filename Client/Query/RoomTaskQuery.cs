@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using SharpChatwork.Query.Types;
+using SharpChatwork.Query.Types.Ids;
 
 namespace SharpChatwork.Client.Query
 {
@@ -12,24 +14,42 @@ namespace SharpChatwork.Client.Query
 		{
 		}
 
-		public ValueTask<ElementId> CreateAsync(long roomId, string taskText, long limit)
+		public async ValueTask<ElementId> CreateAsync(long roomId, string taskText, long limit)
 		{
-			throw new NotImplementedException();
-		}
+            //var data = new Dictionary<string, string>()
+            //{
+            //    { "body" , taskText },
+            //    { "limit" , limit},
+            //    { "limit_type" , doneString},
+            //    { "to_ids" , doneString},
+            //};
+            //return await this.QueryAsync<List<UserTask>>(EndPoints.RoomTasks(roomId), HttpMethod.Get, data);
+            throw new NotImplementedException();
+        }
 
-		public ValueTask<UserTask> GetAsync(long roomId, long taskId)
+		public async ValueTask<UserTask> GetAsync(long roomId, long taskId)
 		{
-			throw new NotImplementedException();
-		}
+            return await this.chatworkClient.QueryAsync<UserTask>(EndPoints.RoomTasksOf(roomId, taskId), HttpMethod.Get,new Dictionary<string, string>());
+        }
 
-		public ValueTask<List<UserTask>> GetllAsync(long roomId, long accountId, long autherId, bool isDone = false)
-		{
-			throw new NotImplementedException();
-		}
+        public async ValueTask<List<UserTask>> GetllAsync(long roomId, long accountId, long autherId, bool isDone = false)
+        {
+            var doneString = "done";
+            if (!isDone)
+                doneString = "open";
+            var data = new Dictionary<string, string>()
+            {
+                { "account_id" , accountId.ToString() },
+                { "assigned_by_account_id" , autherId.ToString()},
+                { "status" , doneString},
+            };
+            return await this.chatworkClient.QueryAsync<List<UserTask>>(EndPoints.RoomTasks(roomId), HttpMethod.Get, data);
+        }
 
-		public ValueTask<ElementId> UpdateAsync(long roomId, long taskId, TaskStateType state)
+		public async ValueTask<ElementId> UpdateAsync(long roomId, long taskId, TaskStateType state)
 		{
-			throw new NotImplementedException();
-		}
+            var uri = $"{EndPoints.RoomTasksOf(roomId, taskId)}?body={state.ToAliasOrDefault()}";
+            return await this.chatworkClient.QueryAsync<TaskId>(new Uri(uri), HttpMethod.Post,new Dictionary<string, string>());
+        }
 	}
 }

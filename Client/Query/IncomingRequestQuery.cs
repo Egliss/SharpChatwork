@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using SharpChatwork.Query.Types;
 
 namespace SharpChatwork.Client.Query
 {
@@ -11,19 +13,19 @@ namespace SharpChatwork.Client.Query
 		{
 		}
 
-		public ValueTask<IncomingRequestQuery> AcceptAsync(long requestId)
-		{
-			throw new NotImplementedException();
-		}
+        public async ValueTask<IncomingRequest> AcceptAsync(long requestId)
+        {
+            return await this.chatworkClient.QueryAsync<IncomingRequest>(EndPoints.IncomingRequestsOf(requestId), HttpMethod.Post,new Dictionary<string, string>());
+        }
 
-		public ValueTask CancelAsync(long requestId)
-		{
-			throw new NotImplementedException();
-		}
+        public async ValueTask CancelAsync(long requestId)
+        {
+            await this.chatworkClient.QueryAsync(EndPoints.IncomingRequestsOf(requestId), HttpMethod.Delete, new Dictionary<string, string>());
+        }
 
-		public ValueTask<List<IncomingRequestQuery>> GetAsync()
-		{
-			throw new NotImplementedException();
-		}
-	}
+        public async ValueTask<List<IncomingRequest>> GetAsync()
+        {
+            return await this.chatworkClient.QueryAsync<List<IncomingRequest>>(EndPoints.IncomingRequests, HttpMethod.Get, new Dictionary<string, string>());
+        }
+    }
 }

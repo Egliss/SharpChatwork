@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using SharpChatwork.Query.Types;
@@ -12,24 +13,36 @@ namespace SharpChatwork.Client.Query
 		{
 		}
 
-		public ValueTask<InviteLink> CreateAsync(long roomId, string uniqueName, string description, bool requireAcceptance)
+		public async ValueTask<InviteLink> CreateAsync(long roomId, string uniqueName, string description, bool requireAcceptance)
 		{
-			throw new NotImplementedException();
-		}
+            var data = new Dictionary<string, string>()
+            {
+                { "code" , uniqueName },
+                { "description" , description},
+                { "need_acceptance" , URLArgEncoder.BoolToInt(requireAcceptance).ToString()},
+            };
+            return await this.chatworkClient.QueryAsync<InviteLink>(EndPoints.RoomTasks(roomId), HttpMethod.Post, data);
+        }
 
-		public ValueTask DestroyAsync(long roomId)
+		public async ValueTask DestroyAsync(long roomId)
 		{
-			throw new NotImplementedException();
-		}
+            await this.chatworkClient.QueryAsync(EndPoints.RoomLink(roomId), HttpMethod.Delete, new Dictionary<string, string>());
+        }
 
-		public ValueTask<InviteLink> GetAsync(long roomId)
+        public async ValueTask<InviteLink> GetAsync(long roomId)
 		{
-			throw new NotImplementedException();
-		}
+            return await this.chatworkClient.QueryAsync<InviteLink>(EndPoints.RoomLink(roomId), HttpMethod.Post, new Dictionary<string, string>());
+        }
 
-		public ValueTask<InviteLink> UpdateAsync(long roomId, string uniqueName, string description, bool requireAcceptance)
+        public async ValueTask<InviteLink> UpdateAsync(long roomId, string uniqueName, string description, bool requireAcceptance)
 		{
-			throw new NotImplementedException();
-		}
+            var data = new Dictionary<string, string>()
+            {
+                { "code" , uniqueName },
+                { "description" , description},
+                { "need_acceptance" , URLArgEncoder.BoolToInt(requireAcceptance).ToString()},
+            };
+            return await this.chatworkClient.QueryAsync<InviteLink>(EndPoints.RoomTasks(roomId), HttpMethod.Put, data);
+        }
 	}
 }
