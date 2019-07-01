@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace SharpChatwork
 {
+    [Serializable]
 	public class OAuth2Client : ChatworkClient
 	{
 		private string clientKey { get; set; } = string.Empty;
@@ -25,7 +26,7 @@ namespace SharpChatwork
 		private string redirectUri { get; set; } = string.Empty;
 		private DateTime tokenQueryTime { get; set; } = DateTime.Now;
 
-        public OAuth2Client() { }
+        // public OAuth2Client() { }
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue(nameof(this.clientKey), this.clientKey);
@@ -38,7 +39,7 @@ namespace SharpChatwork
             info.AddValue(nameof(this.redirectUri), this.redirectUri);
             info.AddValue(nameof(this.scope), this.scope);
         }
-		protected OAuth2Client(SerializationInfo info, StreamingContext context)
+        protected OAuth2Client(SerializationInfo info, StreamingContext context)
 		{
 			this.clientKey = info.GetString(nameof(this.clientKey));
 			this.secretKey = info.GetString(nameof(this.secretKey));
@@ -65,8 +66,9 @@ namespace SharpChatwork
 				RequestUri = uri
 			};
 			request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.accessToken);
-			request.Content = new FormUrlEncodedContent(data);
-			HttpClient client = new HttpClient();
+            if (data.Count != 0)
+                request.Content = new FormUrlEncodedContent(data);
+            HttpClient client = new HttpClient();
 			await client.SendAsync(request);
 			return;
 			//using (StreamReader reader = new StreamReader(await result.Content.ReadAsStreamAsync(), Encoding.UTF8))
@@ -82,7 +84,8 @@ namespace SharpChatwork
 				RequestUri = uri
 			};
 			request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.accessToken);
-			request.Content = new FormUrlEncodedContent(data);
+            if(data.Count != 0)
+			    request.Content = new FormUrlEncodedContent(data);
 			HttpClient client = new HttpClient();
 			var result = await client.SendAsync(request);
 			using (StreamReader reader = new StreamReader(await result.Content.ReadAsStreamAsync(), Encoding.UTF8))
