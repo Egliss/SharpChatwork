@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SharpChatwork
 {
-    class URLArgEncoder
+    internal class URLArgEncoder
     {
         public static Dictionary<string, string> ToDictionary<T>(T input) where T : class
         {

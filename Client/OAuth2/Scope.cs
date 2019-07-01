@@ -100,7 +100,7 @@ namespace SharpChatwork.OAuth2
         ContactsAllW = 0x0000_0001,
     }
 
-    public static class ScopeTypeExtension
+    internal static class ScopeTypeExtension
     {
         public static string ToURLArg(this ScopeType type)
         {
