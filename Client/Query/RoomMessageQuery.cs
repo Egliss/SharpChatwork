@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using SharpChatwork.Query.Types;
-using SharpChatwork.Query.Types.Ids;
+
 
 namespace SharpChatwork.Query
 {

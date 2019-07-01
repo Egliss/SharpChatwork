@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SharpChatwork
 {
-    public class ChatworkQueryInfo
+    internal class ChatworkQueryInfo
     {
         public int statusCode { get; set; }
         public string message { get; set; }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SharpChatwork.Query.Types.Ids
+namespace SharpChatwork.Query.Types
 {
     public class TaskId : ElementId
     {

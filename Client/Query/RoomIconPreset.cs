@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SharpChatwork
+namespace SharpChatwork.Query
 {
     public enum RoomIconPreset
     {
