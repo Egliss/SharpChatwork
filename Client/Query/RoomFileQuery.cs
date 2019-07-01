@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using SharpChatwork.Query.Types;
@@ -12,18 +13,21 @@ namespace SharpChatwork.Client.Query
 		{
 		}
 
-		public ValueTask<List<UserFile>> GetAllAsync(long roomId, long accountId)
+		public async ValueTask<List<UserFile>> GetAllAsync(long roomId, long accountId)
 		{
-			throw new NotImplementedException();
-		}
+            var uri = $"{EndPoints.RoomFiles(roomId)}?account_id={accountId.ToString()}";
+            return await this.chatworkClient.QueryAsync<List<UserFile>>(new Uri(uri), HttpMethod.Get, new Dictionary<string, string>());
+        }
 
-		public ValueTask<UserFile> GetAsync(long roomId, long fileId, bool createDownloadLink)
+		public async ValueTask<UserFile> GetAsync(long roomId, long fileId, bool createDownloadLink)
 		{
-			throw new NotImplementedException();
-		}
+            var uri = $"{EndPoints.RoomFiles(roomId)}?create_download_url={URLArgEncoder.BoolToInt(createDownloadLink)}";
+            return await this.chatworkClient.QueryAsync<UserFile>(new Uri(uri), HttpMethod.Get,new Dictionary<string, string>());
+        }
 
-		public ValueTask<ElementId> UploadAsync(long roomId)
+		public async ValueTask<ElementId> UploadAsync(long roomId)
 		{
+            // TODO implement
 			throw new NotImplementedException();
 		}
 	}
