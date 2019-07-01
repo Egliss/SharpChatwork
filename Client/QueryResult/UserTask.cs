@@ -1,5 +1,13 @@
 ﻿namespace SharpChatwork.Query.Types
 {
+    public enum TaskStateType
+    {
+        [EnumAlias("open")]
+        Open,
+        [EnumAlias("done")]
+        Done
+    }
+
     public class UserTask
     {
         public int task_id { get; set; }

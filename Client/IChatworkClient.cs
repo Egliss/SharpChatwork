@@ -1,22 +1,44 @@
-﻿using SharpChatwork.Query.Types;
+﻿using SharpChatwork;
+using SharpChatwork.Query;
+using SharpChatwork.Query.Types;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
 namespace SharpChatwork
 {
     public interface IChatworkClient : ISerializable
-    {
-        Task<User> GetMeAsync();
-        Task<Status> GetMyStatusAsync();
-        Task<List<UserTask>> GetMyTasksAsync();
+	{
+        IMeQuery me { get; }
+		IRoomQuery room { get; }
+		IContactQuery contact { get; }
+		IIncomingRequestQuery incomingRequest { get; }
+	}
 
-        Task<List<Contact>> GetContactsAsync();
+	public abstract class ChatworkClient : IChatworkClient
+	{
+		public ChatworkClient()
+		{
+			this.me = new MeQuery(this);
+			this.contact= new ContactQuery(this);
+			this.room = new RoomQuery(this);
+			this.incomingRequest = new IncomingRequestQuery(this);
+		}
 
-        Task<List<Room>> GetRoomsAsync();
+		public IMeQuery me { get; private set; }
+		public IRoomQuery room { get; private set; }
+		public IContactQuery contact { get; private set; }
+		public IIncomingRequestQuery incomingRequest { get; private set; }
 
-        Task<List<IncomingRequest>> GetIncomingRequestsAsync();
-        Task<IncomingRequest> AcceptIncomingRequest(long requestId);
-        Task CancelIncomingRequestAsync(long requestId);
+        internal abstract string clientName { get; }
+		internal abstract ValueTask<string> QueryTextAsync(Uri uri, HttpMethod method, Dictionary<string, string> data);
+		internal abstract ValueTask<ReturnT> QueryAsync<ReturnT>(Uri uri, HttpMethod method, Dictionary<string, string> data);
+		internal abstract ValueTask QueryAsync(Uri uri, HttpMethod method, Dictionary<string, string> data);
+
+        public abstract void GetObjectData(SerializationInfo info, StreamingContext context);
     }
 }
