@@ -1,5 +1,5 @@
-﻿using SharpChatwork.Client;
-using SharpChatwork.Client.Query;
+﻿using SharpChatwork;
+using SharpChatwork.Query;
 using SharpChatwork.Query.Types;
 using System;
 using System.Collections.Generic;

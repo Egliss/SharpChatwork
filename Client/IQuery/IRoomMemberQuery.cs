@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SharpChatwork.Client.Query
+namespace SharpChatwork.Query
 {
 	public interface IRoomMemberQuery
 	{

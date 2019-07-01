@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SharpChatwork.OAuth2;
 using SharpChatwork.Query;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SharpChatwork.Client.OAuth2
+namespace SharpChatwork
 {
 	public class OAuth2Client : ChatworkClient
 	{
