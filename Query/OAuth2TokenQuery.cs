@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SharpChatwork.OAuth2
+namespace SharpChatwork.Query
 {
-    public class OAuth2TokenQuery
+    public class OAuth2TokenQuery : IQueryScope
     {
         public enum GrantType
         {

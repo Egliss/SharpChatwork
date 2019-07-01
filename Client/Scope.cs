@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Text;
 
-namespace SharpChatwork.OAuth2
+namespace SharpChatwork
 {
     /// <summary>
     /// API access scopes <para/>

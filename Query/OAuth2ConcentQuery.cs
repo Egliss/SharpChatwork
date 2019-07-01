@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SharpChatwork.OAuth2
+namespace SharpChatwork.Query
 {
     public class OAuth2ConcentQuery
     {
@@ -14,9 +14,6 @@ namespace SharpChatwork.OAuth2
         public string code_challenge { get; set; } = string.Empty;
         public string code_challenge_method { get; set; } = string.Empty;
 
-		/// <summary>
-		/// auto set to <see cref="scope"/> from input bit field flag
-		/// </summary>
         public ScopeType scopeType { set => scope = value.ToURLArg(); }
     }
 }

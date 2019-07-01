@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SharpChatwork.OAuth2
+namespace SharpChatwork.Query
 {
     public class OAuth2ConcentQueryResult
     {
