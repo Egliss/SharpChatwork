@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SharpChatwork.Query
+namespace SharpChatwork.OAuth2
 {
     public class OAuth2TokenQueryResult
     {
