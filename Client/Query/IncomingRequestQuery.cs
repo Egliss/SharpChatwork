@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SharpChatwork.Query.Types;
 
-namespace SharpChatwork.Client.Query
+namespace SharpChatwork.Query
 {
 	internal class IncomingRequestQuery : ClientQuery, IIncomingRequestQuery
 	{

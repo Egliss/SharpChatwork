@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using SharpChatwork.Query.Types;
 using SharpChatwork.Query.Types.Ids;
 
-namespace SharpChatwork.Client.Query
+namespace SharpChatwork.Query
 {
 	internal class RoomTaskQuery : ClientQuery, IRoomTaskQuery
 	{
