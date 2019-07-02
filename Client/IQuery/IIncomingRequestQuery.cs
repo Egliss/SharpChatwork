@@ -8,7 +8,7 @@ namespace SharpChatwork.Query
 {
 	public interface IIncomingRequestQuery
 	{
-		ValueTask<List<IncomingRequest>> GetAllAsync();
+		ValueTask<IEnumerable<IncomingRequest>> GetAllAsync();
 		ValueTask<IncomingRequest> AcceptAsync(long requestId);
 		ValueTask CancelAsync(long requestId);
 	}

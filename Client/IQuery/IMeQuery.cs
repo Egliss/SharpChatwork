@@ -9,7 +9,7 @@ namespace SharpChatwork.Query
 	public interface IMeQuery
 	{
 		ValueTask<Status> GetMyStatusAsync();
-		ValueTask<List<UserTask>> GetMyTasksAsync();
+		ValueTask<IEnumerable<UserTask>> GetMyTasksAsync();
 		ValueTask<User> GetUserAsync();
 	}
 }
