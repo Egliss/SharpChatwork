@@ -18,7 +18,7 @@ namespace SharpChatwork.Query
             return await this.chatworkClient.QueryAsync<Status>(EndPoints.MyStatus, HttpMethod.Get, new Dictionary<string, string>());
         }
 
-        public async ValueTask<List<UserTask>> GetMyTasksAsync()
+        public async ValueTask<IEnumerable<UserTask>> GetMyTasksAsync()
 		{
             return await this.chatworkClient.QueryAsync<List<UserTask>>(EndPoints.MyTasks, HttpMethod.Get, new Dictionary<string, string>());
         }
