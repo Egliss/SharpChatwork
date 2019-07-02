@@ -8,7 +8,7 @@ namespace SharpChatwork.Query
 {
 	public interface IRoomMemberQuery
 	{
-		ValueTask<List<User>> GetAllAsync(long roomId);
+		ValueTask<IEnumerable<User>> GetAllAsync(long roomId);
 		ValueTask<RoomMember> UpdateAsync(long roomId, IEnumerable<long> adminsMembers, IEnumerable<long> normalMembers, IEnumerable<long> readonlyMembers);
 	}
 }
