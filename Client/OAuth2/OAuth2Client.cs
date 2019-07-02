@@ -20,6 +20,7 @@ namespace SharpChatwork.OAuth2
 		private string accessToken { get; set; } = string.Empty;
 		private string refleshToken { get; set; } = string.Empty;
 		private long tokenExpired { get; set; } = 0;
+
 		private string scope { get; set; } = string.Empty;
 		private string redirectUri { get; set; } = string.Empty;
 		private DateTime tokenQueryTime { get; set; } = DateTime.Now;

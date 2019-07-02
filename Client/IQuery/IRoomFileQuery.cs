@@ -8,7 +8,7 @@ namespace SharpChatwork.Query
 {
 	public interface IRoomFileQuery
 	{
-		ValueTask<List<UserFile>> GetAllAsync(long roomId, long accountId);
+		ValueTask<IEnumerable<UserFile>> GetAllAsync(long roomId, long accountId);
 		ValueTask<ElementId> UploadAsync(long roomId);
 		ValueTask<UserFile> GetAsync(long roomId, long fileId, bool createDownloadLink);
 	}

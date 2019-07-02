@@ -14,7 +14,7 @@ namespace SharpChatwork.Query
 		{
 		}
 
-		public async ValueTask<List<UserMessage>> GetAllAsync(long roomId, bool isForceMode = false)
+		public async ValueTask<IEnumerable<UserMessage>> GetAllAsync(long roomId, bool isForceMode = false)
 		{
             // TODO QueryAsync + data is error
             // single arg is invalid ?

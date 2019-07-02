@@ -14,7 +14,7 @@ namespace SharpChatwork.Query
 		{
 		}
 
-		public async ValueTask<List<User>> GetAllAsync(long roomId)
+		public async ValueTask<IEnumerable<User>> GetAllAsync(long roomId)
 		{
             return await this.chatworkClient.QueryAsync<List<User>>(EndPoints.RoomMember(roomId), HttpMethod.Get, new Dictionary<string, string>());
         }
