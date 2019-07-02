@@ -32,7 +32,7 @@ namespace SharpChatwork.Query
             return await this.chatworkClient.QueryAsync<UserTask>(EndPoints.RoomTasksOf(roomId, taskId), HttpMethod.Get,new Dictionary<string, string>());
         }
 
-        public async ValueTask<List<UserTask>> GetllAsync(long roomId, long accountId, long autherId, bool isDone = false)
+        public async ValueTask<IEnumerable<UserTask>> GetllAsync(long roomId, long accountId, long autherId, bool isDone = false)
         {
             var doneString = "done";
             if (!isDone)
