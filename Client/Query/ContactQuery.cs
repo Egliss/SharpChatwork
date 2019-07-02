@@ -13,7 +13,7 @@ namespace SharpChatwork.Query
 		{
 		}
 
-		public async ValueTask<List<Contact>> GetAsync()
+		public async ValueTask<List<Contact>> GetAllAsync()
 		{
             return await this.chatworkClient.QueryAsync<List<Contact>>(EndPoints.Contacts, HttpMethod.Get, new Dictionary<string, string>());
         }
