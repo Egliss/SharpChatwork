@@ -8,6 +8,6 @@ namespace SharpChatwork.Query
 {
 	public interface IContactQuery
 	{
-		ValueTask<List<Contact>> GetAsync();
+		ValueTask<IEnumerable<Contact>> GetAllAsync();
 	}
 }

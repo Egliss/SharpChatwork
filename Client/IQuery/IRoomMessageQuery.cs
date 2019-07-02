@@ -13,7 +13,7 @@ namespace SharpChatwork.Query
 		ValueTask<MessageReadUnread> ReadAsync(long roomId, long messageId);
 		ValueTask<MessageReadUnread> UnReadAsync(long roomId, long messageId);
 
-		ValueTask<List<UserMessage>> GetAllAsync(long roomId, bool isForceMode = false);
+		ValueTask<IEnumerable<UserMessage>> GetAllAsync(long roomId, bool isForceMode = false);
 		ValueTask<UserMessage> GetAsync(long roomId, long messageId);
 
 		ValueTask<ElementId> UpdateAsync(long roomId, long messageId, string message);

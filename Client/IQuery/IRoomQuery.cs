@@ -8,7 +8,7 @@ namespace SharpChatwork.Query
 {
 	public interface IRoomQuery
 	{
-		ValueTask<List<Room>> GetAllAsync();
+		ValueTask<IEnumerable<Room>> GetAllAsync();
 		ValueTask<ElementId> CreateAsync();
 		ValueTask<Room> GetAsync(long roomId);
 		ValueTask<ElementId> UpdateAsync(long roomId, string roomName, string description, RoomIconPreset preset);

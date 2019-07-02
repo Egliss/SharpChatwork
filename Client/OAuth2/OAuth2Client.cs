@@ -20,11 +20,12 @@ namespace SharpChatwork.OAuth2
 		private string accessToken { get; set; } = string.Empty;
 		private string refleshToken { get; set; } = string.Empty;
 		private long tokenExpired { get; set; } = 0;
+
 		private string scope { get; set; } = string.Empty;
 		private string redirectUri { get; set; } = string.Empty;
 		private DateTime tokenQueryTime { get; set; } = DateTime.Now;
 
-        // public OAuth2Client() { }
+        public OAuth2Client() { }
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue(nameof(this.clientKey), this.clientKey);

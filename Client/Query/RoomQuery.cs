@@ -36,7 +36,7 @@ namespace SharpChatwork.Query
             await this.chatworkClient.QueryAsync<RoomId>(new Uri(uri), HttpMethod.Post,new Dictionary<string, string>());
         }
 
-		public async ValueTask<List<Room>> GetAllAsync()
+		public async ValueTask<IEnumerable<Room>> GetAllAsync()
 		{
             return await this.chatworkClient.QueryAsync<List<Room>>(EndPoints.Rooms, HttpMethod.Get,new Dictionary<string, string>());
         }
