@@ -23,7 +23,7 @@ namespace SharpChatwork.Query
             await this.chatworkClient.QueryAsync(EndPoints.IncomingRequestsOf(requestId), HttpMethod.Delete, new Dictionary<string, string>());
         }
 
-        public async ValueTask<List<IncomingRequest>> GetAsync()
+        public async ValueTask<List<IncomingRequest>> GetAllAsync()
         {
             return await this.chatworkClient.QueryAsync<List<IncomingRequest>>(EndPoints.IncomingRequests, HttpMethod.Get, new Dictionary<string, string>());
         }
