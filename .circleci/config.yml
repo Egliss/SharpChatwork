@@ -2,7 +2,14 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: mcr.microsoft.com/dotnet/core/sdk:2.1
+      - image: microsoft/dotnet:2.2-sdk
     steps:
       - checkout
-      - run: echo "OK"
+      - run: dotnet restore
+      - run: dotnet build $SolutionName
+workflows:
+  version: 2.1
+  buildAll:
+    jobs:
+      - build
+      # none
