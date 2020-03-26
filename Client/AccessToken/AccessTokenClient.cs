@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.Serialization;
@@ -31,6 +32,17 @@ namespace SharpChatwork.AccessToken
             this.accessToken = info.GetString(nameof(this.accessToken));
         }
 
+        private HttpRequestMessage GenerateRequestMessage(Uri uri, HttpMethod method)
+        {
+            HttpRequestMessage request = new HttpRequestMessage
+            {
+                Method = method,
+                RequestUri = uri
+            };
+            request.Headers.Add("X-ChatWorkToken", this.accessToken);
+            return request;
+        }
+
         internal override async ValueTask<ReturnT> QueryAsync<ReturnT>(Uri uri, HttpMethod method, Dictionary<string, string> data)
         {
             var text = await this.QueryTextAsync(uri, method, data);
@@ -39,35 +51,33 @@ namespace SharpChatwork.AccessToken
 
         internal override async ValueTask QueryAsync(Uri uri, HttpMethod method, Dictionary<string, string> data)
         {
-            HttpRequestMessage request = new HttpRequestMessage
-            {
-                Method = method,
-                RequestUri = uri
-            };
-            request.Headers.Authorization = new AuthenticationHeaderValue("X-ChatWorkToken", this.accessToken);
+            HttpContent content = null;
             if (data.Count != 0)
-                request.Content = new FormUrlEncodedContent(data);
-            HttpClient client = new HttpClient();
-            await client.SendAsync(request);
-            return;
+                content = new FormUrlEncodedContent(data);
+            await QueryContentTextAsync(uri, method, content);
         }
 
         internal override async ValueTask<string> QueryTextAsync(Uri uri, HttpMethod method, Dictionary<string, string> data)
         {
-            HttpRequestMessage request = new HttpRequestMessage
-            {
-                Method = method,
-                RequestUri = uri
-            };
-            request.Headers.Add("X-ChatWorkToken", this.accessToken);
+            HttpContent content = null;
             if (data.Count != 0)
-                request.Content = new FormUrlEncodedContent(data);
+                content = new FormUrlEncodedContent(data);
+            return await QueryContentTextAsync(uri, method, content);
+        }
+
+        internal override async ValueTask<string> QueryContentTextAsync(Uri uri, HttpMethod method, HttpContent content)
+        {
+            var requestMessage = this.GenerateRequestMessage(uri, method);
+            requestMessage.Content = content;
             HttpClient client = new HttpClient();
-            var result = await client.SendAsync(request);
-            using (StreamReader reader = new StreamReader(await result.Content.ReadAsStreamAsync(), Encoding.UTF8))
-            {
-                return reader.ReadToEnd();
-            }
+            var result = await client.SendAsync(requestMessage);
+            return await result.Content.ReadAsStringAsync();
+        }
+
+        internal override async ValueTask<ReturnT> QueryContentAsync<ReturnT>(Uri uri, HttpMethod method, HttpContent content)
+        {
+            var text = await this.QueryContentTextAsync(uri, method, content);
+            return JsonConvert.DeserializeObject<ReturnT>(text);
         }
     }
 }
