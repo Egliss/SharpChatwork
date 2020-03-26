@@ -1,34 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using SharpChatwork.Query.Types;
 
 namespace SharpChatwork.Query
 {
-	internal class RoomFileQuery : ClientQuery, IRoomFileQuery
-	{
-		public RoomFileQuery(IChatworkClient client) : base(client)
-		{
-		}
+    internal class RoomFileQuery : ClientQuery, IRoomFileQuery
+    {
+        public RoomFileQuery(IChatworkClient client) : base(client)
+        {
+        }
 
-		public async ValueTask<IEnumerable<UserFile>> GetAllAsync(long roomId, long accountId)
-		{
+        public async ValueTask<IEnumerable<UserFile>> GetAllAsync(long roomId, long accountId)
+        {
             var uri = $"{EndPoints.RoomFiles(roomId)}?account_id={accountId.ToString()}";
             return await this.chatworkClient.QueryAsync<List<UserFile>>(new Uri(uri), HttpMethod.Get, new Dictionary<string, string>());
         }
 
-		public async ValueTask<UserFile> GetAsync(long roomId, long fileId, bool createDownloadLink)
-		{
+        public async ValueTask<UserFile> GetAsync(long roomId, long fileId, bool createDownloadLink)
+        {
             var uri = $"{EndPoints.RoomFiles(roomId)}?create_download_url={URLArgEncoder.BoolToInt(createDownloadLink)}";
-            return await this.chatworkClient.QueryAsync<UserFile>(new Uri(uri), HttpMethod.Get,new Dictionary<string, string>());
+            return await this.chatworkClient.QueryAsync<UserFile>(new Uri(uri), HttpMethod.Get, new Dictionary<string, string>());
         }
 
-		public async ValueTask<ElementId> UploadAsync(long roomId)
-		{
-            // TODO implement
-			throw new NotImplementedException();
-		}
-	}
+        public async ValueTask<ElementId> UploadAsync(long roomId, string filePath, string contentType, string message)
+        {
+            var uri = $"{EndPoints.RoomFiles(roomId)}";
+
+            MultipartFormDataContent multipart = new MultipartFormDataContent();
+            var t = await File.ReadAllBytesAsync(filePath);
+            var fileContent = new ByteArrayContent(t);
+            fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+            {
+                Name = "\"file\"",
+                FileName = $"\"{Path.GetFileName(filePath)}\"",
+            };
+            var mimeName = MimeMapping.MimeUtility.GetMimeMapping(filePath);
+            fileContent.Headers.ContentType = new MediaTypeHeaderValue(mimeName);
+            var messageContent = new StringContent(message);
+            messageContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
+            messageContent.Headers.ContentDisposition.Name = "\"message\"";
+            messageContent.Headers.ContentType = null;
+            multipart.Add(fileContent);
+            multipart.Add(messageContent);
+
+            return await this.chatworkClient.QueryContentAsync<ElementId>(new Uri(uri), HttpMethod.Post, multipart);
+        }
+    }
 }
