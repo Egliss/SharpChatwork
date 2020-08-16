@@ -26,14 +26,12 @@ namespace SharpChatwork.Query
             var uri = $"{EndPoints.RoomFiles(roomId)}?create_download_url={URLArgEncoder.BoolToInt(createDownloadLink)}";
             return await this.chatworkClient.QueryAsync<UserFile>(new Uri(uri), HttpMethod.Get, new Dictionary<string, string>());
         }
-
-        public async ValueTask<ElementId> UploadAsync(long roomId, string filePath, string contentType, string message)
+        public async ValueTask<ElementId> UploadAsync(long roomId, Stream stream, string filePath, string message)
         {
             var uri = $"{EndPoints.RoomFiles(roomId)}";
 
             MultipartFormDataContent multipart = new MultipartFormDataContent();
-            var t = await File.ReadAllBytesAsync(filePath);
-            var fileContent = new ByteArrayContent(t);
+            var fileContent = new StreamContent(stream);
             fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
             {
                 Name = "\"file\"",
@@ -49,6 +47,13 @@ namespace SharpChatwork.Query
             multipart.Add(messageContent);
 
             return await this.chatworkClient.QueryContentAsync<ElementId>(new Uri(uri), HttpMethod.Post, multipart);
+        }
+        public async ValueTask<ElementId> UploadAsync(long roomId, string filePath, string message)
+        {
+            using (FileStream stream = new FileStream(filePath, FileMode.Open))
+            {
+                return await UploadAsync(roomId, stream, filePath, message);
+            }
         }
     }
 }

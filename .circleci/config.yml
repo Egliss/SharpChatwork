@@ -2,13 +2,13 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: microsoft/dotnet:2.2-sdk
+      - image: mcr.microsoft.com/dotnet/core/sdk:3.1
     steps:
       - checkout
       - run: dotnet restore
       - run: dotnet build $SolutionName
 workflows:
-  version: 2.1
+  version: 3.1
   buildAll:
     jobs:
       - build

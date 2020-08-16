@@ -88,10 +88,14 @@ namespace SharpChatwork.OAuth2
             request.Content = content;
             HttpClient client = new HttpClient();
             var result = await client.SendAsync(request);
-            using (StreamReader reader = new StreamReader(await result.Content.ReadAsStreamAsync(), Encoding.UTF8))
+            var code = (int)result.StatusCode;
+            var textContent = await result.Content.ReadAsStringAsync();
+            if(code >= 300)
             {
-                return await reader.ReadToEndAsync();
+                throw new Exception($"[{code}] {textContent}");
             }
+
+            return textContent;
         }
 
         internal override async ValueTask<ReturnT> QueryContentAsync<ReturnT>(Uri uri, HttpMethod method, HttpContent content)
