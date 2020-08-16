@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.NetworkInformation;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
@@ -71,7 +72,14 @@ namespace SharpChatwork.AccessToken
             requestMessage.Content = content;
             HttpClient client = new HttpClient();
             var result = await client.SendAsync(requestMessage);
-            return await result.Content.ReadAsStringAsync();
+            var code = (int)result.StatusCode;
+            var textContent = await result.Content.ReadAsStringAsync();
+            if(code >= 300)
+            {
+                throw new Exception($"[{code}] {textContent}");
+            }
+
+            return textContent;
         }
 
         internal override async ValueTask<ReturnT> QueryContentAsync<ReturnT>(Uri uri, HttpMethod method, HttpContent content)
