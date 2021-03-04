@@ -17,7 +17,7 @@ jobs:
       run: dotnet restore
       run: dotnet tool restore
     - name: Lint
-      run: dotnet format SharpChatwork.sln --check
+      run: dotnet format SharpChatwork.sln --check --fix-style
     - name: Build
       run: dotnet build --no-restore
     - name: Test

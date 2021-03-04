@@ -10,6 +10,10 @@ charset = utf-8
 
 # C# ファイル
 [*.cs]
+# 不要なnamespaceのusing
+dotnet_diagnostic.IDE0005.severity = warning
+# thisの強制付与
+dotnet_diagnostic.IDE0009.severity = warning
 
 # インデントと間隔
 indent_size = 4
