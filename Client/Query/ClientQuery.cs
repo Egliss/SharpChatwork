@@ -6,7 +6,7 @@ namespace SharpChatwork.Query
 {
 	internal class ClientQuery
 	{
-		public ClientQuery(IChatworkClient  client)
+		public ClientQuery(IChatworkClient client)
 		{
 			this.chatworkClient = client as ChatworkClient;
 		}
