@@ -15,10 +15,12 @@ jobs:
         dotnet-version: 5.0.x
     - name: Restore dependencies
       run: |
-        dotnet restore 
+        dotnet restore
         dotnet tool restore
     - name: Lint
-      run: dotnet format SharpChatwork.sln --check --fix-style
+      run: |
+        dotnet format SharpChatwork.sln --check
+        dotnet format SharpChatwork.sln --check --fix-style warn
     - name: Build
       run: dotnet build --no-restore
     - name: Test
