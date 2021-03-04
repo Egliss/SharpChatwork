@@ -17,9 +17,10 @@ namespace SharpChatwork.Query
             return await this.chatworkClient.QueryAsync<List<User>>(EndPoints.RoomMember(roomId), HttpMethod.Get, new Dictionary<string, string>());
         }
 
-        public async ValueTask<RoomMember> UpdateAsync(long roomId, IEnumerable<long> adminsMembers, IEnumerable<long> normalMembers, IEnumerable<long> readonlyMembers)
+        public ValueTask<RoomMember> UpdateAsync(long roomId, IEnumerable<long> adminsMembers, IEnumerable<long> normalMembers, IEnumerable<long> readonlyMembers)
         {
             throw new NotImplementedException();
+            /*
             var data = new Dictionary<string, string>()
             {
                 // TODO convert
@@ -28,6 +29,7 @@ namespace SharpChatwork.Query
                 // {"members_readonly_ids",preset.ToAliasOrDefault() }
             };
             return await this.chatworkClient.QueryAsync<RoomMember>(EndPoints.RoomMember(roomId), HttpMethod.Get, data);
+            */
         }
     }
 }
