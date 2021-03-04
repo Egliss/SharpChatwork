@@ -15,6 +15,9 @@ jobs:
         dotnet-version: 5.0.x
     - name: Restore dependencies
       run: dotnet restore
+      run: dotnet tool restore
+    - name: Lint
+      run: dotnet format SharpChatwork.sln --check
     - name: Build
       run: dotnet build --no-restore
     - name: Test
