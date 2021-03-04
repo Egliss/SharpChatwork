@@ -1,21 +1,19 @@
-﻿using System;
+using SharpChatwork.Query.Types;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using SharpChatwork.Query.Types;
 
 namespace SharpChatwork.Query
 {
-	internal class IncomingRequestQuery : ClientQuery, IIncomingRequestQuery
-	{
-		public IncomingRequestQuery(IChatworkClient client) : base(client)
-		{
-		}
+    internal class IncomingRequestQuery : ClientQuery, IIncomingRequestQuery
+    {
+        public IncomingRequestQuery(IChatworkClient client) : base(client)
+        {
+        }
 
         public async ValueTask<IncomingRequest> AcceptAsync(long requestId)
         {
-            return await this.chatworkClient.QueryAsync<IncomingRequest>(EndPoints.IncomingRequestsOf(requestId), HttpMethod.Post,new Dictionary<string, string>());
+            return await this.chatworkClient.QueryAsync<IncomingRequest>(EndPoints.IncomingRequestsOf(requestId), HttpMethod.Post, new Dictionary<string, string>());
         }
 
         public async ValueTask CancelAsync(long requestId)

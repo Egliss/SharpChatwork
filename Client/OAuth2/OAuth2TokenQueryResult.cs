@@ -1,7 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace SharpChatwork.OAuth2
 {
     public class OAuth2TokenQueryResult
@@ -18,6 +14,6 @@ namespace SharpChatwork.OAuth2
         public string error_description { get; set; }
         public string error_uri { get; set; }
 
-        public bool isError => !string.IsNullOrEmpty(error);
+        public bool isError => !string.IsNullOrEmpty(this.error);
     }
 }

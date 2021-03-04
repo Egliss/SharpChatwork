@@ -1,8 +1,6 @@
-﻿using SharpChatwork.Query.Types;
-using System;
+using SharpChatwork.Query.Types;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SharpChatwork.Query
