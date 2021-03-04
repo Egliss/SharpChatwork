@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 
 namespace SharpChatwork
@@ -22,7 +22,7 @@ namespace SharpChatwork
                 .FirstOrDefault();
 
             // use default name
-            if (i == null)
+            if(i == null)
                 return Enum.GetName(value.GetType(), value);
             // use alias
             else

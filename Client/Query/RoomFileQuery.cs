@@ -1,11 +1,10 @@
-﻿using System;
+using SharpChatwork.Query.Types;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
-using SharpChatwork.Query.Types;
 
 namespace SharpChatwork.Query
 {
@@ -50,9 +49,9 @@ namespace SharpChatwork.Query
         }
         public async ValueTask<ElementId> UploadAsync(long roomId, string filePath, string message)
         {
-            using (FileStream stream = new FileStream(filePath, FileMode.Open))
+            using(FileStream stream = new FileStream(filePath, FileMode.Open))
             {
-                return await UploadAsync(roomId, stream, filePath, message);
+                return await this.UploadAsync(roomId, stream, filePath, message);
             }
         }
     }
