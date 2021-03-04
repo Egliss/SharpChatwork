@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace SharpChatwork.OAuth2
 {
     public class OAuth2ConcentQueryResult
@@ -10,6 +6,6 @@ namespace SharpChatwork.OAuth2
         public string state { get; set; } = string.Empty;
         public string error { get; set; } = string.Empty;
 
-        public bool isError => string.IsNullOrEmpty(error);
+        public bool isError => string.IsNullOrEmpty(this.error);
     }
 }

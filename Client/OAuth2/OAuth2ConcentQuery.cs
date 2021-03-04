@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace SharpChatwork.OAuth2
 {
     public class OAuth2ConcentQuery
@@ -17,6 +13,6 @@ namespace SharpChatwork.OAuth2
         /// <summary>
         /// auto set to <see cref="scope"/> from input bit field flag
         /// </summary>
-        public ScopeType scopeType { set => scope = value.ToURLArg(); }
+        public ScopeType scopeType { set => this.scope = value.ToURLArg(); }
     }
 }

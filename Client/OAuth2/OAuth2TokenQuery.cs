@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace SharpChatwork.OAuth2
 {
     public class OAuth2TokenQuery
@@ -24,8 +20,8 @@ namespace SharpChatwork.OAuth2
         private ScopeType _scopeType = 0L;
         public ScopeType scopeType
         {
-            get => _scopeType;
-            set { _scopeType = value; scope = _scopeType.ToURLArg(); }
+            get => this._scopeType;
+            set { this._scopeType = value; this.scope = this._scopeType.ToURLArg(); }
         }
 
         public OAuth2TokenQuery(GrantType type)

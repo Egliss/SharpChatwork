@@ -1,14 +1,8 @@
 using Newtonsoft.Json;
-using SharpChatwork.Query.Types;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net.NetworkInformation;
 using System.Runtime.Serialization;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SharpChatwork.AccessToken
@@ -55,7 +49,7 @@ namespace SharpChatwork.AccessToken
             HttpContent content = null;
             if(data.Count != 0)
                 content = new FormUrlEncodedContent(data);
-            await QueryContentTextAsync(uri, method, content);
+            await this.QueryContentTextAsync(uri, method, content);
         }
 
         internal override async ValueTask<string> QueryTextAsync(Uri uri, HttpMethod method, Dictionary<string, string> data)
@@ -63,7 +57,7 @@ namespace SharpChatwork.AccessToken
             HttpContent content = null;
             if(data.Count != 0)
                 content = new FormUrlEncodedContent(data);
-            return await QueryContentTextAsync(uri, method, content);
+            return await this.QueryContentTextAsync(uri, method, content);
         }
 
         internal override async ValueTask<string> QueryContentTextAsync(Uri uri, HttpMethod method, HttpContent content)
