@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SharpChatwork.Query
@@ -52,7 +51,7 @@ namespace SharpChatwork.Query
         {
             using(FileStream stream = new FileStream(filePath, FileMode.Open))
             {
-                return await UploadAsync(roomId, stream, filePath, message);
+                return await this.UploadAsync(roomId, stream, filePath, message);
             }
         }
     }
