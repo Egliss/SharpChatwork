@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using SharpChatwork;
 using SharpChatwork.Query;
 using SharpChatwork.Query.Types;

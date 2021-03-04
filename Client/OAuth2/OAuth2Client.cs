@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -69,7 +69,7 @@ namespace SharpChatwork.OAuth2
         internal override async ValueTask QueryAsync(Uri uri, HttpMethod method, Dictionary<string, string> data)
         {
             HttpContent content = null;
-            if (data.Count != 0)
+            if(data.Count != 0)
                 content = new FormUrlEncodedContent(data);
             await this.QueryContentTextAsync(uri, method, content);
             return;
@@ -77,7 +77,7 @@ namespace SharpChatwork.OAuth2
         internal override async ValueTask<string> QueryTextAsync(Uri uri, HttpMethod method, Dictionary<string, string> data)
         {
             HttpContent content = null;
-            if (data.Count != 0)
+            if(data.Count != 0)
                 content = new FormUrlEncodedContent(data);
             return await this.QueryContentTextAsync(uri, method, content);
         }
@@ -115,7 +115,7 @@ namespace SharpChatwork.OAuth2
             Process.Start(new ProcessStartInfo("cmd", $"/c start {concentUrlArg}") { CreateNoWindow = true });
             this.oauth2Code = Console.ReadLine();
 
-            if (string.IsNullOrEmpty(this.oauth2Code))
+            if(string.IsNullOrEmpty(this.oauth2Code))
             {
                 return new OAuth2ConcentQueryResult()
                 {
@@ -142,9 +142,9 @@ namespace SharpChatwork.OAuth2
                 RequestUri = EndPoints.Token,
             };
 
-            if (grantType == OAuth2TokenQuery.GrantType.AuthroizationCode)
+            if(grantType == OAuth2TokenQuery.GrantType.AuthroizationCode)
                 tokenQuery.code = this.oauth2Code;
-            else if (grantType == OAuth2TokenQuery.GrantType.RefreshToken)
+            else if(grantType == OAuth2TokenQuery.GrantType.RefreshToken)
                 tokenQuery.refresh_token = this.refleshToken;
 
             request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(
@@ -156,7 +156,7 @@ namespace SharpChatwork.OAuth2
             var response = await client.SendAsync(request);
             var stream = await response.Content.ReadAsStreamAsync();
 
-            using (StreamReader reader = new StreamReader(stream))
+            using(StreamReader reader = new StreamReader(stream))
             {
                 var result = JsonConvert.DeserializeObject<OAuth2TokenQueryResult>(reader.ReadToEnd());
                 this.tokenExpired = result.expires_in;
