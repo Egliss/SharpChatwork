@@ -1,4 +1,4 @@
-﻿using SharpChatwork.Query.Types;
+using SharpChatwork.Query.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;

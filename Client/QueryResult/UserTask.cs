@@ -1,4 +1,4 @@
-﻿namespace SharpChatwork.Query.Types
+namespace SharpChatwork.Query.Types
 {
     public class UserTask
     {

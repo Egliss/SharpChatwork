@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -33,7 +33,7 @@ namespace SharpChatwork.OAuth2
 
         [Description("チャットルームに紐づくメッセージ・タスク・ファイル・概要・メンバー情報の操作/取得")]
         [EnumAlias("rooms.all:read_write")]
-        RoomsAllRW =  RoomsAllR | RoomsAllW,
+        RoomsAllRW = RoomsAllR | RoomsAllW,
 
         [Description("チャットルームに紐づくメッセージ・タスク・ファイル・概要・メンバー情報の取得")]
         [EnumAlias("rooms.all:read")]
@@ -118,7 +118,7 @@ namespace SharpChatwork.OAuth2
             // escape _all child
             foreach(var item in enumNameValues)
             {
-                if (resultScopes.Where(m => (m.Item2 & (long)item.Value) != 0).Any()) 
+                if(resultScopes.Where(m => (m.Item2 & (long)item.Value) != 0).Any())
                 {
                     continue;
                 }
@@ -126,7 +126,7 @@ namespace SharpChatwork.OAuth2
             }
 
             // ascii 'SP'
-            return string.Join("%20", resultScopes.Select(m=>m.Item1));
+            return string.Join("%20", resultScopes.Select(m => m.Item1));
         }
         private static AttributeT FindAttribute<AttributeT>(ScopeType type) where AttributeT : Attribute
         {
@@ -135,9 +135,9 @@ namespace SharpChatwork.OAuth2
                 .GetCustomAttributes(typeof(AttributeT), false)
                 .Cast<AttributeT>();
 
-            if (attributes == null)
+            if(attributes == null)
                 return null;
-            if (!attributes.Any())
+            if(!attributes.Any())
                 return null;
 
             return attributes.First();

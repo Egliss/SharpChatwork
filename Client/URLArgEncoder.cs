@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -16,7 +16,7 @@ namespace SharpChatwork
                 .Where(m => m.DeclaringType.IsPublic)
                 .Select(m => new KeyValuePair<string, object>(m.Name, type.GetField(m.Name).GetValue(input)))
                 .Where(m => m.Value != null)
-                .Where(m=> !string.IsNullOrEmpty(m.Value.ToString()))
+                .Where(m => !string.IsNullOrEmpty(m.Value.ToString()))
                 .Select(m => new KeyValuePair<string, string>(m.Key, m.Value.ToString()))
                 .Concat(
                     type.GetProperties()
@@ -25,18 +25,18 @@ namespace SharpChatwork
                     .Where(m => type.GetProperty(m.Name).CanRead)
                     .Select(m => new KeyValuePair<string, object>(m.Name, type.GetProperty(m.Name).GetValue(input)))
                     .Where(m => m.Value != null)
-                    .Where(m=> !string.IsNullOrEmpty(m.Value.ToString()))
+                    .Where(m => !string.IsNullOrEmpty(m.Value.ToString()))
                     .Select(m => new KeyValuePair<string, string>(m.Key, m.Value.ToString())))
                 .ToDictionary(m => m.Key, n => n.Value);
         }
         public static string ToURLArg<T>(T input) where T : class
         {
-            return "?" + string.Join("^&" , ToDictionary(input).Select(m => $"{m.Key}={m.Value}"));
+            return "?" + string.Join("^&", ToDictionary(input).Select(m => $"{m.Key}={m.Value}"));
         }
 
         public static int BoolToInt(bool value)
         {
-            if (value)
+            if(value)
                 return 1;
             return 0;
         }

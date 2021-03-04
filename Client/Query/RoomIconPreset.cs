@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,7 +13,7 @@ namespace SharpChatwork.Query
         [EnumAlias("document")]
         Document,
         [EnumAlias("meeting")]
-        Meeting, 
+        Meeting,
         [EnumAlias("event")]
         Event,
         [EnumAlias("project")]
