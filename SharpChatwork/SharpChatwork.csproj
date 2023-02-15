@@ -6,10 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="External\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="MimeMapping" Version="1.0.1.50" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
