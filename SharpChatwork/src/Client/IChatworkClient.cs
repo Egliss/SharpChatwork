@@ -1,9 +1,9 @@
-using Newtonsoft.Json;
 using SharpChatwork.Query;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace SharpChatwork

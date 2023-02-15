@@ -1,8 +1,9 @@
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Runtime.Serialization;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace SharpChatwork.AccessToken
@@ -41,7 +42,7 @@ namespace SharpChatwork.AccessToken
         internal override async ValueTask<ReturnT> QueryAsync<ReturnT>(Uri uri, HttpMethod method, Dictionary<string, string> data)
         {
             var text = await this.QueryTextAsync(uri, method, data);
-            return JsonConvert.DeserializeObject<ReturnT>(text);
+            return JsonSerializer.Deserialize<ReturnT>(text);
         }
 
         internal override async ValueTask QueryAsync(Uri uri, HttpMethod method, Dictionary<string, string> data)
@@ -79,7 +80,7 @@ namespace SharpChatwork.AccessToken
         internal override async ValueTask<ReturnT> QueryContentAsync<ReturnT>(Uri uri, HttpMethod method, HttpContent content)
         {
             var text = await this.QueryContentTextAsync(uri, method, content);
-            return JsonConvert.DeserializeObject<ReturnT>(text);
+            return JsonSerializer.Deserialize<ReturnT>(text);
         }
     }
 }

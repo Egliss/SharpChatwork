@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace SharpChatwork.OAuth2
@@ -64,7 +64,7 @@ namespace SharpChatwork.OAuth2
         internal override async ValueTask<ReturnT> QueryAsync<ReturnT>(Uri uri, HttpMethod method, Dictionary<string, string> data)
         {
             var text = await this.QueryTextAsync(uri, method, data);
-            return JsonConvert.DeserializeObject<ReturnT>(text);
+            return JsonSerializer.Deserialize<ReturnT>(text);
         }
         internal override async ValueTask QueryAsync(Uri uri, HttpMethod method, Dictionary<string, string> data)
         {
@@ -101,7 +101,7 @@ namespace SharpChatwork.OAuth2
         internal override async ValueTask<ReturnT> QueryContentAsync<ReturnT>(Uri uri, HttpMethod method, HttpContent content)
         {
             var text = await this.QueryContentTextAsync(uri, method, content);
-            return JsonConvert.DeserializeObject<ReturnT>(text);
+            return JsonSerializer.Deserialize<ReturnT>(text);
         }
 
         public OAuth2ConcentQueryResult Authorization(OAuth2ConcentQuery query, string codeVerifer = "")
@@ -110,6 +110,7 @@ namespace SharpChatwork.OAuth2
             this.scope = query.scope;
             this.redirectUri = query.redirect_uri;
 
+            // TODO Only windows
             var concentUrlArg = EndPoints.Oauth2.OriginalString + $"{URLArgEncoder.ToURLArg(query)}";
             Console.WriteLine("Please input code of redirect url code=");
             Process.Start(new ProcessStartInfo("cmd", $"/c start {concentUrlArg}") { CreateNoWindow = true });
@@ -158,7 +159,7 @@ namespace SharpChatwork.OAuth2
 
             using(StreamReader reader = new StreamReader(stream))
             {
-                var result = JsonConvert.DeserializeObject<OAuth2TokenQueryResult>(reader.ReadToEnd());
+                var result = JsonSerializer.Deserialize<OAuth2TokenQueryResult>(reader.ReadToEnd());
                 this.tokenExpired = result.expires_in;
                 this.tokenQueryTime = DateTime.Now;
                 this.refleshToken = result.refresh_token;
