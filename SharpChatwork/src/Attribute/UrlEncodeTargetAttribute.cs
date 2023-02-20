@@ -2,7 +2,7 @@ using System;
 
 namespace SharpChatwork
 {
-    internal class UrlEncodeTargetAttribute : Attribute
+    internal sealed class UrlEncodeTargetAttribute : Attribute
     {
 
     }

@@ -1,3 +1,5 @@
+#pragma warning disable CA1707 // Underscore
+
 namespace SharpChatwork.OAuth2
 {
     public class OAuth2TokenQuery
@@ -17,11 +19,11 @@ namespace SharpChatwork.OAuth2
         public string refresh_token { get; set; } = string.Empty;
         public string scope { get; set; } = string.Empty;
 
-        private ScopeType _scopeType = 0L;
+        private ScopeType _scopeType;
         public ScopeType scopeType
         {
             get => this._scopeType;
-            set { this._scopeType = value; this.scope = this._scopeType.ToURLArg(); }
+            set { this._scopeType = value; this.scope = this._scopeType.ToUrlArg(); }
         }
 
         public OAuth2TokenQuery(GrantType type)

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SharpChatwork.Query
 {
-    internal class RoomMessageQuery : ClientQuery, IRoomMessageQuery
+    internal sealed class RoomMessageQuery : ClientQuery, IRoomMessageQuery
     {
         public RoomMessageQuery(IChatworkClient client) : base(client)
         {

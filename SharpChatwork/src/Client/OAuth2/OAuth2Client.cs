@@ -1,3 +1,4 @@
+using SharpChatwork.Client.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -92,7 +93,7 @@ namespace SharpChatwork.OAuth2
             var textContent = await result.Content.ReadAsStringAsync();
             if(code >= 300)
             {
-                throw new Exception($"[{code}] {textContent}");
+                throw new ChatworkRequestException(code, textContent);
             }
 
             return textContent;
