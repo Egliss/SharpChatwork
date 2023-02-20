@@ -17,7 +17,7 @@ namespace SharpChatwork.Query
         {
             // TODO QueryAsync + data is error
             // single arg is invalid ?
-            var uri = $"{EndPoints.RoomMessages(roomId)}?force={UrlArgEncoder.BoolToInt(isForceMode).ToString()}";
+            var uri = $"{EndPoints.RoomMessages(roomId)}?force={UrlArgEncoder.BoolToInt(isForceMode)}";
             return await this.chatworkClient.QueryAsync<List<UserMessage>>(new Uri(uri), HttpMethod.Get, new Dictionary<string, string>());
         }
 
@@ -28,7 +28,7 @@ namespace SharpChatwork.Query
 
         public async ValueTask<MessageReadUnread> ReadAsync(long roomId, long messageId)
         {
-            var uri = $"{EndPoints.RoomMessages(roomId)}?message_id={messageId.ToString()}";
+            var uri = $"{EndPoints.RoomMessages(roomId)}?message_id={messageId}";
             return await this.chatworkClient.QueryAsync<MessageReadUnread>(new Uri(uri), HttpMethod.Post, new Dictionary<string, string>());
         }
 
@@ -49,7 +49,7 @@ namespace SharpChatwork.Query
 
         public async ValueTask<MessageReadUnread> UnReadAsync(long roomId, long messageId)
         {
-            var uri = $"{EndPoints.RoomMessages(roomId)}?message_id={messageId.ToString()}";
+            var uri = $"{EndPoints.RoomMessages(roomId)}?message_id={messageId}";
             return await this.chatworkClient.QueryAsync<MessageReadUnread>(new Uri(uri), HttpMethod.Post, new Dictionary<string, string>());
         }
 

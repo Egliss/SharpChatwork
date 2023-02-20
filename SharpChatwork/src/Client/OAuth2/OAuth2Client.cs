@@ -1,3 +1,5 @@
+#pragma warning disable CA1805 // Default value initialize
+
 using SharpChatwork.Client.Exceptions;
 using System;
 using System.Collections.Generic;

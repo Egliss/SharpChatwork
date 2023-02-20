@@ -16,7 +16,7 @@ namespace SharpChatwork.Query
 
         public async ValueTask<IEnumerable<UserFile>> GetAllAsync(long roomId, long accountId)
         {
-            var uri = $"{EndPoints.RoomFiles(roomId)}?account_id={accountId.ToString()}";
+            var uri = $"{EndPoints.RoomFiles(roomId)}?account_id={accountId}";
             return await this.chatworkClient.QueryAsync<List<UserFile>>(new Uri(uri), HttpMethod.Get, new Dictionary<string, string>());
         }
 

@@ -1,3 +1,6 @@
+#pragma warning disable CA1707 // Underscore
+#pragma warning disable CA1805 // Default value initialize
+
 namespace SharpChatwork.Query.Types
 {
     public class Room

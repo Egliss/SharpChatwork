@@ -1,3 +1,5 @@
+#pragma warning disable CA1707 // Underscore
+
 using System.Collections.Generic;
 
 namespace SharpChatwork.Query.Types
