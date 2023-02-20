@@ -17,7 +17,7 @@ namespace SharpChatwork.Query
             {
                 { "code" , uniqueName },
                 { "description" , description},
-                { "need_acceptance" , URLArgEncoder.BoolToInt(requireAcceptance).ToString()},
+                { "need_acceptance" , UrlArgEncoder.BoolToInt(requireAcceptance).ToString()},
             };
             return await this.chatworkClient.QueryAsync<InviteLink>(EndPoints.RoomTasks(roomId), HttpMethod.Post, data);
         }
@@ -38,7 +38,7 @@ namespace SharpChatwork.Query
             {
                 { "code" , uniqueName },
                 { "description" , description},
-                { "need_acceptance" , URLArgEncoder.BoolToInt(requireAcceptance).ToString()},
+                { "need_acceptance" , UrlArgEncoder.BoolToInt(requireAcceptance).ToString()},
             };
             return await this.chatworkClient.QueryAsync<InviteLink>(EndPoints.RoomTasks(roomId), HttpMethod.Put, data);
         }

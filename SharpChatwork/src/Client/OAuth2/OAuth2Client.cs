@@ -111,7 +111,7 @@ namespace SharpChatwork.OAuth2
             this.redirectUri = query.redirect_uri;
 
             // TODO Only windows
-            var concentUrlArg = EndPoints.Oauth2.OriginalString + $"{URLArgEncoder.ToURLArg(query)}";
+            var concentUrlArg = EndPoints.Oauth2.OriginalString + $"{UrlArgEncoder.ToURLArg(query)}";
             Console.WriteLine("Please input code of redirect url code=");
             Process.Start(new ProcessStartInfo("cmd", $"/c start {concentUrlArg}") { CreateNoWindow = true });
             this.oauth2Code = Console.ReadLine();
@@ -151,7 +151,7 @@ namespace SharpChatwork.OAuth2
             request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(
                 "Basic",
                 Convert.ToBase64String(Encoding.ASCII.GetBytes($"{this.clientKey}:{this.secretKey}")));
-            request.Content = new FormUrlEncodedContent(URLArgEncoder.ToDictionary(tokenQuery));
+            request.Content = new FormUrlEncodedContent(UrlArgEncoder.ToDictionary(tokenQuery));
 
             HttpClient client = new HttpClient();
             var response = await client.SendAsync(request);

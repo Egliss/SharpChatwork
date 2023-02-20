@@ -22,7 +22,7 @@ namespace SharpChatwork.Query
 
         public async ValueTask<UserFile> GetAsync(long roomId, long fileId, bool createDownloadLink)
         {
-            var uri = $"{EndPoints.RoomFiles(roomId)}?create_download_url={URLArgEncoder.BoolToInt(createDownloadLink)}";
+            var uri = $"{EndPoints.RoomFiles(roomId)}?create_download_url={UrlArgEncoder.BoolToInt(createDownloadLink)}";
             return await this.chatworkClient.QueryAsync<UserFile>(new Uri(uri), HttpMethod.Get, new Dictionary<string, string>());
         }
         public async ValueTask<ElementId> UploadAsync(long roomId, Stream stream, string filePath, string message)
