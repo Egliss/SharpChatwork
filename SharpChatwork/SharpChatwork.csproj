@@ -20,7 +20,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/Egliss/SharpChatwork</RepositoryUrl>
     <PackageTags>C#;Chatwork</PackageTags>
-    <PackageReleaseNotes>[v1.0.0]
+    <PackageReleaseNotes>[v1.0.0-alpha]
 Release.</PackageReleaseNotes>
     <IncludeSymbols>True</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
