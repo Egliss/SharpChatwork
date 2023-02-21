@@ -24,4 +24,4 @@ jobs:
       - name: Build
         run: dotnet build --no-restore --configuration Release
       - name: Publish to NuGet
-        run: dotnet nuget push SharpChatwork/bin/Release/SharpChatwork.0.1.0-alpha.snupkg --api-key ${{secrets.NUGET_API_KEY}}
+        run: dotnet nuget push SharpChatwork/bin/Release/SharpChatwork.0.1.0-alpha.snupkg --api-key ${{secrets.NUGET_API_KEY}} --source https://www.nuget.org
