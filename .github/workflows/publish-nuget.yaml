@@ -3,7 +3,7 @@ name: Publish - Nuget
 on:
   workflow_run:
     workflows: ["Build"]
-    branches: [master]
+    branches: [develop]
     types:
       - completed
 
@@ -24,4 +24,4 @@ jobs:
       - name: Build
         run: dotnet build --no-restore --configuration Release
       - name: Publish to NuGet
-        run: nuget push SharpChatwork/bin/Release/SharpChatwork.0.1.0.snupkg
+        run: nuget push SharpChatwork/bin/Release/SharpChatwork.0.1.0-alpha.snupkg
