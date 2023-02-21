@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SharpChatwork.Query
 {
-    internal class RoomFileQuery : ClientQuery, IRoomFileQuery
+    internal sealed class RoomFileQuery : ClientQuery, IRoomFileQuery
     {
         public RoomFileQuery(IChatworkClient client) : base(client)
         {
@@ -16,13 +16,13 @@ namespace SharpChatwork.Query
 
         public async ValueTask<IEnumerable<UserFile>> GetAllAsync(long roomId, long accountId)
         {
-            var uri = $"{EndPoints.RoomFiles(roomId)}?account_id={accountId.ToString()}";
+            var uri = $"{EndPoints.RoomFiles(roomId)}?account_id={accountId}";
             return await this.chatworkClient.QueryAsync<List<UserFile>>(new Uri(uri), HttpMethod.Get, new Dictionary<string, string>());
         }
 
         public async ValueTask<UserFile> GetAsync(long roomId, long fileId, bool createDownloadLink)
         {
-            var uri = $"{EndPoints.RoomFiles(roomId)}?create_download_url={URLArgEncoder.BoolToInt(createDownloadLink)}";
+            var uri = $"{EndPoints.RoomFiles(roomId)}?create_download_url={UrlArgEncoder.BoolToInt(createDownloadLink)}";
             return await this.chatworkClient.QueryAsync<UserFile>(new Uri(uri), HttpMethod.Get, new Dictionary<string, string>());
         }
         public async ValueTask<ElementId> UploadAsync(long roomId, Stream stream, string filePath, string message)

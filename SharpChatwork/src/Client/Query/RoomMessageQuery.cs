@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SharpChatwork.Query
 {
-    internal class RoomMessageQuery : ClientQuery, IRoomMessageQuery
+    internal sealed class RoomMessageQuery : ClientQuery, IRoomMessageQuery
     {
         public RoomMessageQuery(IChatworkClient client) : base(client)
         {
@@ -17,7 +17,7 @@ namespace SharpChatwork.Query
         {
             // TODO QueryAsync + data is error
             // single arg is invalid ?
-            var uri = $"{EndPoints.RoomMessages(roomId)}?force={URLArgEncoder.BoolToInt(isForceMode).ToString()}";
+            var uri = $"{EndPoints.RoomMessages(roomId)}?force={UrlArgEncoder.BoolToInt(isForceMode)}";
             return await this.chatworkClient.QueryAsync<List<UserMessage>>(new Uri(uri), HttpMethod.Get, new Dictionary<string, string>());
         }
 
@@ -28,7 +28,7 @@ namespace SharpChatwork.Query
 
         public async ValueTask<MessageReadUnread> ReadAsync(long roomId, long messageId)
         {
-            var uri = $"{EndPoints.RoomMessages(roomId)}?message_id={messageId.ToString()}";
+            var uri = $"{EndPoints.RoomMessages(roomId)}?message_id={messageId}";
             return await this.chatworkClient.QueryAsync<MessageReadUnread>(new Uri(uri), HttpMethod.Post, new Dictionary<string, string>());
         }
 
@@ -42,14 +42,14 @@ namespace SharpChatwork.Query
             var data = new Dictionary<string, string>()
             {
                 { "body" , message },
-                { "self_unread" , URLArgEncoder.BoolToInt(isSelfUnread).ToString() }
+                { "self_unread" , UrlArgEncoder.BoolToInt(isSelfUnread).ToString() }
             };
             return await this.chatworkClient.QueryAsync<MessageId>(EndPoints.RoomMessages(roomId), HttpMethod.Post, data);
         }
 
         public async ValueTask<MessageReadUnread> UnReadAsync(long roomId, long messageId)
         {
-            var uri = $"{EndPoints.RoomMessages(roomId)}?message_id={messageId.ToString()}";
+            var uri = $"{EndPoints.RoomMessages(roomId)}?message_id={messageId}";
             return await this.chatworkClient.QueryAsync<MessageReadUnread>(new Uri(uri), HttpMethod.Post, new Dictionary<string, string>());
         }
 

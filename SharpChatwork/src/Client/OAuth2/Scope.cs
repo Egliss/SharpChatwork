@@ -102,7 +102,7 @@ namespace SharpChatwork.OAuth2
 
     internal static class ScopeTypeExtension
     {
-        public static string ToURLArg(this ScopeType type)
+        public static string ToUrlArg(this ScopeType type)
         {
             // extract name value pair
             var enumValues = Enum.GetValues(typeof(ScopeType)).OfType<ScopeType>();

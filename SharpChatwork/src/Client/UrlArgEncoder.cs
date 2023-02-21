@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace SharpChatwork
 {
-    internal class URLArgEncoder
+    internal sealed class UrlArgEncoder
     {
         public static Dictionary<string, string> ToDictionary<T>(T input) where T : class
         {

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SharpChatwork.Query
 {
-    internal class ContactQuery : ClientQuery, IContactQuery
+    internal sealed class ContactQuery : ClientQuery, IContactQuery
     {
         public ContactQuery(IChatworkClient client) : base(client)
         {

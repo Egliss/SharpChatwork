@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SharpChatwork.Query
 {
-    internal class MeQuery : ClientQuery, IMeQuery
+    internal sealed class MeQuery : ClientQuery, IMeQuery
     {
         public MeQuery(IChatworkClient client) : base(client)
         {

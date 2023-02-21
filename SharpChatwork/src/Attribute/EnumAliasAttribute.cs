@@ -3,7 +3,8 @@ using System.Linq;
 
 namespace SharpChatwork
 {
-    internal class EnumAliasAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Field)]
+    internal sealed class EnumAliasAttribute : Attribute
     {
         public string AliasName { get; set; }
         public EnumAliasAttribute(string aliasName)

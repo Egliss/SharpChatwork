@@ -1,3 +1,5 @@
+#pragma warning disable CA1707 // Underscore
+
 namespace SharpChatwork.OAuth2
 {
     public class OAuth2TokenQueryResult

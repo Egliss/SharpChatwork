@@ -1,4 +1,6 @@
-using Newtonsoft.Json;
+#pragma warning disable CA1805 // Default value initialize
+
+using SharpChatwork.Client.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -7,6 +9,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace SharpChatwork.OAuth2
@@ -64,7 +67,7 @@ namespace SharpChatwork.OAuth2
         internal override async ValueTask<ReturnT> QueryAsync<ReturnT>(Uri uri, HttpMethod method, Dictionary<string, string> data)
         {
             var text = await this.QueryTextAsync(uri, method, data);
-            return JsonConvert.DeserializeObject<ReturnT>(text);
+            return JsonSerializer.Deserialize<ReturnT>(text);
         }
         internal override async ValueTask QueryAsync(Uri uri, HttpMethod method, Dictionary<string, string> data)
         {
@@ -92,7 +95,7 @@ namespace SharpChatwork.OAuth2
             var textContent = await result.Content.ReadAsStringAsync();
             if(code >= 300)
             {
-                throw new Exception($"[{code}] {textContent}");
+                throw new ChatworkRequestException(code, textContent);
             }
 
             return textContent;
@@ -101,7 +104,7 @@ namespace SharpChatwork.OAuth2
         internal override async ValueTask<ReturnT> QueryContentAsync<ReturnT>(Uri uri, HttpMethod method, HttpContent content)
         {
             var text = await this.QueryContentTextAsync(uri, method, content);
-            return JsonConvert.DeserializeObject<ReturnT>(text);
+            return JsonSerializer.Deserialize<ReturnT>(text);
         }
 
         public OAuth2ConcentQueryResult Authorization(OAuth2ConcentQuery query, string codeVerifer = "")
@@ -110,7 +113,8 @@ namespace SharpChatwork.OAuth2
             this.scope = query.scope;
             this.redirectUri = query.redirect_uri;
 
-            var concentUrlArg = EndPoints.Oauth2.OriginalString + $"{URLArgEncoder.ToURLArg(query)}";
+            // TODO Only windows
+            var concentUrlArg = EndPoints.Oauth2.OriginalString + $"{UrlArgEncoder.ToURLArg(query)}";
             Console.WriteLine("Please input code of redirect url code=");
             Process.Start(new ProcessStartInfo("cmd", $"/c start {concentUrlArg}") { CreateNoWindow = true });
             this.oauth2Code = Console.ReadLine();
@@ -150,7 +154,7 @@ namespace SharpChatwork.OAuth2
             request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(
                 "Basic",
                 Convert.ToBase64String(Encoding.ASCII.GetBytes($"{this.clientKey}:{this.secretKey}")));
-            request.Content = new FormUrlEncodedContent(URLArgEncoder.ToDictionary(tokenQuery));
+            request.Content = new FormUrlEncodedContent(UrlArgEncoder.ToDictionary(tokenQuery));
 
             HttpClient client = new HttpClient();
             var response = await client.SendAsync(request);
@@ -158,7 +162,7 @@ namespace SharpChatwork.OAuth2
 
             using(StreamReader reader = new StreamReader(stream))
             {
-                var result = JsonConvert.DeserializeObject<OAuth2TokenQueryResult>(reader.ReadToEnd());
+                var result = JsonSerializer.Deserialize<OAuth2TokenQueryResult>(reader.ReadToEnd());
                 this.tokenExpired = result.expires_in;
                 this.tokenQueryTime = DateTime.Now;
                 this.refleshToken = result.refresh_token;

@@ -1,3 +1,5 @@
+#pragma warning disable CA1707 // Underscore
+
 namespace SharpChatwork.OAuth2
 {
     public class OAuth2ConcentQuery
@@ -13,6 +15,6 @@ namespace SharpChatwork.OAuth2
         /// <summary>
         /// auto set to <see cref="scope"/> from input bit field flag
         /// </summary>
-        public ScopeType scopeType { set => this.scope = value.ToURLArg(); }
+        public ScopeType scopeType { set => this.scope = value.ToUrlArg(); }
     }
 }

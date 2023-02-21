@@ -1,4 +1,4 @@
-name: .NET
+name: Build
 
 on:
   pull_request:
@@ -19,5 +19,7 @@ jobs:
         dotnet tool restore
     - name: Build
       run: dotnet build --no-restore
+    - name: Lint
+      run: ./scripts/lint.sh
     - name: Test
       run: dotnet test --no-build --verbosity normal
