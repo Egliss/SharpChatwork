@@ -1,6 +1,6 @@
 # SharpChatwork
 
-![[NuGet version(SharpChatwork)](https://www.nuget.org/packages/SharpChatwork/)](https://img.shields.io/nuget/v/SharpChatwork.svg?style=flat-square)
+![https://www.nuget.org/packages/SharpChatwork/](https://img.shields.io/nuget/v/SharpChatwork.svg?style=flat-square)
 
 |Branch|Status|
 |------|------|
