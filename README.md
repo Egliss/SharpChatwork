@@ -4,8 +4,8 @@
 
 |Branch|Status|
 |------|------|
-|develop|[![.NET](https://github.com/Egliss/SharpChatwork/actions/workflows/dotnet.yaml/badge.svg?branch=master)](https://github.com/Egliss/SharpChatwork/actions/workflows/dotnet.yaml)|
-|master|[![.NET](https://github.com/Egliss/SharpChatwork/actions/workflows/dotnet.yaml/badge.svg?branch=develop)](https://github.com/Egliss/SharpChatwork/actions/workflows/dotnet.yaml)|
+|master|[![.NET](https://github.com/Egliss/SharpChatwork/actions/workflows/dotnet.yaml/badge.svg?branch=master)](https://github.com/Egliss/SharpChatwork/actions/workflows/dotnet.yaml)|
+|develop|[![.NET](https://github.com/Egliss/SharpChatwork/actions/workflows/dotnet.yaml/badge.svg?branch=develop)](https://github.com/Egliss/SharpChatwork/actions/workflows/dotnet.yaml)|
 
 ## API Support Status
 
