@@ -1,11 +1,11 @@
 # SharpChatwork
 
-![https://www.nuget.org/packages/SharpChatwork/](https://img.shields.io/nuget/v/SharpChatwork.svg?style=flat-square)
+[![Nuget](https://img.shields.io/nuget/v/SharpChatwork.svg?style=flat-square)](https://www.nuget.org/packages/SharpChatwork/)
 
 |Branch|Status|
 |------|------|
-|master|[![.NET](https://github.com/Egliss/SharpChatwork/actions/workflows/dotnet.yaml/badge.svg?branch=master)](https://github.com/Egliss/SharpChatwork/actions/workflows/dotnet.yaml)|
-|develop|[![.NET](https://github.com/Egliss/SharpChatwork/actions/workflows/dotnet.yaml/badge.svg?branch=develop)](https://github.com/Egliss/SharpChatwork/actions/workflows/dotnet.yaml)|
+|master|[![master](https://github.com/Egliss/SharpChatwork/actions/workflows/dotnet.yaml/badge.svg?branch=master)](https://github.com/Egliss/SharpChatwork/actions/workflows/dotnet.yaml)|
+|develop|[![develop](https://github.com/Egliss/SharpChatwork/actions/workflows/dotnet.yaml/badge.svg?branch=develop)](https://github.com/Egliss/SharpChatwork/actions/workflows/dotnet.yaml)|
 
 ## API Support Status
 
