@@ -1,7 +1,12 @@
-# EditorConfig is awesome: https://EditorConfig.org
-
-# このファイルよりも上位のEditorConfigを見ない
+# 上位ディレクトリから .editorconfig 設定を継承する場合は、以下の行を削除します
 root = true
+
+[*.{xml,json,pubxml,cs,csproj,txt,yml,yaml}]
+trim_trailing_whitespace = true
+insert_final_newline = true
+end_of_line = lf
+charset = utf-8
+# EditorConfig is awesome: https://EditorConfig.org
 
 # Makefile
 [Makefile]
@@ -13,7 +18,7 @@ trim_trailing_whitespace = unset
 charset = utf-8
 
 # shell
-[*.sh]
+[*.{sh,md}]
 end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = false
