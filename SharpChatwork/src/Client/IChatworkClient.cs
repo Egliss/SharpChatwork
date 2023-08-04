@@ -10,10 +10,10 @@ namespace SharpChatwork
 {
     public interface IChatworkClient : ISerializable
     {
-        IMeQuery me { get; }
-        IRoomQuery room { get; }
-        IContactQuery contact { get; }
-        IIncomingRequestQuery incomingRequest { get; }
+        public IMeQuery me { get; }
+        public IRoomQuery room { get; }
+        public IContactQuery contact { get; }
+        public IIncomingRequestQuery incomingRequest { get; }
     }
 
     public abstract class ChatworkClient : IChatworkClient
