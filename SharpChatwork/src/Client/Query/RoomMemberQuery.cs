@@ -2,6 +2,7 @@ using SharpChatwork.Query.Types;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SharpChatwork.Query
@@ -12,12 +13,12 @@ namespace SharpChatwork.Query
         {
         }
 
-        public async ValueTask<IEnumerable<User>> GetAllAsync(long roomId)
+        public async ValueTask<IEnumerable<User>> GetAllAsync(long roomId, CancellationToken token = default)
         {
             return await this.chatworkClient.QueryAsync<List<User>>(EndPoints.RoomMember(roomId), HttpMethod.Get, new Dictionary<string, string>());
         }
 
-        public ValueTask<RoomMember> UpdateAsync(long roomId, IEnumerable<long> adminsMembers, IEnumerable<long> normalMembers, IEnumerable<long> readonlyMembers)
+        public ValueTask<RoomMember> UpdateAsync(long roomId, IEnumerable<long> adminsMembers, IEnumerable<long> normalMembers, IEnumerable<long> readonlyMembers, CancellationToken token = default)
         {
             throw new NotImplementedException();
             /*

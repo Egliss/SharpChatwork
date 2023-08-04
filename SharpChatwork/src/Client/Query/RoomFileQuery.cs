@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SharpChatwork.Query
@@ -14,18 +15,18 @@ namespace SharpChatwork.Query
         {
         }
 
-        public async ValueTask<IEnumerable<UserFile>> GetAllAsync(long roomId, long accountId)
+        public async ValueTask<IEnumerable<UserFile>> GetAllAsync(long roomId, long accountId, CancellationToken token = default)
         {
             var uri = $"{EndPoints.RoomFiles(roomId)}?account_id={accountId}";
             return await this.chatworkClient.QueryAsync<List<UserFile>>(new Uri(uri), HttpMethod.Get, new Dictionary<string, string>());
         }
 
-        public async ValueTask<UserFile> GetAsync(long roomId, long fileId, bool createDownloadLink)
+        public async ValueTask<UserFile> GetAsync(long roomId, long fileId, bool createDownloadLink, CancellationToken token = default)
         {
             var uri = $"{EndPoints.RoomFiles(roomId)}?create_download_url={UrlArgEncoder.BoolToInt(createDownloadLink)}";
             return await this.chatworkClient.QueryAsync<UserFile>(new Uri(uri), HttpMethod.Get, new Dictionary<string, string>());
         }
-        public async ValueTask<ElementId> UploadAsync(long roomId, Stream stream, string filePath, string message)
+        public async ValueTask<ElementId> UploadAsync(long roomId, Stream stream, string filePath, string message, CancellationToken token = default)
         {
             var uri = $"{EndPoints.RoomFiles(roomId)}";
 
@@ -49,7 +50,7 @@ namespace SharpChatwork.Query
 
             return await this.chatworkClient.QueryContentAsync<ElementId>(new Uri(uri), HttpMethod.Post, multipart);
         }
-        public async ValueTask<ElementId> UploadAsync(long roomId, string filePath, string message)
+        public async ValueTask<ElementId> UploadAsync(long roomId, string filePath, string message, CancellationToken token = default)
         {
             using FileStream stream = new FileStream(filePath, FileMode.Open);
             return await this.UploadAsync(roomId, stream, filePath, message);

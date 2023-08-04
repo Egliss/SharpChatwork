@@ -1,6 +1,7 @@
 using SharpChatwork.Query.Types;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SharpChatwork.Query
@@ -11,17 +12,17 @@ namespace SharpChatwork.Query
         {
         }
 
-        public async ValueTask<IncomingRequest> AcceptAsync(long requestId)
+        public async ValueTask<IncomingRequest> AcceptAsync(long requestId, CancellationToken token = default)
         {
             return await this.chatworkClient.QueryAsync<IncomingRequest>(EndPoints.IncomingRequestsOf(requestId), HttpMethod.Post, new Dictionary<string, string>());
         }
 
-        public async ValueTask CancelAsync(long requestId)
+        public async ValueTask CancelAsync(long requestId, CancellationToken token = default)
         {
             await this.chatworkClient.QueryAsync(EndPoints.IncomingRequestsOf(requestId), HttpMethod.Delete, new Dictionary<string, string>());
         }
 
-        public async ValueTask<IEnumerable<IncomingRequest>> GetAllAsync()
+        public async ValueTask<IEnumerable<IncomingRequest>> GetAllAsync(CancellationToken token = default)
         {
             return await this.chatworkClient.QueryAsync<List<IncomingRequest>>(EndPoints.IncomingRequests, HttpMethod.Get, new Dictionary<string, string>());
         }
