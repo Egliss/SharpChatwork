@@ -27,29 +27,29 @@ namespace SharpChatwork.Query
 
         public async ValueTask<ElementId> CreateAsync(CancellationToken token = default)
         {
-            return await this.chatworkClient.QueryAsync<RoomId>(EndPoints.Rooms, HttpMethod.Get, new Dictionary<string, string>());
+            return await this.chatworkClient.QueryAsync<RoomId>(EndPoints.Rooms, HttpMethod.Get, new Dictionary<string, string>(), token);
         }
 
         public async ValueTask DeleteAsync(long roomId, CancellationToken token = default)
         {
             var uri = $"{EndPoints.RoomMessages(roomId)}?action_type=delete";
-            await this.chatworkClient.QueryAsync<RoomId>(new Uri(uri), HttpMethod.Post, new Dictionary<string, string>());
+            await this.chatworkClient.QueryAsync<RoomId>(new Uri(uri), HttpMethod.Post, new Dictionary<string, string>(), token);
         }
 
         public async ValueTask<IEnumerable<Room>> GetAllAsync(CancellationToken token = default)
         {
-            return await this.chatworkClient.QueryAsync<List<Room>>(EndPoints.Rooms, HttpMethod.Get, new Dictionary<string, string>());
+            return await this.chatworkClient.QueryAsync<List<Room>>(EndPoints.Rooms, HttpMethod.Get, new Dictionary<string, string>(), token);
         }
 
         public async ValueTask<Room> GetAsync(long roomId, CancellationToken token = default)
         {
-            return await this.chatworkClient.QueryAsync<Room>(EndPoints.RoomOf(roomId), HttpMethod.Get, new Dictionary<string, string>());
+            return await this.chatworkClient.QueryAsync<Room>(EndPoints.RoomOf(roomId), HttpMethod.Get, new Dictionary<string, string>(), token);
         }
 
         public async ValueTask LeaveAsync(long roomId, CancellationToken token = default)
         {
             var uri = $"{EndPoints.RoomMessages(roomId)}?action_type=leave";
-            await this.chatworkClient.QueryAsync<RoomId>(new Uri(uri), HttpMethod.Post, new Dictionary<string, string>());
+            await this.chatworkClient.QueryAsync<RoomId>(new Uri(uri), HttpMethod.Post, new Dictionary<string, string>(), token);
         }
 
         public async ValueTask<ElementId> UpdateAsync(long roomId, string roomName, string description, RoomIconPreset preset, CancellationToken token = default)
@@ -60,7 +60,7 @@ namespace SharpChatwork.Query
                 {"description",roomName },
                 {"icon_preset",preset.ToAliasOrDefault() }
             };
-            return await this.chatworkClient.QueryAsync<RoomId>(EndPoints.RoomOf(roomId), HttpMethod.Post, data);
+            return await this.chatworkClient.QueryAsync<RoomId>(EndPoints.RoomOf(roomId), HttpMethod.Post, data, token);
         }
     }
 }

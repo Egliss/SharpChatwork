@@ -67,7 +67,7 @@ namespace SharpChatwork.OAuth2
         }
         internal override async ValueTask<ReturnT> QueryAsync<ReturnT>(Uri uri, HttpMethod method, Dictionary<string, string> data, CancellationToken cancellation = default)
         {
-            var text = await this.QueryTextAsync(uri, method, data);
+            var text = await this.QueryTextAsync(uri, method, data, cancellation);
             return JsonSerializer.Deserialize<ReturnT>(text);
         }
         internal override async ValueTask QueryAsync(Uri uri, HttpMethod method, Dictionary<string, string> data, CancellationToken cancellation = default)

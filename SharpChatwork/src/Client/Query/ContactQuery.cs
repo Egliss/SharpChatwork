@@ -14,7 +14,7 @@ namespace SharpChatwork.Query
 
         public async ValueTask<IEnumerable<Contact>> GetAllAsync(CancellationToken token = default)
         {
-            return await this.chatworkClient.QueryAsync<List<Contact>>(EndPoints.Contacts, HttpMethod.Get, new Dictionary<string, string>());
+            return await this.chatworkClient.QueryAsync<List<Contact>>(EndPoints.Contacts, HttpMethod.Get, new Dictionary<string, string>(), token);
         }
     }
 }

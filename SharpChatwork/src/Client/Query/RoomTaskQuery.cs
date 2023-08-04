@@ -29,7 +29,7 @@ namespace SharpChatwork.Query
 
         public async ValueTask<UserTask> GetAsync(long roomId, long taskId, CancellationToken token = default)
         {
-            return await this.chatworkClient.QueryAsync<UserTask>(EndPoints.RoomTasksOf(roomId, taskId), HttpMethod.Get, new Dictionary<string, string>());
+            return await this.chatworkClient.QueryAsync<UserTask>(EndPoints.RoomTasksOf(roomId, taskId), HttpMethod.Get, new Dictionary<string, string>(), token);
         }
 
         public async ValueTask<IEnumerable<UserTask>> GetllAsync(long roomId, long accountId, long autherId, bool isDone = false, CancellationToken token = default)
@@ -43,13 +43,13 @@ namespace SharpChatwork.Query
                 { "assigned_by_account_id" , autherId.ToString()},
                 { "status" , doneString},
             };
-            return await this.chatworkClient.QueryAsync<List<UserTask>>(EndPoints.RoomTasks(roomId), HttpMethod.Get, data);
+            return await this.chatworkClient.QueryAsync<List<UserTask>>(EndPoints.RoomTasks(roomId), HttpMethod.Get, data, token);
         }
 
         public async ValueTask<ElementId> UpdateAsync(long roomId, long taskId, TaskStateType state, CancellationToken token = default)
         {
             var uri = $"{EndPoints.RoomTasksOf(roomId, taskId)}?body={state.ToAliasOrDefault()}";
-            return await this.chatworkClient.QueryAsync<TaskId>(new Uri(uri), HttpMethod.Post, new Dictionary<string, string>());
+            return await this.chatworkClient.QueryAsync<TaskId>(new Uri(uri), HttpMethod.Post, new Dictionary<string, string>(), token);
         }
     }
 }

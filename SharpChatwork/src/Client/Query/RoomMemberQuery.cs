@@ -15,7 +15,7 @@ namespace SharpChatwork.Query
 
         public async ValueTask<IEnumerable<User>> GetAllAsync(long roomId, CancellationToken token = default)
         {
-            return await this.chatworkClient.QueryAsync<List<User>>(EndPoints.RoomMember(roomId), HttpMethod.Get, new Dictionary<string, string>());
+            return await this.chatworkClient.QueryAsync<List<User>>(EndPoints.RoomMember(roomId), HttpMethod.Get, new Dictionary<string, string>(), token);
         }
 
         public ValueTask<RoomMember> UpdateAsync(long roomId, IEnumerable<long> adminsMembers, IEnumerable<long> normalMembers, IEnumerable<long> readonlyMembers, CancellationToken token = default)
