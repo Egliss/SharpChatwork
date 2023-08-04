@@ -1,22 +1,23 @@
 using SharpChatwork.Query.Types;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SharpChatwork.Query
 {
     public interface IRoomQuery
     {
-        ValueTask<IEnumerable<Room>> GetAllAsync();
-        ValueTask<ElementId> CreateAsync();
-        ValueTask<Room> GetAsync(long roomId);
-        ValueTask<ElementId> UpdateAsync(long roomId, string roomName, string description, RoomIconPreset preset);
-        ValueTask LeaveAsync(long roomId);
-        ValueTask DeleteAsync(long roomId);
+        public ValueTask<IEnumerable<Room>> GetAllAsync(CancellationToken cancellation = default);
+        public ValueTask<ElementId> CreateAsync(CancellationToken cancellation = default);
+        public ValueTask<Room> GetAsync(long roomId, CancellationToken cancellation = default);
+        public ValueTask<ElementId> UpdateAsync(long roomId, string roomName, string description, RoomIconPreset preset, CancellationToken cancellation = default);
+        public ValueTask LeaveAsync(long roomId, CancellationToken cancellation = default);
+        public ValueTask DeleteAsync(long roomId, CancellationToken cancellation = default);
 
-        IRoomMessageQuery message { get; }
-        IRoomMemberQuery member { get; }
-        IRoomInviteQuery invite { get; }
-        IRoomFileQuery file { get; }
-        IRoomTaskQuery task { get; }
+        public IRoomMessageQuery message { get; }
+        public IRoomMemberQuery member { get; }
+        public IRoomInviteQuery invite { get; }
+        public IRoomFileQuery file { get; }
+        public IRoomTaskQuery task { get; }
     }
 }
