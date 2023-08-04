@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpChatwork", "SharpChatwork\SharpChatwork.csproj", "{2F598CB8-DA5A-4739-BA71-30E075B32D61}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpChatwork.Test", "SharpChatwork.Test\SharpChatwork.Test.csproj", "{58167E26-09F4-4F9B-93B0-D5C12A63C6CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,10 @@ Global
 		{2F598CB8-DA5A-4739-BA71-30E075B32D61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F598CB8-DA5A-4739-BA71-30E075B32D61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F598CB8-DA5A-4739-BA71-30E075B32D61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58167E26-09F4-4F9B-93B0-D5C12A63C6CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58167E26-09F4-4F9B-93B0-D5C12A63C6CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58167E26-09F4-4F9B-93B0-D5C12A63C6CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58167E26-09F4-4F9B-93B0-D5C12A63C6CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -39,8 +39,8 @@ Release.</PackageReleaseNotes>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MimeMapping" Version="1.0.1.50" />
-    <PackageReference Include="System.Text.Json" Version="7.0.2" />
+    <PackageReference Include="MimeMapping" Version="2.0.0" />
+    <PackageReference Include="System.Text.Json" Version="7.0.3" />
   </ItemGroup>
 
 </Project>
