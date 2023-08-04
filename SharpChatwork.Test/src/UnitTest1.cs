@@ -1,14 +1,12 @@
-using SharpChatwork.AccessToken;
+using SharpChatwork.Query;
 
-namespace SharpChatwork.Test.src
+namespace SharpChatwork.Test
 {
     public class UnitTest1
     {
         [Fact]
         public void Test1()
         {
-            var client = new AccessTokenClient('');
-
         }
     }
 }
