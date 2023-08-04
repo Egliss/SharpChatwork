@@ -39,8 +39,10 @@ namespace SharpChatwork.Query
             var mimeName = MimeMapping.MimeUtility.GetMimeMapping(filePath);
             fileContent.Headers.ContentType = new MediaTypeHeaderValue(mimeName);
             var messageContent = new StringContent(message);
-            messageContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data");
-            messageContent.Headers.ContentDisposition.Name = "\"message\"";
+            messageContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+            {
+                Name = "\"message\""
+            };
             messageContent.Headers.ContentType = null;
             multipart.Add(fileContent);
             multipart.Add(messageContent);
@@ -49,10 +51,8 @@ namespace SharpChatwork.Query
         }
         public async ValueTask<ElementId> UploadAsync(long roomId, string filePath, string message)
         {
-            using(FileStream stream = new FileStream(filePath, FileMode.Open))
-            {
-                return await this.UploadAsync(roomId, stream, filePath, message);
-            }
+            using FileStream stream = new FileStream(filePath, FileMode.Open);
+            return await this.UploadAsync(roomId, stream, filePath, message);
         }
     }
 }

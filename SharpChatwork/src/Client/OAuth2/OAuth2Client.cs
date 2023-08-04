@@ -160,15 +160,13 @@ namespace SharpChatwork.OAuth2
             var response = await client.SendAsync(request);
             var stream = await response.Content.ReadAsStreamAsync();
 
-            using(StreamReader reader = new StreamReader(stream))
-            {
-                var result = JsonSerializer.Deserialize<OAuth2TokenQueryResult>(reader.ReadToEnd());
-                this.tokenExpired = result.expires_in;
-                this.tokenQueryTime = DateTime.Now;
-                this.refleshToken = result.refresh_token;
-                this.accessToken = result.access_token;
-                return result;
-            }
+            using StreamReader reader = new StreamReader(stream);
+            var result = JsonSerializer.Deserialize<OAuth2TokenQueryResult>(reader.ReadToEnd());
+            this.tokenExpired = result.expires_in;
+            this.tokenQueryTime = DateTime.Now;
+            this.refleshToken = result.refresh_token;
+            this.accessToken = result.access_token;
+            return result;
         }
     }
 }
