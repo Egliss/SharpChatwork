@@ -10,6 +10,7 @@ using System.Net.Http.Headers;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SharpChatwork.OAuth2
@@ -64,33 +65,33 @@ namespace SharpChatwork.OAuth2
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.accessToken);
             return request;
         }
-        internal override async ValueTask<ReturnT> QueryAsync<ReturnT>(Uri uri, HttpMethod method, Dictionary<string, string> data)
+        internal override async ValueTask<ReturnT> QueryAsync<ReturnT>(Uri uri, HttpMethod method, Dictionary<string, string> data, CancellationToken cancellation = default)
         {
             var text = await this.QueryTextAsync(uri, method, data);
             return JsonSerializer.Deserialize<ReturnT>(text);
         }
-        internal override async ValueTask QueryAsync(Uri uri, HttpMethod method, Dictionary<string, string> data)
+        internal override async ValueTask QueryAsync(Uri uri, HttpMethod method, Dictionary<string, string> data, CancellationToken cancellation = default)
         {
             HttpContent content = null;
             if(data.Count != 0)
                 content = new FormUrlEncodedContent(data);
-            await this.QueryContentTextAsync(uri, method, content);
+            await this.QueryContentTextAsync(uri, method, content, cancellation);
             return;
         }
-        internal override async ValueTask<string> QueryTextAsync(Uri uri, HttpMethod method, Dictionary<string, string> data)
+        internal override async ValueTask<string> QueryTextAsync(Uri uri, HttpMethod method, Dictionary<string, string> data, CancellationToken cancellation = default)
         {
             HttpContent content = null;
             if(data.Count != 0)
                 content = new FormUrlEncodedContent(data);
-            return await this.QueryContentTextAsync(uri, method, content);
+            return await this.QueryContentTextAsync(uri, method, content, cancellation);
         }
 
-        internal override async ValueTask<string> QueryContentTextAsync(Uri uri, HttpMethod method, HttpContent content)
+        internal override async ValueTask<string> QueryContentTextAsync(Uri uri, HttpMethod method, HttpContent content, CancellationToken cancellation = default)
         {
             HttpRequestMessage request = this.GenerateRequestMessage(uri, method);
             request.Content = content;
             HttpClient client = new HttpClient();
-            var result = await client.SendAsync(request);
+            var result = await client.SendAsync(request, cancellation);
             var code = (int)result.StatusCode;
             var textContent = await result.Content.ReadAsStringAsync();
             if(code >= 300)
@@ -101,9 +102,9 @@ namespace SharpChatwork.OAuth2
             return textContent;
         }
 
-        internal override async ValueTask<ReturnT> QueryContentAsync<ReturnT>(Uri uri, HttpMethod method, HttpContent content)
+        internal override async ValueTask<ReturnT> QueryContentAsync<ReturnT>(Uri uri, HttpMethod method, HttpContent content, CancellationToken cancellation = default)
         {
-            var text = await this.QueryContentTextAsync(uri, method, content);
+            var text = await this.QueryContentTextAsync(uri, method, content, cancellation);
             return JsonSerializer.Deserialize<ReturnT>(text);
         }
 
@@ -133,7 +134,7 @@ namespace SharpChatwork.OAuth2
                 code = this.oauth2Code,
             };
         }
-        public async Task<OAuth2TokenQueryResult> UpdateToken(OAuth2TokenQuery.GrantType grantType = OAuth2TokenQuery.GrantType.RefreshToken, string codeVerifer = "")
+        public async Task<OAuth2TokenQueryResult> UpdateToken(OAuth2TokenQuery.GrantType grantType = OAuth2TokenQuery.GrantType.RefreshToken, string codeVerifer = "", CancellationToken cancellation = default)
         {
             OAuth2TokenQuery tokenQuery = new OAuth2TokenQuery(grantType)
             {
@@ -151,13 +152,13 @@ namespace SharpChatwork.OAuth2
             else if(grantType == OAuth2TokenQuery.GrantType.RefreshToken)
                 tokenQuery.refresh_token = this.refleshToken;
 
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(
+            request.Headers.Authorization = new AuthenticationHeaderValue(
                 "Basic",
                 Convert.ToBase64String(Encoding.ASCII.GetBytes($"{this.clientKey}:{this.secretKey}")));
             request.Content = new FormUrlEncodedContent(UrlArgEncoder.ToDictionary(tokenQuery));
 
             HttpClient client = new HttpClient();
-            var response = await client.SendAsync(request);
+            var response = await client.SendAsync(request, cancellation);
             var stream = await response.Content.ReadAsStreamAsync();
 
             using StreamReader reader = new StreamReader(stream);

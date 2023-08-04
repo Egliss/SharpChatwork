@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Runtime.Serialization;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SharpChatwork.AccessToken
@@ -39,34 +40,34 @@ namespace SharpChatwork.AccessToken
             return request;
         }
 
-        internal override async ValueTask<ReturnT> QueryAsync<ReturnT>(Uri uri, HttpMethod method, Dictionary<string, string> data)
+        internal override async ValueTask<ReturnT> QueryAsync<ReturnT>(Uri uri, HttpMethod method, Dictionary<string, string> data, CancellationToken cancellation = default)
         {
-            var text = await this.QueryTextAsync(uri, method, data);
+            var text = await this.QueryTextAsync(uri, method, data, cancellation);
             return JsonSerializer.Deserialize<ReturnT>(text);
         }
 
-        internal override async ValueTask QueryAsync(Uri uri, HttpMethod method, Dictionary<string, string> data)
+        internal override async ValueTask QueryAsync(Uri uri, HttpMethod method, Dictionary<string, string> data, CancellationToken cancellation = default)
         {
             HttpContent content = null;
             if(data.Count != 0)
                 content = new FormUrlEncodedContent(data);
-            await this.QueryContentTextAsync(uri, method, content);
+            await this.QueryContentTextAsync(uri, method, content, cancellation);
         }
 
-        internal override async ValueTask<string> QueryTextAsync(Uri uri, HttpMethod method, Dictionary<string, string> data)
+        internal override async ValueTask<string> QueryTextAsync(Uri uri, HttpMethod method, Dictionary<string, string> data, CancellationToken cancellation = default)
         {
             HttpContent content = null;
             if(data.Count != 0)
                 content = new FormUrlEncodedContent(data);
-            return await this.QueryContentTextAsync(uri, method, content);
+            return await this.QueryContentTextAsync(uri, method, content, cancellation);
         }
 
-        internal override async ValueTask<string> QueryContentTextAsync(Uri uri, HttpMethod method, HttpContent content)
+        internal override async ValueTask<string> QueryContentTextAsync(Uri uri, HttpMethod method, HttpContent content, CancellationToken cancellation = default)
         {
             var requestMessage = this.GenerateRequestMessage(uri, method);
             requestMessage.Content = content;
             HttpClient client = new HttpClient();
-            var result = await client.SendAsync(requestMessage);
+            var result = await client.SendAsync(requestMessage, cancellation);
             var code = (int)result.StatusCode;
             var textContent = await result.Content.ReadAsStringAsync();
             if(code >= 300)
@@ -77,9 +78,9 @@ namespace SharpChatwork.AccessToken
             return textContent;
         }
 
-        internal override async ValueTask<ReturnT> QueryContentAsync<ReturnT>(Uri uri, HttpMethod method, HttpContent content)
+        internal override async ValueTask<ReturnT> QueryContentAsync<ReturnT>(Uri uri, HttpMethod method, HttpContent content, CancellationToken cancellation = default)
         {
-            var text = await this.QueryContentTextAsync(uri, method, content);
+            var text = await this.QueryContentTextAsync(uri, method, content, cancellation);
             return JsonSerializer.Deserialize<ReturnT>(text);
         }
     }
