@@ -1,4 +1,3 @@
-using SharpChatwork.Query;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -6,6 +5,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using SharpChatwork.Client.Exceptions;
+using SharpChatwork.Query;
 
 namespace SharpChatwork
 {
@@ -27,10 +27,10 @@ namespace SharpChatwork
             this.incomingRequest = new IncomingRequestQuery(this);
         }
 
-        public IMeQuery me { get; private set; }
-        public IRoomQuery room { get; private set; }
-        public IContactQuery contact { get; private set; }
-        public IIncomingRequestQuery incomingRequest { get; private set; }
+        public IMeQuery me { get; }
+        public IRoomQuery room { get; }
+        public IContactQuery contact { get; }
+        public IIncomingRequestQuery incomingRequest { get; }
 
         public abstract string clientName { get; }
         public abstract ValueTask<ResponseWrapper> QueryAsync(Uri uri, HttpMethod method, HttpContent content, CancellationToken cancellation = default);
@@ -52,6 +52,7 @@ namespace SharpChatwork
 
             return await this.QueryAsync(uri, method, content, cancellation);
         }
+
         public async ValueTask<T> QueryAsync<T>(Uri uri, HttpMethod method, IReadOnlyDictionary<string, string> data, CancellationToken cancellation = default)
         {
             var wrapper = await this.QueryAsync(uri, method, data, cancellation);

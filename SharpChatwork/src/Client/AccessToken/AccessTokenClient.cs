@@ -30,7 +30,7 @@ namespace SharpChatwork.AccessToken
             requestMessage.Content = content;
             var client = this._messageInvoker;
             var result = await client.SendAsync(requestMessage, cancellation);
-            var code = (int) result.StatusCode;
+            var code = (int)result.StatusCode;
 
             return new ResponseWrapper
             {
