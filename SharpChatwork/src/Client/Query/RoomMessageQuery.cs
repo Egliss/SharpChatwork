@@ -8,12 +8,8 @@ using System.Threading.Tasks;
 
 namespace SharpChatwork.Query
 {
-    internal sealed class RoomMessageQuery : ClientQuery, IRoomMessageQuery
+    internal sealed class RoomMessageQuery(IChatworkClient client) : ClientQuery(client), IRoomMessageQuery
     {
-        public RoomMessageQuery(IChatworkClient client) : base(client)
-        {
-        }
-
         public async ValueTask<IEnumerable<UserMessage>> GetAllAsync(long roomId, bool isForceMode = false, CancellationToken token = default)
         {
             // TODO QueryAsync + data is error

@@ -5,6 +5,6 @@ namespace SharpChatwork.Query
         [EnumAlias("open")]
         Open,
         [EnumAlias("done")]
-        Done
+        Done,
     }
 }

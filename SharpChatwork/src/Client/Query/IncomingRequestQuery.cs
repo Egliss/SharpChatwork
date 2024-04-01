@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace SharpChatwork.Query
 {
-    internal sealed class IncomingRequestQuery : ClientQuery, IIncomingRequestQuery
+    internal sealed class IncomingRequestQuery(IChatworkClient client) : ClientQuery(client), IIncomingRequestQuery
     {
-        public IncomingRequestQuery(IChatworkClient client) : base(client)
-        {
-        }
-
         public async ValueTask<IncomingRequest> AcceptAsync(long requestId, CancellationToken token = default)
         {
             return await this.chatworkClient.QueryAsync<IncomingRequest>(EndPoints.IncomingRequestsOf(requestId), HttpMethod.Post, new Dictionary<string, string>(), token);
