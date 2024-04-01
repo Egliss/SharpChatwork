@@ -8,12 +8,8 @@ using System.Threading.Tasks;
 
 namespace SharpChatwork.Query
 {
-    internal sealed class RoomTaskQuery : ClientQuery, IRoomTaskQuery
+    internal sealed class RoomTaskQuery(IChatworkClient client) : ClientQuery(client), IRoomTaskQuery
     {
-        public RoomTaskQuery(IChatworkClient client) : base(client)
-        {
-        }
-
         public ValueTask<ElementId> CreateAsync(long roomId, string taskText, long limit, CancellationToken token = default)
         {
             //var data = new Dictionary<string, string>()

@@ -2,19 +2,19 @@ using SharpChatwork.Query;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using SharpChatwork.Client.Exceptions;
 
 namespace SharpChatwork
 {
-    public interface IChatworkClient : ISerializable
+    public interface IChatworkClient
     {
-        public IMeQuery me { get; }
-        public IRoomQuery room { get; }
-        public IContactQuery contact { get; }
-        public IIncomingRequestQuery incomingRequest { get; }
+        IMeQuery me { get; }
+        IRoomQuery room { get; }
+        IContactQuery contact { get; }
+        IIncomingRequestQuery incomingRequest { get; }
     }
 
     public abstract class ChatworkClient : IChatworkClient
@@ -27,23 +27,38 @@ namespace SharpChatwork
             this.incomingRequest = new IncomingRequestQuery(this);
         }
 
-        [JsonIgnore]
         public IMeQuery me { get; private set; }
-        [JsonIgnore]
         public IRoomQuery room { get; private set; }
-        [JsonIgnore]
         public IContactQuery contact { get; private set; }
-        [JsonIgnore]
         public IIncomingRequestQuery incomingRequest { get; private set; }
 
-        [JsonIgnore]
-        internal abstract string clientName { get; }
-        internal abstract ValueTask<string> QueryTextAsync(Uri uri, HttpMethod method, Dictionary<string, string> data, CancellationToken cancellation = default);
-        internal abstract ValueTask<ReturnT> QueryAsync<ReturnT>(Uri uri, HttpMethod method, Dictionary<string, string> data, CancellationToken cancellation = default);
-        internal abstract ValueTask QueryAsync(Uri uri, HttpMethod method, Dictionary<string, string> data, CancellationToken cancellation = default);
-        internal abstract ValueTask<string> QueryContentTextAsync(Uri uri, HttpMethod method, HttpContent content, CancellationToken cancellation = default);
-        internal abstract ValueTask<ReturnT> QueryContentAsync<ReturnT>(Uri uri, HttpMethod method, HttpContent content, CancellationToken cancellation = default);
+        public abstract string clientName { get; }
+        public abstract ValueTask<ResponseWrapper> QueryAsync(Uri uri, HttpMethod method, HttpContent content, CancellationToken cancellation = default);
 
-        public abstract void GetObjectData(SerializationInfo info, StreamingContext context);
+        public async ValueTask<T> QueryAsync<T>(Uri uri, HttpMethod method, HttpContent content, CancellationToken cancellation = default)
+        {
+            var wrapper = await this.QueryAsync(uri, method, content, cancellation);
+            if(wrapper.statusCode >= 300)
+                throw new ChatworkClientException(wrapper);
+
+            return JsonSerializer.Deserialize<T>(wrapper.content);
+        }
+
+        public async ValueTask<ResponseWrapper> QueryAsync(Uri uri, HttpMethod method, IReadOnlyDictionary<string, string> data, CancellationToken cancellation = default)
+        {
+            HttpContent content = null;
+            if(data.Count != 0)
+                content = new FormUrlEncodedContent(data);
+
+            return await this.QueryAsync(uri, method, content, cancellation);
+        }
+        public async ValueTask<T> QueryAsync<T>(Uri uri, HttpMethod method, IReadOnlyDictionary<string, string> data, CancellationToken cancellation = default)
+        {
+            var wrapper = await this.QueryAsync(uri, method, data, cancellation);
+            if(wrapper.statusCode >= 300)
+                throw new ChatworkClientException(wrapper);
+
+            return JsonSerializer.Deserialize<T>(wrapper.content);
+        }
     }
 }

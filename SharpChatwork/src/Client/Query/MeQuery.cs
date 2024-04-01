@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace SharpChatwork.Query
 {
-    internal sealed class MeQuery : ClientQuery, IMeQuery
+    internal sealed class MeQuery(IChatworkClient client) : ClientQuery(client), IMeQuery
     {
-        public MeQuery(IChatworkClient client) : base(client)
-        {
-        }
-
         public async ValueTask<Status> GetMyStatusAsync(CancellationToken token = default)
         {
             return await this.chatworkClient.QueryAsync<Status>(EndPoints.MyStatus, HttpMethod.Get, new Dictionary<string, string>(), token);

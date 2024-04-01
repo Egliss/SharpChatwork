@@ -35,6 +35,6 @@ namespace SharpChatwork.Query
         [EnumAlias("sports")]
         Sports,
         [EnumAlias("travel")]
-        Travel
+        Travel,
     }
 }

@@ -42,13 +42,13 @@ namespace SharpChatwork.Query
             var messageContent = new StringContent(message);
             messageContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
             {
-                Name = "\"message\""
+                Name = "\"message\"",
             };
             messageContent.Headers.ContentType = null;
             multipart.Add(fileContent);
             multipart.Add(messageContent);
 
-            return await this.chatworkClient.QueryContentAsync<ElementId>(new Uri(uri), HttpMethod.Post, multipart, token);
+            return await this.chatworkClient.QueryAsync<ElementId>(new Uri(uri), HttpMethod.Post, multipart, token);
         }
         public async ValueTask<ElementId> UploadAsync(long roomId, string filePath, string message, CancellationToken token = default)
         {

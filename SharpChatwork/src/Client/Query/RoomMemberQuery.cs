@@ -7,12 +7,8 @@ using System.Threading.Tasks;
 
 namespace SharpChatwork.Query
 {
-    internal sealed class RoomMemberQuery : ClientQuery, IRoomMemberQuery
+    internal sealed class RoomMemberQuery(IChatworkClient client) : ClientQuery(client), IRoomMemberQuery
     {
-        public RoomMemberQuery(IChatworkClient client) : base(client)
-        {
-        }
-
         public async ValueTask<IEnumerable<User>> GetAllAsync(long roomId, CancellationToken token = default)
         {
             return await this.chatworkClient.QueryAsync<List<User>>(EndPoints.RoomMember(roomId), HttpMethod.Get, new Dictionary<string, string>(), token);

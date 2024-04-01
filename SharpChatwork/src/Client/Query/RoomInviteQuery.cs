@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace SharpChatwork.Query
 {
-    internal sealed class RoomInviteQuery : ClientQuery, IRoomInviteQuery
+    internal sealed class RoomInviteQuery(IChatworkClient client) : ClientQuery(client), IRoomInviteQuery
     {
-        public RoomInviteQuery(IChatworkClient client) : base(client)
-        {
-        }
-
         public async ValueTask<InviteLink> CreateAsync(long roomId, string uniqueName, string description, bool requireAcceptance, CancellationToken token = default)
         {
             var data = new Dictionary<string, string>()

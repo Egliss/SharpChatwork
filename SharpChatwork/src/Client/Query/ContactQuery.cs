@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace SharpChatwork.Query
 {
-    internal sealed class ContactQuery : ClientQuery, IContactQuery
+    internal sealed class ContactQuery(IChatworkClient client) : ClientQuery(client), IContactQuery
     {
-        public ContactQuery(IChatworkClient client) : base(client)
-        {
-        }
-
         public async ValueTask<IEnumerable<Contact>> GetAllAsync(CancellationToken token = default)
         {
             return await this.chatworkClient.QueryAsync<List<Contact>>(EndPoints.Contacts, HttpMethod.Get, new Dictionary<string, string>(), token);

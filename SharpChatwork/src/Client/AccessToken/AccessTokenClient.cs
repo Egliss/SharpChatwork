@@ -1,87 +1,43 @@
-using SharpChatwork.Client.Exceptions;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
-using System.Runtime.Serialization;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace SharpChatwork.AccessToken
 {
-    [Serializable]
-    public class AccessTokenClient : ChatworkClient
+    public class AccessTokenClient(string accessToken, HttpMessageInvoker messageInvoker = null) : ChatworkClient
     {
-        internal override string clientName => nameof(AccessTokenClient);
+        public override string clientName => nameof(AccessTokenClient);
+        private readonly HttpMessageInvoker _messageInvoker = messageInvoker ?? new HttpClient();
 
-        private string accessToken { get; set; } = string.Empty;
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            info.AddValue(nameof(this.accessToken), this.accessToken);
-        }
-        public AccessTokenClient(string accessToken)
-        {
-            this.accessToken = accessToken;
-        }
-        protected AccessTokenClient(SerializationInfo info, StreamingContext context)
-        {
-            this.accessToken = info.GetString(nameof(this.accessToken));
-        }
+        private string accessToken { get; } = accessToken;
 
         private HttpRequestMessage GenerateRequestMessage(Uri uri, HttpMethod method)
         {
-            HttpRequestMessage request = new HttpRequestMessage
+            var request = new HttpRequestMessage
             {
                 Method = method,
-                RequestUri = uri
+                RequestUri = uri,
             };
             request.Headers.Add("X-ChatWorkToken", this.accessToken);
             return request;
         }
 
-        internal override async ValueTask<ReturnT> QueryAsync<ReturnT>(Uri uri, HttpMethod method, Dictionary<string, string> data, CancellationToken cancellation = default)
-        {
-            var text = await this.QueryTextAsync(uri, method, data, cancellation);
-            return JsonSerializer.Deserialize<ReturnT>(text);
-        }
-
-        internal override async ValueTask QueryAsync(Uri uri, HttpMethod method, Dictionary<string, string> data, CancellationToken cancellation = default)
-        {
-            HttpContent content = null;
-            if(data.Count != 0)
-                content = new FormUrlEncodedContent(data);
-            await this.QueryContentTextAsync(uri, method, content, cancellation);
-        }
-
-        internal override async ValueTask<string> QueryTextAsync(Uri uri, HttpMethod method, Dictionary<string, string> data, CancellationToken cancellation = default)
-        {
-            HttpContent content = null;
-            if(data.Count != 0)
-                content = new FormUrlEncodedContent(data);
-            return await this.QueryContentTextAsync(uri, method, content, cancellation);
-        }
-
-        internal override async ValueTask<string> QueryContentTextAsync(Uri uri, HttpMethod method, HttpContent content, CancellationToken cancellation = default)
+        public override async ValueTask<ResponseWrapper> QueryAsync(Uri uri, HttpMethod method, HttpContent content, CancellationToken cancellation = default)
         {
             var requestMessage = this.GenerateRequestMessage(uri, method);
             requestMessage.Content = content;
-            HttpClient client = new HttpClient();
+            var client = this._messageInvoker;
             var result = await client.SendAsync(requestMessage, cancellation);
-            var code = (int)result.StatusCode;
-            var textContent = await result.Content.ReadAsStringAsync();
-            if(code >= 300)
+            var code = (int) result.StatusCode;
+
+            return new ResponseWrapper
             {
-                throw new ChatworkRequestException(code, textContent);
-            }
-
-            return textContent;
-        }
-
-        internal override async ValueTask<ReturnT> QueryContentAsync<ReturnT>(Uri uri, HttpMethod method, HttpContent content, CancellationToken cancellation = default)
-        {
-            var text = await this.QueryContentTextAsync(uri, method, content, cancellation);
-            return JsonSerializer.Deserialize<ReturnT>(text);
+                content = await result.Content.ReadAsStringAsync(),
+                headers = result.Headers.ToDictionary(m => m.Key, m => m.Value),
+                statusCode = code,
+            };
         }
     }
 }
