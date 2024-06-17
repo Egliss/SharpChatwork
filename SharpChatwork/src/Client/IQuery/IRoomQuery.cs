@@ -8,9 +8,9 @@ namespace SharpChatwork.Query
     public interface IRoomQuery
     {
         public ValueTask<IEnumerable<Room>> GetAllAsync(CancellationToken cancellation = default);
-        public ValueTask<ElementId> CreateAsync(CancellationToken cancellation = default);
+        public ValueTask<RoomId> CreateAsync(CancellationToken cancellation = default);
         public ValueTask<Room> GetAsync(long roomId, CancellationToken cancellation = default);
-        public ValueTask<ElementId> UpdateAsync(long roomId, string roomName, string description, RoomIconPreset preset, CancellationToken cancellation = default);
+        public ValueTask<RoomId> UpdateAsync(long roomId, string roomName, string description, RoomIconPreset preset, CancellationToken cancellation = default);
         public ValueTask LeaveAsync(long roomId, CancellationToken cancellation = default);
         public ValueTask DeleteAsync(long roomId, CancellationToken cancellation = default);
 

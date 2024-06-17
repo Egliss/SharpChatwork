@@ -4,6 +4,6 @@ namespace SharpChatwork.Query.Types
 {
     public class ElementId
     {
-        public string id { get; set; }
+        public long id { get; set; }
     }
 }

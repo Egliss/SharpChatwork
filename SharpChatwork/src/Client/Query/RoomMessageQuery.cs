@@ -29,12 +29,12 @@ namespace SharpChatwork.Query
             return await this.chatworkClient.QueryAsync<MessageReadUnread>(new Uri(uri), HttpMethod.Post, new Dictionary<string, string>(), token);
         }
 
-        public async ValueTask<ElementId> RemoveAsync(long roomId, long messageId, CancellationToken token = default)
+        public async ValueTask<MessageId> RemoveAsync(long roomId, long messageId, CancellationToken token = default)
         {
             return await this.chatworkClient.QueryAsync<MessageId>(EndPoints.RoomMessagesOf(roomId, messageId), HttpMethod.Delete, new Dictionary<string, string>(), token);
         }
 
-        public async ValueTask<ElementId> SendAsync(long roomId, string message, bool isSelfUnread, CancellationToken token = default)
+        public async ValueTask<MessageId> SendAsync(long roomId, string message, bool isSelfUnread, CancellationToken token = default)
         {
             var data = new Dictionary<string, string>()
             {
@@ -50,7 +50,7 @@ namespace SharpChatwork.Query
             return await this.chatworkClient.QueryAsync<MessageReadUnread>(new Uri(uri), HttpMethod.Post, new Dictionary<string, string>(), token);
         }
 
-        public async ValueTask<ElementId> UpdateAsync(long roomId, long messageId, string message, CancellationToken token = default)
+        public async ValueTask<MessageId> UpdateAsync(long roomId, long messageId, string message, CancellationToken token = default)
         {
             var uri = $"{EndPoints.RoomMessagesOf(roomId, messageId)}?body={message}";
             return await this.chatworkClient.QueryAsync<MessageId>(new Uri(uri), HttpMethod.Post, new Dictionary<string, string>(), token);
