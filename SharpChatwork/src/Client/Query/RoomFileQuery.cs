@@ -26,7 +26,7 @@ namespace SharpChatwork.Query
             var uri = $"{EndPoints.RoomFiles(roomId)}?create_download_url={UrlArgEncoder.BoolToInt(createDownloadLink)}";
             return await this.chatworkClient.QueryAsync<UserFile>(new Uri(uri), HttpMethod.Get, new Dictionary<string, string>(), token);
         }
-        public async ValueTask<ElementId> UploadAsync(long roomId, Stream stream, string filePath, string message, CancellationToken token = default)
+        public async ValueTask<FileId> UploadAsync(long roomId, Stream stream, string filePath, string message, CancellationToken token = default)
         {
             var uri = $"{EndPoints.RoomFiles(roomId)}";
 
@@ -48,9 +48,9 @@ namespace SharpChatwork.Query
             multipart.Add(fileContent);
             multipart.Add(messageContent);
 
-            return await this.chatworkClient.QueryAsync<ElementId>(new Uri(uri), HttpMethod.Post, multipart, token);
+            return await this.chatworkClient.QueryAsync<FileId>(new Uri(uri), HttpMethod.Post, multipart, token);
         }
-        public async ValueTask<ElementId> UploadAsync(long roomId, string filePath, string message, CancellationToken token = default)
+        public async ValueTask<FileId> UploadAsync(long roomId, string filePath, string message, CancellationToken token = default)
         {
             using FileStream stream = new FileStream(filePath, FileMode.Open);
             return await this.UploadAsync(roomId, stream, filePath, message, token);

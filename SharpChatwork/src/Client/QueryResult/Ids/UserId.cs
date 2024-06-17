@@ -4,7 +4,7 @@ namespace SharpChatwork.Query.Types
 {
     public class UserId : ElementId
     {
-        public string user_id
+        public long user_id
         {
             get => this.id;
             set => this.id = value;
