@@ -6,8 +6,9 @@ using System.Linq;
 namespace SharpChatwork.OAuth2;
 
 /// <summary>
-/// API access scopes <para/>
-/// implement from here http://developer.chatwork.com/ja/oauth.html#secAppendix 
+/// API access scopes
+/// <para />
+/// implement from here http://developer.chatwork.com/ja/oauth.html#secAppendix
 /// </summary>
 public enum ScopeType : long
 {
@@ -17,7 +18,7 @@ public enum ScopeType : long
 
     [Description("自分のアカウントに紐づく情報の取得")]
     [EnumAlias("users.all:read")]
-    UsersAllR = UsersProfileMeR | UsersTasksMeR | UsersStatusMeR,
+    UsersAllR = ScopeType.UsersProfileMeR | ScopeType.UsersTasksMeR | ScopeType.UsersStatusMeR,
 
     [Description("自分のプロフィール情報の取得")]
     [EnumAlias("users.profile.me:read")]
@@ -33,7 +34,7 @@ public enum ScopeType : long
 
     [Description("チャットルームに紐づくメッセージ・タスク・ファイル・概要・メンバー情報の操作/取得")]
     [EnumAlias("rooms.all:read_write")]
-    RoomsAllRW = RoomsAllR | RoomsAllW,
+    RoomsAllRW = ScopeType.RoomsAllR | ScopeType.RoomsAllW,
 
     [Description("チャットルームに紐づくメッセージ・タスク・ファイル・概要・メンバー情報の取得")]
     [EnumAlias("rooms.all:read")]
@@ -89,7 +90,7 @@ public enum ScopeType : long
 
     [Description("自分のコンタクト、及びコンタクト承認依頼情報の取得/操作")]
     [EnumAlias("contacts.all:read_write")]
-    ContactsAllRW = ContactsAllR | ContactsAllW,
+    ContactsAllRW = ScopeType.ContactsAllR | ScopeType.ContactsAllW,
 
     [Description("自分のコンタクト、及びコンタクト承認依頼情報の取得")]
     [EnumAlias("contacts.all:read")]
@@ -106,14 +107,19 @@ internal static class ScopeTypeExtension
     {
         // extract name value pair
         var enumValues = Enum.GetValues(typeof(ScopeType)).OfType<ScopeType>();
-        var enumNames = enumValues.Select(m => FindAttribute<EnumAliasAttribute>(m));
+        var enumNames = enumValues.Select(ScopeTypeExtension.FindAttribute<EnumAliasAttribute>);
         var input = (long)type;
         var enumNameValues = enumNames
-            .Zip(enumValues, (m, n) => new { m.AliasName, Value = n })
+            .Zip(
+                enumValues, (m, n) => new
+                {
+                    AliasName = m.aliasName,
+                    Value = n,
+                }
+            )
             .Where(m => ((long)m.Value & input) != 0)
             .Reverse();
-
-        List<Tuple<string, long>> resultScopes = new List<Tuple<string, long>>();
+        var resultScopes = new List<Tuple<string, long>>();
 
         // escape _all child
         foreach(var item in enumNameValues)
@@ -134,12 +140,8 @@ internal static class ScopeTypeExtension
         var attributes = fieldInfo
             .GetCustomAttributes(typeof(AttributeT), false)
             .Cast<AttributeT>();
-
-        if(attributes == null)
-            return null;
         if(!attributes.Any())
             return null;
-
         return attributes.First();
     }
 }

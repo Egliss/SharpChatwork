@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -38,7 +39,7 @@ internal sealed class RoomMessageQuery(IChatworkClient client) : ClientQuery(cli
         var data = new Dictionary<string, string>
         {
             {"body", message},
-            {"self_unread", UrlArgEncoder.BoolToInt(isSelfUnread).ToString()},
+            {"self_unread", UrlArgEncoder.BoolToInt(isSelfUnread).ToString(CultureInfo.InvariantCulture)},
         };
         return await this.chatworkClient.QueryAsync<MessageId>(EndPoints.RoomMessages(roomId), HttpMethod.Post, data, token);
     }

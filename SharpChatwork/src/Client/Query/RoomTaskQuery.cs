@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -34,8 +35,8 @@ internal sealed class RoomTaskQuery(IChatworkClient client) : ClientQuery(client
             doneString = "open";
         var data = new Dictionary<string, string>
         {
-            {"account_id", accountId.ToString()},
-            {"assigned_by_account_id", autherId.ToString()},
+            {"account_id", accountId.ToString(CultureInfo.InvariantCulture)},
+            {"assigned_by_account_id", autherId.ToString(CultureInfo.InvariantCulture)},
             {"status", doneString},
         };
         return await this.chatworkClient.QueryAsync<List<UserTask>>(EndPoints.RoomTasks(roomId), HttpMethod.Get, data, token);

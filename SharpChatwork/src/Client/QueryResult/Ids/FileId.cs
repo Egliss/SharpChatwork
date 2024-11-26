@@ -4,7 +4,7 @@ namespace SharpChatwork.Query.Types;
 
 public class FileId : ElementId
 {
-    public string File_id
+    public string file_id
     {
         get => this.id;
         set => this.id = value;

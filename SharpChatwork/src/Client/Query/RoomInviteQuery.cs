@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ internal sealed class RoomInviteQuery(IChatworkClient client) : ClientQuery(clie
         {
             {"code", uniqueName},
             {"description", description},
-            {"need_acceptance", UrlArgEncoder.BoolToInt(requireAcceptance).ToString()},
+            {"need_acceptance", UrlArgEncoder.BoolToInt(requireAcceptance).ToString(CultureInfo.InvariantCulture)},
         };
         return await this.chatworkClient.QueryAsync<InviteLink>(EndPoints.RoomTasks(roomId), HttpMethod.Post, data, token);
     }
@@ -35,7 +36,7 @@ internal sealed class RoomInviteQuery(IChatworkClient client) : ClientQuery(clie
         {
             {"code", uniqueName},
             {"description", description},
-            {"need_acceptance", UrlArgEncoder.BoolToInt(requireAcceptance).ToString()},
+            {"need_acceptance", UrlArgEncoder.BoolToInt(requireAcceptance).ToString(CultureInfo.InvariantCulture)},
         };
         return await this.chatworkClient.QueryAsync<InviteLink>(EndPoints.RoomTasks(roomId), HttpMethod.Put, data, token);
     }

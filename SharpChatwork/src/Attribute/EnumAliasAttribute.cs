@@ -4,13 +4,9 @@ using System.Linq;
 namespace SharpChatwork;
 
 [AttributeUsage(AttributeTargets.Field)]
-internal sealed class EnumAliasAttribute : Attribute
+internal sealed class EnumAliasAttribute(string aliasName) : Attribute
 {
-    public EnumAliasAttribute(string aliasName)
-    {
-        this.AliasName = aliasName;
-    }
-    public string AliasName { get; set; }
+    public string aliasName { get; set; } = aliasName;
 }
 
 internal static class EnumAliasExtension
@@ -27,6 +23,6 @@ internal static class EnumAliasExtension
         if(i == null)
             return Enum.GetName(value.GetType(), value);
         // use alias
-        return i.AliasName;
+        return i.aliasName;
     }
 }

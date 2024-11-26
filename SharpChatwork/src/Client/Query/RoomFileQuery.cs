@@ -10,12 +10,8 @@ using SharpChatwork.Query.Types;
 
 namespace SharpChatwork.Query;
 
-internal sealed class RoomFileQuery : ClientQuery, IRoomFileQuery
+internal sealed class RoomFileQuery(IChatworkClient client) : ClientQuery(client), IRoomFileQuery
 {
-    public RoomFileQuery(IChatworkClient client) : base(client)
-    {
-    }
-
     public async ValueTask<IEnumerable<UserFile>> GetAllAsync(long roomId, long accountId, CancellationToken token = default)
     {
         var uri = $"{EndPoints.RoomFiles(roomId)}?account_id={accountId}";

@@ -4,7 +4,9 @@ namespace SharpChatwork.OAuth2;
 
 public class OAuth2ConcentQuery
 {
+#pragma warning disable CA1822
     public string response_type => "code";
+#pragma warning restore CA1822
     public string client_id { get; set; } = string.Empty;
     public string redirect_uri { get; set; } = string.Empty;
     public string scope { get; set; } = string.Empty;

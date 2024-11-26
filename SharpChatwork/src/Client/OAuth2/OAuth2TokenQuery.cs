@@ -2,7 +2,7 @@
 
 namespace SharpChatwork.OAuth2;
 
-public class OAuth2TokenQuery
+public class OAuth2TokenQuery(OAuth2TokenQuery.GrantType type)
 {
     public enum GrantType
     {
@@ -12,7 +12,7 @@ public class OAuth2TokenQuery
         RefreshToken,
     }
 
-    public string grant_type { get; set; } = string.Empty;
+    public string grant_type { get; set; } = type.ToAliasOrDefault();
     public string code { get; set; } = string.Empty;
     public string redirect_uri { get; set; } = string.Empty;
     public string code_verifier { get; set; } = string.Empty;
@@ -24,10 +24,5 @@ public class OAuth2TokenQuery
     {
         get => this._scopeType;
         set { this._scopeType = value; this.scope = this._scopeType.ToUrlArg(); }
-    }
-
-    public OAuth2TokenQuery(GrantType type)
-    {
-        this.grant_type = type.ToAliasOrDefault();
     }
 }
