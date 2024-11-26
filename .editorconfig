@@ -517,3 +517,5 @@ csharp_wrap_lines = false
 csharp_wrap_object_and_collection_initializer_style = wrap_if_long
 # プロパティパターンのラップスタイルを指定する
 csharp_wrap_property_pattern = chop_if_long
+# フォルダ構造とnamespaceが違っても警告しない
+dotnet_style_namespace_match_folder = false

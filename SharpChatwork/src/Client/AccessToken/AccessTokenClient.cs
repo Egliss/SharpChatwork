@@ -8,10 +8,10 @@ namespace SharpChatwork.AccessToken;
 
 public class AccessTokenClient(string accessToken, HttpMessageInvoker messageInvoker = null) : ChatworkClient
 {
-    private readonly HttpMessageInvoker _messageInvoker = messageInvoker ?? new HttpClient();
+    private readonly HttpMessageInvoker MessageInvoker = messageInvoker ?? new HttpClient();
     public override string clientName => nameof(AccessTokenClient);
 
-    private string accessToken { get; } = accessToken;
+    private string _accessToken { get; } = accessToken;
 
     private HttpRequestMessage GenerateRequestMessage(Uri uri, HttpMethod method)
     {
@@ -20,7 +20,7 @@ public class AccessTokenClient(string accessToken, HttpMessageInvoker messageInv
             Method = method,
             RequestUri = uri,
         };
-        request.Headers.Add("X-ChatWorkToken", this.accessToken);
+        request.Headers.Add("X-ChatWorkToken", this._accessToken);
         return request;
     }
 
@@ -28,7 +28,7 @@ public class AccessTokenClient(string accessToken, HttpMessageInvoker messageInv
     {
         var requestMessage = this.GenerateRequestMessage(uri, method);
         requestMessage.Content = content;
-        var client = this._messageInvoker;
+        var client = this.MessageInvoker;
         var result = await client.SendAsync(requestMessage, cancellation);
         var code = (int)result.StatusCode;
         return new ResponseWrapper

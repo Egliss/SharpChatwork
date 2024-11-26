@@ -17,17 +17,17 @@ public class OAuth2Client(string clientKey, string secretKey, HttpMessageInvoker
 {
     public override string clientName => nameof(OAuth2Client);
 
-    private readonly HttpMessageInvoker _messageInvoker = invoker ?? new HttpClient();
-    private string clientKey { get; } = clientKey;
-    private string secretKey { get; } = secretKey;
-    private string oauth2Code { get; set; } = string.Empty;
-    private string accessToken { get; set; } = string.Empty;
-    private string refleshToken { get; set; } = string.Empty;
-    private long tokenExpired { get; set; } = 0;
+    private readonly HttpMessageInvoker MessageInvoker = invoker ?? new HttpClient();
+    private string _clientKey { get; } = clientKey;
+    private string _secretKey { get; } = secretKey;
+    private string _oauth2Code { get; set; } = string.Empty;
+    private string _accessToken { get; set; } = string.Empty;
+    private string _refreshToken { get; set; } = string.Empty;
+    private long _tokenExpired { get; set; } = 0;
 
-    private string scope { get; set; } = string.Empty;
-    private string redirectUri { get; set; } = string.Empty;
-    private DateTime tokenQueryTime { get; set; } = DateTime.Now;
+    private string _scope { get; set; } = string.Empty;
+    private string _redirectUri { get; set; } = string.Empty;
+    private DateTime _tokenQueryTime { get; set; } = DateTime.Now;
 
     private HttpRequestMessage GenerateRequestMessage(Uri uri, HttpMethod method)
     {
@@ -36,7 +36,7 @@ public class OAuth2Client(string clientKey, string secretKey, HttpMessageInvoker
             Method = method,
             RequestUri = uri,
         };
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.accessToken);
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this._accessToken);
         return request;
     }
 
@@ -44,7 +44,7 @@ public class OAuth2Client(string clientKey, string secretKey, HttpMessageInvoker
     {
         var requestMessage = this.GenerateRequestMessage(uri, method);
         requestMessage.Content = content;
-        var client = this._messageInvoker;
+        var client = this.MessageInvoker;
         var result = await client.SendAsync(requestMessage, cancellation);
         var code = (int)result.StatusCode;
 
@@ -58,21 +58,21 @@ public class OAuth2Client(string clientKey, string secretKey, HttpMessageInvoker
 
     public OAuth2ConcentQueryResult Authorization(OAuth2ConcentQuery query, string codeVerifer = "")
     {
-        query.client_id = this.clientKey;
-        this.scope = query.scope;
-        this.redirectUri = query.redirect_uri;
+        query.client_id = this._clientKey;
+        this._scope = query.scope;
+        this._redirectUri = query.redirect_uri;
         // TODO Only windows
-        var concentUrlArg = EndPoints.Oauth2.OriginalString + $"{UrlArgEncoder.ToURLArg(query)}";
+        var contentUrlArg = EndPoints.Oauth2.OriginalString + $"{UrlArgEncoder.ToURLArg(query)}";
         Console.WriteLine("Please input code of redirect url code=");
         Process.Start(
-            new ProcessStartInfo("cmd", $"/c start {concentUrlArg}")
+            new ProcessStartInfo("cmd", $"/c start {contentUrlArg}")
             {
                 CreateNoWindow = true,
             }
         );
-        this.oauth2Code = Console.ReadLine();
+        this._oauth2Code = Console.ReadLine();
 
-        if(string.IsNullOrEmpty(this.oauth2Code))
+        if(string.IsNullOrEmpty(this._oauth2Code))
         {
             return new OAuth2ConcentQueryResult
             {
@@ -80,19 +80,19 @@ public class OAuth2Client(string clientKey, string secretKey, HttpMessageInvoker
                 //error_description = "inputed oauth_code is null or empty",
             };
         }
-        query.client_id = this.clientKey;
+        query.client_id = this._clientKey;
         return new OAuth2ConcentQueryResult
         {
-            code = this.oauth2Code,
+            code = this._oauth2Code,
         };
     }
 
-    public async Task<OAuth2TokenQueryResult> UpdateToken(OAuth2TokenQuery.GrantType grantType = OAuth2TokenQuery.GrantType.RefreshToken, string codeVerifer = "", CancellationToken cancellation = default)
+    public async Task<OAuth2TokenQueryResult> UpdateTokenAsync(OAuth2TokenQuery.GrantType grantType = OAuth2TokenQuery.GrantType.RefreshToken, string codeVerifer = "", CancellationToken cancellation = default)
     {
         var tokenQuery = new OAuth2TokenQuery(grantType)
         {
-            scope = this.scope,
-            redirect_uri = this.redirectUri,
+            scope = this._scope,
+            redirect_uri = this._redirectUri,
         };
         var request = new HttpRequestMessage
         {
@@ -101,26 +101,26 @@ public class OAuth2Client(string clientKey, string secretKey, HttpMessageInvoker
         };
 
         if(grantType == OAuth2TokenQuery.GrantType.AuthroizationCode)
-            tokenQuery.code = this.oauth2Code;
+            tokenQuery.code = this._oauth2Code;
         else if(grantType == OAuth2TokenQuery.GrantType.RefreshToken)
-            tokenQuery.refresh_token = this.refleshToken;
+            tokenQuery.refresh_token = this._refreshToken;
 
         request.Headers.Authorization = new AuthenticationHeaderValue(
             "Basic",
-            Convert.ToBase64String(Encoding.ASCII.GetBytes($"{this.clientKey}:{this.secretKey}"))
+            Convert.ToBase64String(Encoding.ASCII.GetBytes($"{this._clientKey}:{this._secretKey}"))
         );
         request.Content = new FormUrlEncodedContent(UrlArgEncoder.ToDictionary(tokenQuery));
 
-        var client = this._messageInvoker;
+        var client = this.MessageInvoker;
         var response = await client.SendAsync(request, cancellation);
         var stream = await response.Content.ReadAsStreamAsync();
 
         using var reader = new StreamReader(stream);
-        var result = JsonSerializer.Deserialize<OAuth2TokenQueryResult>(reader.ReadToEnd());
-        this.tokenExpired = result.expires_in;
-        this.tokenQueryTime = DateTime.Now;
-        this.refleshToken = result.refresh_token;
-        this.accessToken = result.access_token;
+        var result = JsonSerializer.Deserialize<OAuth2TokenQueryResult>(await reader.ReadToEndAsync());
+        this._tokenExpired = result.expires_in;
+        this._tokenQueryTime = DateTime.Now;
+        this._refreshToken = result.refresh_token;
+        this._accessToken = result.access_token;
         return result;
     }
 }
