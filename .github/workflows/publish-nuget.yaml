@@ -24,4 +24,4 @@ jobs:
       - name: Build
         run: dotnet build --no-restore --configuration Release
       - name: Publish to NuGet
-        run: dotnet nuget push SharpChatwork/bin/Release/SharpChatwork.0.2.2-alpha.nupkg --api-key ${{secrets.EGLISS_TOKEN}} --source "github"
+        run: dotnet nuget push SharpChatwork/bin/Release/SharpChatwork.0.2.4-alpha.nupkg --api-key ${{secrets.EGLISS_TOKEN}} --source "github"
