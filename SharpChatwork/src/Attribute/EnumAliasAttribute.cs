@@ -1,33 +1,32 @@
 using System;
 using System.Linq;
 
-namespace SharpChatwork
-{
-    [AttributeUsage(AttributeTargets.Field)]
-    internal sealed class EnumAliasAttribute : Attribute
-    {
-        public string AliasName { get; set; }
-        public EnumAliasAttribute(string aliasName)
-        {
-            this.AliasName = aliasName;
-        }
-    }
-    internal static class EnumAliasExtension
-    {
-        public static string ToAliasOrDefault(this Enum value)
-        {
-            var i = value.GetType()
-                .GetField(value.ToString())
-                .GetCustomAttributes(typeof(EnumAliasAttribute), false)
-                .Cast<EnumAliasAttribute>()
-                .FirstOrDefault();
+namespace SharpChatwork;
 
-            // use default name
-            if(i == null)
-                return Enum.GetName(value.GetType(), value);
-            // use alias
-            else
-                return i.AliasName;
-        }
+[AttributeUsage(AttributeTargets.Field)]
+internal sealed class EnumAliasAttribute : Attribute
+{
+    public EnumAliasAttribute(string aliasName)
+    {
+        this.AliasName = aliasName;
+    }
+    public string AliasName { get; set; }
+}
+
+internal static class EnumAliasExtension
+{
+    public static string ToAliasOrDefault(this Enum value)
+    {
+        var i = value.GetType()
+            .GetField(value.ToString())
+            .GetCustomAttributes(typeof(EnumAliasAttribute), false)
+            .Cast<EnumAliasAttribute>()
+            .FirstOrDefault();
+
+        // use default name
+        if(i == null)
+            return Enum.GetName(value.GetType(), value);
+        // use alias
+        return i.AliasName;
     }
 }

@@ -4,40 +4,38 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SharpChatwork.AccessToken
+namespace SharpChatwork.AccessToken;
+
+public class AccessTokenClient(string accessToken, HttpMessageInvoker messageInvoker = null) : ChatworkClient
 {
-    public class AccessTokenClient(string accessToken, HttpMessageInvoker messageInvoker = null) : ChatworkClient
+    private readonly HttpMessageInvoker _messageInvoker = messageInvoker ?? new HttpClient();
+    public override string clientName => nameof(AccessTokenClient);
+
+    private string accessToken { get; } = accessToken;
+
+    private HttpRequestMessage GenerateRequestMessage(Uri uri, HttpMethod method)
     {
-        public override string clientName => nameof(AccessTokenClient);
-        private readonly HttpMessageInvoker _messageInvoker = messageInvoker ?? new HttpClient();
-
-        private string accessToken { get; } = accessToken;
-
-        private HttpRequestMessage GenerateRequestMessage(Uri uri, HttpMethod method)
+        var request = new HttpRequestMessage
         {
-            var request = new HttpRequestMessage
-            {
-                Method = method,
-                RequestUri = uri,
-            };
-            request.Headers.Add("X-ChatWorkToken", this.accessToken);
-            return request;
-        }
+            Method = method,
+            RequestUri = uri,
+        };
+        request.Headers.Add("X-ChatWorkToken", this.accessToken);
+        return request;
+    }
 
-        public override async ValueTask<ResponseWrapper> QueryAsync(Uri uri, HttpMethod method, HttpContent content, CancellationToken cancellation = default)
+    public override async ValueTask<ResponseWrapper> QueryAsync(Uri uri, HttpMethod method, HttpContent content, CancellationToken cancellation = default)
+    {
+        var requestMessage = this.GenerateRequestMessage(uri, method);
+        requestMessage.Content = content;
+        var client = this._messageInvoker;
+        var result = await client.SendAsync(requestMessage, cancellation);
+        var code = (int)result.StatusCode;
+        return new ResponseWrapper
         {
-            var requestMessage = this.GenerateRequestMessage(uri, method);
-            requestMessage.Content = content;
-            var client = this._messageInvoker;
-            var result = await client.SendAsync(requestMessage, cancellation);
-            var code = (int)result.StatusCode;
-
-            return new ResponseWrapper
-            {
-                content = await result.Content.ReadAsStringAsync(),
-                headers = result.Headers.ToDictionary(m => m.Key, m => m.Value),
-                statusCode = code,
-            };
-        }
+            content = await result.Content.ReadAsStringAsync(),
+            headers = result.Headers.ToDictionary(m => m.Key, m => m.Value),
+            statusCode = code,
+        };
     }
 }

@@ -1,34 +1,33 @@
 #pragma warning disable CA1707 // Underscore
 
-namespace SharpChatwork.OAuth2
+namespace SharpChatwork.OAuth2;
+
+public class OAuth2TokenQuery
 {
-    public class OAuth2TokenQuery
+    public enum GrantType
     {
-        public enum GrantType
-        {
-            [EnumAlias("authorization_code")]
-            AuthroizationCode,
-            [EnumAlias("refresh_token")]
-            RefreshToken,
-        }
+        [EnumAlias("authorization_code")]
+        AuthroizationCode,
+        [EnumAlias("refresh_token")]
+        RefreshToken,
+    }
 
-        public string grant_type { get; set; } = string.Empty;
-        public string code { get; set; } = string.Empty;
-        public string redirect_uri { get; set; } = string.Empty;
-        public string code_verifier { get; set; } = string.Empty;
-        public string refresh_token { get; set; } = string.Empty;
-        public string scope { get; set; } = string.Empty;
+    public string grant_type { get; set; } = string.Empty;
+    public string code { get; set; } = string.Empty;
+    public string redirect_uri { get; set; } = string.Empty;
+    public string code_verifier { get; set; } = string.Empty;
+    public string refresh_token { get; set; } = string.Empty;
+    public string scope { get; set; } = string.Empty;
 
-        private ScopeType _scopeType;
-        public ScopeType scopeType
-        {
-            get => this._scopeType;
-            set { this._scopeType = value; this.scope = this._scopeType.ToUrlArg(); }
-        }
+    private ScopeType _scopeType;
+    public ScopeType scopeType
+    {
+        get => this._scopeType;
+        set { this._scopeType = value; this.scope = this._scopeType.ToUrlArg(); }
+    }
 
-        public OAuth2TokenQuery(GrantType type)
-        {
-            this.grant_type = type.ToAliasOrDefault();
-        }
+    public OAuth2TokenQuery(GrantType type)
+    {
+        this.grant_type = type.ToAliasOrDefault();
     }
 }

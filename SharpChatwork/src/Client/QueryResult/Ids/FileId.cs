@@ -1,13 +1,12 @@
 #pragma warning disable CA1707 // Underscore
 
-namespace SharpChatwork.Query.Types
+namespace SharpChatwork.Query.Types;
+
+public class FileId : ElementId
 {
-    public class FileId : ElementId
+    public string File_id
     {
-        public string File_id
-        {
-            get => this.id;
-            set => this.id = value;
-        }
+        get => this.id;
+        set => this.id = value;
     }
 }

@@ -7,59 +7,55 @@ using System.Threading.Tasks;
 using SharpChatwork.Client.Exceptions;
 using SharpChatwork.Query;
 
-namespace SharpChatwork
+namespace SharpChatwork;
+
+public interface IChatworkClient
 {
-    public interface IChatworkClient
+    IMeQuery me { get; }
+    IRoomQuery room { get; }
+    IContactQuery contact { get; }
+    IIncomingRequestQuery incomingRequest { get; }
+}
+
+public abstract class ChatworkClient : IChatworkClient
+{
+    public ChatworkClient()
     {
-        IMeQuery me { get; }
-        IRoomQuery room { get; }
-        IContactQuery contact { get; }
-        IIncomingRequestQuery incomingRequest { get; }
+        this.me = new MeQuery(this);
+        this.contact = new ContactQuery(this);
+        this.room = new RoomQuery(this);
+        this.incomingRequest = new IncomingRequestQuery(this);
     }
 
-    public abstract class ChatworkClient : IChatworkClient
+    public abstract string clientName { get; }
+
+    public IMeQuery me { get; }
+    public IRoomQuery room { get; }
+    public IContactQuery contact { get; }
+    public IIncomingRequestQuery incomingRequest { get; }
+    public abstract ValueTask<ResponseWrapper> QueryAsync(Uri uri, HttpMethod method, HttpContent content, CancellationToken cancellation = default);
+
+    public async ValueTask<T> QueryAsync<T>(Uri uri, HttpMethod method, HttpContent content, CancellationToken cancellation = default)
     {
-        public ChatworkClient()
-        {
-            this.me = new MeQuery(this);
-            this.contact = new ContactQuery(this);
-            this.room = new RoomQuery(this);
-            this.incomingRequest = new IncomingRequestQuery(this);
-        }
+        var wrapper = await this.QueryAsync(uri, method, content, cancellation);
+        if(wrapper.statusCode >= 300)
+            throw new ChatworkClientException(wrapper);
+        return JsonSerializer.Deserialize<T>(wrapper.content);
+    }
 
-        public IMeQuery me { get; }
-        public IRoomQuery room { get; }
-        public IContactQuery contact { get; }
-        public IIncomingRequestQuery incomingRequest { get; }
+    public async ValueTask<ResponseWrapper> QueryAsync(Uri uri, HttpMethod method, IReadOnlyDictionary<string, string> data, CancellationToken cancellation = default)
+    {
+        HttpContent content = null;
+        if(data.Count != 0)
+            content = new FormUrlEncodedContent(data);
+        return await this.QueryAsync(uri, method, content, cancellation);
+    }
 
-        public abstract string clientName { get; }
-        public abstract ValueTask<ResponseWrapper> QueryAsync(Uri uri, HttpMethod method, HttpContent content, CancellationToken cancellation = default);
-
-        public async ValueTask<T> QueryAsync<T>(Uri uri, HttpMethod method, HttpContent content, CancellationToken cancellation = default)
-        {
-            var wrapper = await this.QueryAsync(uri, method, content, cancellation);
-            if(wrapper.statusCode >= 300)
-                throw new ChatworkClientException(wrapper);
-
-            return JsonSerializer.Deserialize<T>(wrapper.content);
-        }
-
-        public async ValueTask<ResponseWrapper> QueryAsync(Uri uri, HttpMethod method, IReadOnlyDictionary<string, string> data, CancellationToken cancellation = default)
-        {
-            HttpContent content = null;
-            if(data.Count != 0)
-                content = new FormUrlEncodedContent(data);
-
-            return await this.QueryAsync(uri, method, content, cancellation);
-        }
-
-        public async ValueTask<T> QueryAsync<T>(Uri uri, HttpMethod method, IReadOnlyDictionary<string, string> data, CancellationToken cancellation = default)
-        {
-            var wrapper = await this.QueryAsync(uri, method, data, cancellation);
-            if(wrapper.statusCode >= 300)
-                throw new ChatworkClientException(wrapper);
-
-            return JsonSerializer.Deserialize<T>(wrapper.content);
-        }
+    public async ValueTask<T> QueryAsync<T>(Uri uri, HttpMethod method, IReadOnlyDictionary<string, string> data, CancellationToken cancellation = default)
+    {
+        var wrapper = await this.QueryAsync(uri, method, data, cancellation);
+        if(wrapper.statusCode >= 300)
+            throw new ChatworkClientException(wrapper);
+        return JsonSerializer.Deserialize<T>(wrapper.content);
     }
 }

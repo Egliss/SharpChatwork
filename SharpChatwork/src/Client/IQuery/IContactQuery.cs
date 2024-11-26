@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SharpChatwork.Query
+namespace SharpChatwork.Query;
+
+public interface IContactQuery
 {
-    public interface IContactQuery
-    {
-        ValueTask<IEnumerable<Contact>> GetAllAsync(CancellationToken token = default);
-    }
+    ValueTask<IEnumerable<Contact>> GetAllAsync(CancellationToken token = default);
 }
