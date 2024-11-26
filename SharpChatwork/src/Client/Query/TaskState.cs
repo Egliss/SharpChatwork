@@ -1,10 +1,9 @@
-namespace SharpChatwork.Query
+namespace SharpChatwork.Query;
+
+public enum TaskStateType
 {
-    public enum TaskStateType
-    {
-        [EnumAlias("open")]
-        Open,
-        [EnumAlias("done")]
-        Done,
-    }
+    [EnumAlias("open")]
+    Open,
+    [EnumAlias("done")]
+    Done,
 }

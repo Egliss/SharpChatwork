@@ -453,8 +453,8 @@ csharp_style_expression_bodied_properties = when_on_single_line:warning
 csharp_style_implicit_object_creation_when_type_is_apparent = false
 # 変数宣言をインライン化する
 csharp_style_inlined_variable_declaration = true:warning
-# 名前空間宣言をブロックスコープにする
-csharp_style_namespace_declarations = block_scoped:silent
+# 名前空間宣言をファイルスコープにする
+csharp_style_namespace_declarations = file_scoped:warning
 # パターンローカル変数を使用する
 csharp_style_pattern_local_over_anonymous_function = true:warning
 # nullチェックを伴うas演算子よりもパターンマッチングを使用する

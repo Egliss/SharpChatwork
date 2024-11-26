@@ -1,16 +1,15 @@
 #pragma warning disable CA1707 // Underscore
 
-namespace SharpChatwork.Query.Types
+namespace SharpChatwork.Query.Types;
+
+public class Contact
 {
-    public class Contact
-    {
-        public int account_id { get; set; }
-        public int room_id { get; set; }
-        public string name { get; set; }
-        public string chatwork_id { get; set; }
-        public int organization_id { get; set; }
-        public string organization_name { get; set; }
-        public string department { get; set; }
-        public string avatar_image_url { get; set; }
-    }
+    public int account_id { get; set; }
+    public int room_id { get; set; }
+    public string name { get; set; }
+    public string chatwork_id { get; set; }
+    public int organization_id { get; set; }
+    public string organization_name { get; set; }
+    public string department { get; set; }
+    public string avatar_image_url { get; set; }
 }
