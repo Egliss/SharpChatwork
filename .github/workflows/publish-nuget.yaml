@@ -25,5 +25,4 @@ jobs:
         run: dotnet build --no-restore --configuration Release
       - name: Publish to NuGet
         run: |
-          dotnet nuget add source https://nuget.pkg.github.com/Egliss/index.json --username USERNAME --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github
-          dotnet nuget push SharpChatwork/bin/Release/SharpChatwork.0.2.4-alpha.nupkg --api-key ${{secrets.EGLISS_TOKEN}} --source "github"
+          dotnet nuget push SharpChatwork/bin/Release/SharpChatwork.0.2.4-alpha.nupkg --api-key ${{secrets.NUGET_API_KEY}} --source "nuget.org"
