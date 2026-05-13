@@ -5,7 +5,7 @@ namespace SharpChatwork.Test.Query.Spec;
 public class RoomInviteQuerySpecTests
 {
     [Test]
-public async Task GetAsync_should_use_GET_per_spec()
+    public async Task GetAsync_should_use_GET_per_spec()
     {
         var stub = StubChatworkClient.WithJsonResponse(ApiFixtures.InviteLinkGet);
         var query = new RoomInviteQuery(stub);
@@ -20,7 +20,7 @@ public async Task GetAsync_should_use_GET_per_spec()
     }
 
     [Test]
-public async Task CreateAsync_should_target_link_endpoint_per_spec()
+    public async Task CreateAsync_should_target_link_endpoint_per_spec()
     {
         var stub = StubChatworkClient.WithJsonResponse(ApiFixtures.InviteLinkGet);
         var query = new RoomInviteQuery(stub);
@@ -35,7 +35,7 @@ public async Task CreateAsync_should_target_link_endpoint_per_spec()
     }
 
     [Test]
-public async Task UpdateAsync_should_target_link_endpoint_per_spec()
+    public async Task UpdateAsync_should_target_link_endpoint_per_spec()
     {
         var stub = StubChatworkClient.WithJsonResponse(ApiFixtures.InviteLinkGet);
         var query = new RoomInviteQuery(stub);

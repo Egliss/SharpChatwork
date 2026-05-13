@@ -21,16 +21,16 @@ internal static class StubChatworkClient
 
     public static async Task<Dictionary<string, string>> ReadFormValuesAsync(HttpContent? content)
     {
-        if (content is null)
+        if(content is null)
         {
             return new Dictionary<string, string>();
         }
         var raw = await content.ReadAsStringAsync();
         var dict = new Dictionary<string, string>();
-        foreach (var pair in raw.Split('&', StringSplitOptions.RemoveEmptyEntries))
+        foreach(var pair in raw.Split('&', StringSplitOptions.RemoveEmptyEntries))
         {
             var eq = pair.IndexOf('=');
-            if (eq < 0)
+            if(eq < 0)
             {
                 dict[Uri.UnescapeDataString(pair)] = string.Empty;
                 continue;
@@ -55,7 +55,7 @@ internal static class StubChatworkClient
     {
         var content = LastQueryAsyncContent(stub);
         var form = await ReadFormValuesAsync(content);
-        foreach (var (key, value) in expected)
+        foreach(var (key, value) in expected)
         {
             var actual = form.TryGetValue(key, out var found) ? found : null;
             await Assert.That(actual).IsEqualTo(value).Because($"form key '{key}' should equal '{value}'");

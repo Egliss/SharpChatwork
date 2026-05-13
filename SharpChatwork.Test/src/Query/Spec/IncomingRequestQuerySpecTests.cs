@@ -5,7 +5,7 @@ namespace SharpChatwork.Test.Query.Spec;
 public class IncomingRequestQuerySpecTests
 {
     [Test]
-public async Task AcceptAsync_should_use_PUT_per_spec()
+    public async Task AcceptAsync_should_use_PUT_per_spec()
     {
         var stub = StubChatworkClient.WithJsonResponse(ApiFixtures.IncomingRequestPut);
         var query = new IncomingRequestQuery(stub);

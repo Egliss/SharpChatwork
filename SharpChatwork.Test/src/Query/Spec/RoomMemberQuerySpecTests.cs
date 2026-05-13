@@ -5,7 +5,7 @@ namespace SharpChatwork.Test.Query.Spec;
 public class RoomMemberQuerySpecTests
 {
     [Test]
-public async Task UpdateAsync_should_PUT_members_with_form_data_per_spec()
+    public async Task UpdateAsync_should_PUT_members_with_form_data_per_spec()
     {
         var stub = StubChatworkClient.WithJsonResponse("""{"admin":[1],"member":[2],"readonly":[3]}""");
         var query = new RoomMemberQuery(stub);

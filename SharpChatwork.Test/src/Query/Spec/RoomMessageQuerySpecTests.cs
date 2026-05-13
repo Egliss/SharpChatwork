@@ -5,7 +5,7 @@ namespace SharpChatwork.Test.Query.Spec;
 public class RoomMessageQuerySpecTests
 {
     [Test]
-public async Task ReadAsync_should_PUT_messages_read_with_message_id_body_per_spec()
+    public async Task ReadAsync_should_PUT_messages_read_with_message_id_body_per_spec()
     {
         var stub = StubChatworkClient.WithJsonResponse(ApiFixtures.MessageReadUnreadResult);
         var query = new RoomMessageQuery(stub);
@@ -21,7 +21,7 @@ public async Task ReadAsync_should_PUT_messages_read_with_message_id_body_per_sp
     }
 
     [Test]
-public async Task UnReadAsync_should_PUT_messages_unread_with_message_id_body_per_spec()
+    public async Task UnReadAsync_should_PUT_messages_unread_with_message_id_body_per_spec()
     {
         var stub = StubChatworkClient.WithJsonResponse(ApiFixtures.MessageReadUnreadResult);
         var query = new RoomMessageQuery(stub);
@@ -37,7 +37,7 @@ public async Task UnReadAsync_should_PUT_messages_unread_with_message_id_body_pe
     }
 
     [Test]
-public async Task UpdateAsync_should_PUT_messages_of_id_with_body_in_form_per_spec()
+    public async Task UpdateAsync_should_PUT_messages_of_id_with_body_in_form_per_spec()
     {
         var stub = StubChatworkClient.WithJsonResponse(ApiFixtures.MessageIdResult);
         var query = new RoomMessageQuery(stub);

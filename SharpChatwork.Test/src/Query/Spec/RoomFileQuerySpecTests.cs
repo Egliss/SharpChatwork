@@ -5,7 +5,7 @@ namespace SharpChatwork.Test.Query.Spec;
 public class RoomFileQuerySpecTests
 {
     [Test]
-public async Task EndPoints_RoomFilesOf_should_not_contain_extra_whitespace_per_spec()
+    public async Task EndPoints_RoomFilesOf_should_not_contain_extra_whitespace_per_spec()
     {
         var uri = EndPoints.RoomFilesOf(42, 7).ToString();
 
@@ -13,7 +13,7 @@ public async Task EndPoints_RoomFilesOf_should_not_contain_extra_whitespace_per_
     }
 
     [Test]
-public async Task GetAsync_should_target_file_of_id_path_per_spec()
+    public async Task GetAsync_should_target_file_of_id_path_per_spec()
     {
         var stub = StubChatworkClient.WithJsonResponse(ApiFixtures.RoomFileGet);
         var query = new RoomFileQuery(stub);
