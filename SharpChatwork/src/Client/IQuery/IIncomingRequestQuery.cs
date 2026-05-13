@@ -7,7 +7,7 @@ namespace SharpChatwork.Query;
 
 public interface IIncomingRequestQuery
 {
-    ValueTask<IEnumerable<IncomingRequest>> GetAllAsync(CancellationToken token = default);
-    ValueTask<IncomingRequest> AcceptAsync(long requestId, CancellationToken token = default);
-    ValueTask CancelAsync(long requestId, CancellationToken token = default);
+    public ValueTask<IEnumerable<IncomingRequest>> GetAllAsync(CancellationToken token = default);
+    public ValueTask<IncomingRequest> AcceptAsync(long requestId, CancellationToken token = default);
+    public ValueTask CancelAsync(long requestId, CancellationToken token = default);
 }

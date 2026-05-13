@@ -200,7 +200,7 @@ dotnet_style_qualification_for_property = true:warning
 # 読み取り専用フィールドを許可する
 dotnet_style_readonly_field = false:warning
 # アクセシビリティ修飾子を要求する
-dotnet_style_require_accessibility_modifiers = for_non_interface_members:warning
+dotnet_style_require_accessibility_modifiers = always:warning
 
 [*.cs]
 # LINQクエリ式を揃える

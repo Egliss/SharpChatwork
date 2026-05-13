@@ -7,5 +7,5 @@ namespace SharpChatwork.Query;
 
 public interface IContactQuery
 {
-    ValueTask<IEnumerable<Contact>> GetAllAsync(CancellationToken token = default);
+    public ValueTask<IEnumerable<Contact>> GetAllAsync(CancellationToken token = default);
 }
