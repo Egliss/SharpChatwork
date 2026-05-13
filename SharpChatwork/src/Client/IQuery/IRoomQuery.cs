@@ -14,7 +14,14 @@ public interface IRoomQuery
     public IRoomFileQuery file { get; }
     public IRoomTaskQuery task { get; }
     public ValueTask<IEnumerable<Room>> GetAllAsync(CancellationToken cancellation = default);
-    public ValueTask<RoomId> CreateAsync(CancellationToken cancellation = default);
+    public ValueTask<RoomId> CreateAsync(
+        string name,
+        IEnumerable<long> adminMemberIds,
+        string description = null,
+        IEnumerable<long> normalMemberIds = null,
+        IEnumerable<long> readonlyMemberIds = null,
+        RoomIconPreset? iconPreset = null,
+        CancellationToken cancellation = default);
     public ValueTask<Room> GetAsync(long roomId, CancellationToken cancellation = default);
     public ValueTask<RoomId> UpdateAsync(long roomId, string roomName, string description, RoomIconPreset preset, CancellationToken cancellation = default);
     public ValueTask LeaveAsync(long roomId, CancellationToken cancellation = default);

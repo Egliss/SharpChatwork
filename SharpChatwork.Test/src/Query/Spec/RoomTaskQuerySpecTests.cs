@@ -10,13 +10,28 @@ public class RoomTaskQuerySpecTests
         var stub = StubChatworkClient.WithJsonResponse(ApiFixtures.RoomTasksGet);
         var query = new RoomTaskQuery(stub);
 
-        await query.GetAllAsync(42, accountId: 1, autherId: 2, isDone: false);
+        await query.GetAllAsync(42, accountId: 1, assignedByAccountId: 2, status: TaskStateType.Open);
 
         await stub.Received(1).QueryAsync(
             Arg.Is<Uri>(u =>
                 u.OriginalString.Contains("account_id=1", StringComparison.Ordinal)
                 && u.OriginalString.Contains("assigned_by_account_id=2", StringComparison.Ordinal)
                 && u.OriginalString.Contains("status=open", StringComparison.Ordinal)),
+            HttpMethod.Get,
+            Arg.Any<HttpContent>(),
+            Arg.Any<CancellationToken>());
+    }
+
+    [Test]
+    public async Task GetAllAsync_should_omit_query_string_when_no_filters_per_spec()
+    {
+        var stub = StubChatworkClient.WithJsonResponse(ApiFixtures.RoomTasksGet);
+        var query = new RoomTaskQuery(stub);
+
+        await query.GetAllAsync(42);
+
+        await stub.Received(1).QueryAsync(
+            Arg.Is<Uri>(u => u.OriginalString == "https://api.chatwork.com/v2/rooms/42/tasks"),
             HttpMethod.Get,
             Arg.Any<HttpContent>(),
             Arg.Any<CancellationToken>());

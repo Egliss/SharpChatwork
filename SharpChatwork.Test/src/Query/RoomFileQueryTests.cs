@@ -25,6 +25,21 @@ public class RoomFileQueryTests
     }
 
     [Test]
+    public async Task GetAllAsync_omits_account_id_query_param_when_null()
+    {
+        var stub = StubChatworkClient.WithJsonResponse(ApiFixtures.RoomFilesGet);
+        var query = new RoomFileQuery(stub);
+
+        await query.GetAllAsync(42);
+
+        await stub.Received(1).QueryAsync(
+            Arg.Is<Uri>(u => u.OriginalString.EndsWith("/rooms/42/files", StringComparison.Ordinal)),
+            HttpMethod.Get,
+            Arg.Any<HttpContent>(),
+            Arg.Any<CancellationToken>());
+    }
+
+    [Test]
     public async Task GetAsync_calls_files_of_id_endpoint_with_create_download_url_query()
     {
         var stub = StubChatworkClient.WithJsonResponse(ApiFixtures.RoomFileGet);

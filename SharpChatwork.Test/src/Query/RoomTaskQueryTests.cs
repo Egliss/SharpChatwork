@@ -10,7 +10,7 @@ public class RoomTaskQueryTests
         var stub = StubChatworkClient.WithJsonResponse(ApiFixtures.RoomTasksGet);
         var query = new RoomTaskQuery(stub);
 
-        var tasks = (await query.GetAllAsync(42, accountId: 1, autherId: 2, isDone: false)).ToList();
+        var tasks = (await query.GetAllAsync(42, accountId: 1, assignedByAccountId: 2, status: TaskStateType.Open)).ToList();
 
         await Assert.That(tasks.Count).IsEqualTo(1);
         await stub.Received(1).QueryAsync(
@@ -25,12 +25,12 @@ public class RoomTaskQueryTests
     }
 
     [Test]
-    public async Task GetAllAsync_uses_status_done_when_isDone_true()
+    public async Task GetAllAsync_uses_status_done_when_status_Done()
     {
         var stub = StubChatworkClient.WithJsonResponse(ApiFixtures.RoomTasksGet);
         var query = new RoomTaskQuery(stub);
 
-        await query.GetAllAsync(42, 1, 2, isDone: true);
+        await query.GetAllAsync(42, 1, 2, status: TaskStateType.Done);
 
         await stub.Received(1).QueryAsync(
             Arg.Is<Uri>(u => u.OriginalString.Contains("status=done", StringComparison.Ordinal)),

@@ -56,21 +56,18 @@ public class OAuth2Client(string clientKey, string secretKey, HttpMessageInvoker
         };
     }
 
-    public OAuth2ConcentQueryResult Authorization(OAuth2ConcentQuery query, string codeVerifer = "")
+    public OAuth2ConcentQueryResult Authorization(
+        OAuth2ConcentQuery query,
+        string codeVerifer = "",
+        Action<string> openBrowser = null,
+        Func<string> readCode = null)
     {
         query.client_id = this._clientKey;
         this._scope = query.scope;
         this._redirectUri = query.redirect_uri;
-        // TODO Only windows
         var contentUrlArg = EndPoints.Oauth2.OriginalString + $"{UrlArgEncoder.ToURLArg(query)}";
-        Console.WriteLine("Please input code of redirect url code=");
-        Process.Start(
-            new ProcessStartInfo("cmd", $"/c start {contentUrlArg}")
-            {
-                CreateNoWindow = true,
-            }
-        );
-        this._oauth2Code = Console.ReadLine();
+        (openBrowser ?? DefaultOpenBrowser)(contentUrlArg);
+        this._oauth2Code = (readCode ?? DefaultReadCode)();
 
         if(string.IsNullOrEmpty(this._oauth2Code))
         {
@@ -85,6 +82,23 @@ public class OAuth2Client(string clientKey, string secretKey, HttpMessageInvoker
         {
             code = this._oauth2Code,
         };
+    }
+
+    // TODO Only windows
+    private static void DefaultOpenBrowser(string url)
+    {
+        Console.WriteLine("Please input code of redirect url code=");
+        Process.Start(
+            new ProcessStartInfo("cmd", $"/c start {url}")
+            {
+                CreateNoWindow = true,
+            }
+        );
+    }
+
+    private static string DefaultReadCode()
+    {
+        return Console.ReadLine();
     }
 
     public async Task<OAuth2TokenQueryResult> UpdateTokenAsync(OAuth2TokenQuery.GrantType grantType = OAuth2TokenQuery.GrantType.RefreshToken, string codeVerifer = "", CancellationToken cancellation = default)

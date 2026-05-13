@@ -33,13 +33,18 @@ internal sealed class RoomTaskQuery(IChatworkClient client) : ClientQuery(client
         return await this.chatworkClient.QueryAsync<UserTask>(EndPoints.RoomTasksOf(roomId, taskId), HttpMethod.Get, new Dictionary<string, string>(), token);
     }
 
-    public async ValueTask<IEnumerable<UserTask>> GetAllAsync(long roomId, long accountId, long autherId, bool isDone = false, CancellationToken token = default)
+    public async ValueTask<IEnumerable<UserTask>> GetAllAsync(long roomId, long? accountId = null, long? assignedByAccountId = null, TaskStateType? status = null, CancellationToken token = default)
     {
-        var doneString = isDone ? "done" : "open";
-        var uri = $"{EndPoints.RoomTasks(roomId)}"
-            + $"?account_id={accountId.ToString(CultureInfo.InvariantCulture)}"
-            + $"&assigned_by_account_id={autherId.ToString(CultureInfo.InvariantCulture)}"
-            + $"&status={doneString}";
+        var filters = new List<string>();
+        if(accountId.HasValue)
+            filters.Add($"account_id={accountId.Value.ToString(CultureInfo.InvariantCulture)}");
+        if(assignedByAccountId.HasValue)
+            filters.Add($"assigned_by_account_id={assignedByAccountId.Value.ToString(CultureInfo.InvariantCulture)}");
+        if(status.HasValue)
+            filters.Add($"status={status.Value.ToAliasOrDefault()}");
+        var uri = filters.Count > 0
+            ? $"{EndPoints.RoomTasks(roomId)}?{string.Join("&", filters)}"
+            : $"{EndPoints.RoomTasks(roomId)}";
         return await this.chatworkClient.QueryAsync<List<UserTask>>(new Uri(uri), HttpMethod.Get, new Dictionary<string, string>(), token);
     }
 
