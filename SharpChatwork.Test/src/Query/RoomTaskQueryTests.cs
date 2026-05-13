@@ -73,12 +73,19 @@ public class RoomTaskQueryTests
     }
 
     [Test]
-    public async Task CreateAsync_throws_NotImplementedException()
+    public async Task CreateAsync_posts_to_room_tasks_with_form_body()
     {
-        var stub = StubChatworkClient.WithJsonResponse("{}");
+        var stub = StubChatworkClient.WithJsonResponse("""{"task_ids":[10,11]}""");
         var query = new RoomTaskQuery(stub);
 
-        await Assert.That(async () => await query.CreateAsync(1, "body", 0))
-            .Throws<NotImplementedException>();
+        var result = await query.CreateAsync(42, "buy milk", new long[] { 78, 79 }, 1384354799, TaskLimitType.Time);
+
+        await Assert.That(result.task_ids.Length).IsEqualTo(2);
+        await stub.Received(1).QueryAsync(
+            EndPoints.RoomTasks(42),
+            HttpMethod.Post,
+            Arg.Any<HttpContent>(),
+            Arg.Any<CancellationToken>());
+        await StubChatworkClient.AssertFormDataAsync(stub, ("limit_type", "time"));
     }
 }

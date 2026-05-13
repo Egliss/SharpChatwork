@@ -39,18 +39,25 @@ public class RoomTaskQuerySpecTests
     }
 
     [Test]
-    [Skip("interface-gap: IRoomTaskQuery.CreateAsync(roomId, taskText, limit) is missing required to_ids/limit_type params per spec docs/apis/rooms/tasks/post.md. Signature extension needed before this can be implemented.")]
     public async Task CreateAsync_should_POST_tasks_with_required_body_per_spec()
     {
         var stub = StubChatworkClient.WithJsonResponse("""{"task_ids":[123,124]}""");
         var query = new RoomTaskQuery(stub);
 
-        await query.CreateAsync(42, "buy milk", 1384354799);
+        var result = await query.CreateAsync(42, "buy milk", new long[] { 78, 79 }, 1384354799, TaskLimitType.Date);
 
         await stub.Received(1).QueryAsync(
             EndPoints.RoomTasks(42),
             HttpMethod.Post,
             Arg.Any<HttpContent>(),
             Arg.Any<CancellationToken>());
+        await StubChatworkClient.AssertFormDataAsync(stub,
+            ("body", "buy milk"),
+            ("to_ids", "78,79"),
+            ("limit", "1384354799"),
+            ("limit_type", "date"));
+        await Assert.That(result.task_ids.Length).IsEqualTo(2);
+        await Assert.That(result.task_ids[0]).IsEqualTo(123L);
+        await Assert.That(result.task_ids[1]).IsEqualTo(124L);
     }
 }

@@ -18,6 +18,9 @@
 #### RoomTaskQuery
 - `GetAllAsync`: フィルタ (`account_id` / `assigned_by_account_id` / `status`) を form body → query string へ移動
 - `UpdateAsync`: POST `/rooms/{id}/tasks/{tid}?body=...` → PUT `/rooms/{id}/tasks/{tid}/status` + `body` form body
+- **[Breaking]** `CreateAsync`: `NotImplementedException` → POST `/rooms/{id}/tasks` を実装。signature を `(roomId, taskText, limit)` → `(roomId, taskText, toIds, limit, limitType)` に変更 (spec の必須 `to_ids` / `limit_type` 追加)。戻り値も `TaskId` → `TaskIds` (新 DTO、`long[] task_ids`) に変更
+- 新規 `TaskLimitType` enum 追加 (`none` / `date` / `time`)
+- 新規 `TaskIds` DTO 追加 (`long[] task_ids`)
 
 #### RoomFileQuery
 - `GetAsync`: URL に `file_id` が含まれていなかったバグを修正 (`EndPoints.RoomFiles(roomId)` → `EndPoints.RoomFilesOf(roomId, fileId)`)

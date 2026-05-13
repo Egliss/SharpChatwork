@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,17 +11,21 @@ namespace SharpChatwork.Query;
 
 internal sealed class RoomTaskQuery(IChatworkClient client) : ClientQuery(client), IRoomTaskQuery
 {
-    public ValueTask<TaskId> CreateAsync(long roomId, string taskText, long limit, CancellationToken token = default)
+    public async ValueTask<TaskIds> CreateAsync(long roomId, string taskText, IEnumerable<long> toIds, long limit, TaskLimitType limitType, CancellationToken token = default)
     {
-        //var data = new Dictionary<string, string>()
-        //{
-        //    { "body" , taskText },
-        //    { "limit" , limit},
-        //    { "limit_type" , doneString},
-        //    { "to_ids" , doneString},
-        //};
-        //return await this.QueryAsync<List<UserTask>>(EndPoints.RoomTasks(roomId), HttpMethod.Get, data);
-        throw new NotImplementedException();
+        var data = new Dictionary<string, string>
+        {
+            {"body", taskText},
+            {"to_ids", JoinIds(toIds)},
+            {"limit", limit.ToString(CultureInfo.InvariantCulture)},
+            {"limit_type", limitType.ToAliasOrDefault()},
+        };
+        return await this.chatworkClient.QueryAsync<TaskIds>(EndPoints.RoomTasks(roomId), HttpMethod.Post, data, token);
+    }
+
+    private static string JoinIds(IEnumerable<long> ids)
+    {
+        return string.Join(",", ids.Select(id => id.ToString(CultureInfo.InvariantCulture)));
     }
 
     public async ValueTask<UserTask> GetAsync(long roomId, long taskId, CancellationToken token = default)
