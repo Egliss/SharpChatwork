@@ -12,11 +12,11 @@ namespace SharpChatwork;
 public interface IChatworkClient
 {
 #pragma warning disable CA1716
-    IMeQuery me { get; }
+    public IMeQuery me { get; }
 #pragma warning restore CA1716
-    IRoomQuery room { get; }
-    IContactQuery contact { get; }
-    IIncomingRequestQuery incomingRequest { get; }
+    public IRoomQuery room { get; }
+    public IContactQuery contact { get; }
+    public IIncomingRequestQuery incomingRequest { get; }
 }
 
 public abstract class ChatworkClient : IChatworkClient
