@@ -17,7 +17,7 @@ internal sealed class RoomInviteQuery(IChatworkClient client) : ClientQuery(clie
             {"description", description},
             {"need_acceptance", UrlArgEncoder.BoolToInt(requireAcceptance).ToString(CultureInfo.InvariantCulture)},
         };
-        return await this.chatworkClient.QueryAsync<InviteLink>(EndPoints.RoomTasks(roomId), HttpMethod.Post, data, token);
+        return await this.chatworkClient.QueryAsync<InviteLink>(EndPoints.RoomLink(roomId), HttpMethod.Post, data, token);
     }
 
     public async ValueTask DestroyAsync(long roomId, CancellationToken token = default)
@@ -27,7 +27,7 @@ internal sealed class RoomInviteQuery(IChatworkClient client) : ClientQuery(clie
 
     public async ValueTask<InviteLink> GetAsync(long roomId, CancellationToken token = default)
     {
-        return await this.chatworkClient.QueryAsync<InviteLink>(EndPoints.RoomLink(roomId), HttpMethod.Post, new Dictionary<string, string>(), token);
+        return await this.chatworkClient.QueryAsync<InviteLink>(EndPoints.RoomLink(roomId), HttpMethod.Get, new Dictionary<string, string>(), token);
     }
 
     public async ValueTask<InviteLink> UpdateAsync(long roomId, string uniqueName, string description, bool requireAcceptance, CancellationToken token = default)
@@ -38,6 +38,6 @@ internal sealed class RoomInviteQuery(IChatworkClient client) : ClientQuery(clie
             {"description", description},
             {"need_acceptance", UrlArgEncoder.BoolToInt(requireAcceptance).ToString(CultureInfo.InvariantCulture)},
         };
-        return await this.chatworkClient.QueryAsync<InviteLink>(EndPoints.RoomTasks(roomId), HttpMethod.Put, data, token);
+        return await this.chatworkClient.QueryAsync<InviteLink>(EndPoints.RoomLink(roomId), HttpMethod.Put, data, token);
     }
 }

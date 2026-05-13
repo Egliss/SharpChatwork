@@ -1,5 +1,6 @@
-using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,18 +15,19 @@ internal sealed class RoomMemberQuery(IChatworkClient client) : ClientQuery(clie
         return await this.chatworkClient.QueryAsync<List<User>>(EndPoints.RoomMember(roomId), HttpMethod.Get, new Dictionary<string, string>(), token);
     }
 
-    public ValueTask<RoomMember> UpdateAsync(long roomId, IEnumerable<long> adminsMembers, IEnumerable<long> normalMembers, IEnumerable<long> readonlyMembers, CancellationToken token = default)
+    public async ValueTask<RoomMember> UpdateAsync(long roomId, IEnumerable<long> adminsMembers, IEnumerable<long> normalMembers, IEnumerable<long> readonlyMembers, CancellationToken token = default)
     {
-        throw new NotImplementedException();
-        /*
-        var data = new Dictionary<string, string>()
+        var data = new Dictionary<string, string>
         {
-            // TODO convert
-            // {"members_admin_ids",adminsMembers},
-            // {"members_member_ids",roomName },
-            // {"members_readonly_ids",preset.ToAliasOrDefault() }
+            {"members_admin_ids", JoinIds(adminsMembers)},
+            {"members_member_ids", JoinIds(normalMembers)},
+            {"members_readonly_ids", JoinIds(readonlyMembers)},
         };
-        return await this.chatworkClient.QueryAsync<RoomMember>(EndPoints.RoomMember(roomId), HttpMethod.Get, data);
-        */
+        return await this.chatworkClient.QueryAsync<RoomMember>(EndPoints.RoomMember(roomId), HttpMethod.Put, data, token);
+    }
+
+    private static string JoinIds(IEnumerable<long> ids)
+    {
+        return string.Join(",", ids.Select(id => id.ToString(CultureInfo.InvariantCulture)));
     }
 }
