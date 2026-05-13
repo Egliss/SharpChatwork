@@ -49,7 +49,7 @@ public class RoomQueryTests
         var stub = StubChatworkClient.WithJsonResponse(ApiFixtures.RoomIdResult);
         var query = new RoomQuery(stub);
 
-        var result = await query.CreateAsync();
+        var result = await query.CreateAsync("new room", new long[] { 1 });
 
         await Assert.That(result.room_id).IsEqualTo("1234");
         await stub.Received(1).QueryAsync(
@@ -57,6 +57,22 @@ public class RoomQueryTests
             HttpMethod.Post,
             Arg.Any<HttpContent>(),
             Arg.Any<CancellationToken>());
+    }
+
+    [Test]
+    public async Task CreateAsync_omits_optional_form_fields_when_not_supplied()
+    {
+        var stub = StubChatworkClient.WithJsonResponse(ApiFixtures.RoomIdResult);
+        var query = new RoomQuery(stub);
+
+        await query.CreateAsync("new room", new long[] { 1 });
+
+        var content = StubChatworkClient.LastQueryAsyncContent(stub);
+        var form = await StubChatworkClient.ReadFormValuesAsync(content);
+        await Assert.That(form.ContainsKey("name")).IsTrue();
+        await Assert.That(form.ContainsKey("members_admin_ids")).IsTrue();
+        await Assert.That(form.ContainsKey("description")).IsFalse();
+        await Assert.That(form.ContainsKey("icon_preset")).IsFalse();
     }
 
     [Test]

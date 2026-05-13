@@ -48,4 +48,40 @@ public class OAuth2ClientTests
         var (client, _) = MockedOAuth2Client.Create();
         await Assert.That(client.clientName).IsEqualTo(nameof(OAuth2Client));
     }
+
+    [Test]
+    public async Task Authorization_invokes_openBrowser_with_oauth_url_and_uses_readCode_result()
+    {
+        var (client, _) = MockedOAuth2Client.Create();
+        string capturedUrl = null;
+        var query = new OAuth2ConcentQuery
+        {
+            redirect_uri = "https://example.com/cb",
+            scope = "rooms.all:read",
+        };
+
+        var result = client.Authorization(
+            query,
+            openBrowser: url => capturedUrl = url,
+            readCode: () => "fake-code-123");
+
+        await Assert.That(result.code).IsEqualTo("fake-code-123");
+        await Assert.That(result.error ?? string.Empty).IsEqualTo(string.Empty);
+        await Assert.That(capturedUrl).IsNotNull();
+        await Assert.That(capturedUrl.StartsWith(EndPoints.Oauth2.OriginalString, StringComparison.Ordinal)).IsTrue();
+    }
+
+    [Test]
+    public async Task Authorization_returns_oauth_code_error_when_readCode_returns_empty()
+    {
+        var (client, _) = MockedOAuth2Client.Create();
+        var query = new OAuth2ConcentQuery { scope = "rooms.all:read" };
+
+        var result = client.Authorization(
+            query,
+            openBrowser: _ => { },
+            readCode: () => string.Empty);
+
+        await Assert.That(result.error).IsEqualTo("oauth_code_error");
+    }
 }

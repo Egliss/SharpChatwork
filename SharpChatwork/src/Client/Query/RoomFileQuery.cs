@@ -12,9 +12,11 @@ namespace SharpChatwork.Query;
 
 internal sealed class RoomFileQuery(IChatworkClient client) : ClientQuery(client), IRoomFileQuery
 {
-    public async ValueTask<IEnumerable<UserFile>> GetAllAsync(long roomId, long accountId, CancellationToken token = default)
+    public async ValueTask<IEnumerable<UserFile>> GetAllAsync(long roomId, long? accountId = null, CancellationToken token = default)
     {
-        var uri = $"{EndPoints.RoomFiles(roomId)}?account_id={accountId}";
+        var uri = $"{EndPoints.RoomFiles(roomId)}";
+        if(accountId.HasValue)
+            uri += $"?account_id={accountId.Value.ToString(System.Globalization.CultureInfo.InvariantCulture)}";
         return await this.chatworkClient.QueryAsync<List<UserFile>>(new Uri(uri), HttpMethod.Get, new Dictionary<string, string>(), token);
     }
 
