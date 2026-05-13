@@ -2,10 +2,10 @@
 
 [![Nuget](https://img.shields.io/nuget/v/SharpChatwork.svg?style=flat-square)](https://www.nuget.org/packages/SharpChatwork/)
 
-|Branch|Status|
-|------|------|
-|master|[![master](https://github.com/Egliss/SharpChatwork/actions/workflows/dotnet.yaml/badge.svg?branch=master)](https://github.com/Egliss/SharpChatwork/actions/workflows/dotnet.yaml)|
-|develop|[![develop](https://github.com/Egliss/SharpChatwork/actions/workflows/dotnet.yaml/badge.svg?branch=develop)](https://github.com/Egliss/SharpChatwork/actions/workflows/dotnet.yaml)|
+|Branch|Status|Coverage|
+|------|------|--------|
+|master|[![master](https://github.com/Egliss/SharpChatwork/actions/workflows/dotnet.yaml/badge.svg?branch=master)](https://github.com/Egliss/SharpChatwork/actions/workflows/dotnet.yaml)|[![coverage](https://egliss.github.io/SharpChatwork/badge_linecoverage.svg)](https://egliss.github.io/SharpChatwork/)|
+|develop|[![develop](https://github.com/Egliss/SharpChatwork/actions/workflows/dotnet.yaml/badge.svg?branch=develop)](https://github.com/Egliss/SharpChatwork/actions/workflows/dotnet.yaml)|[![coverage](https://egliss.github.io/SharpChatwork/badge_linecoverage.svg)](https://egliss.github.io/SharpChatwork/)|
 
 ## API Support Status
 

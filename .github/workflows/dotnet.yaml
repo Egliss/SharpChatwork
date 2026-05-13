@@ -3,6 +3,9 @@ name: Build
 on:
   push:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -22,4 +25,16 @@ jobs:
     - name: Lint
       run: ./scripts/lint.sh
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --no-build --coverage --coverage-output-format cobertura --coverage-output coverage.cobertura.xml --verbosity normal
+    - name: Generate coverage report
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.5.10
+      with:
+        reports: '**/TestResults/coverage.cobertura.xml'
+        targetdir: 'coverage-report'
+        reporttypes: 'Html;Badges;TextSummary'
+    - name: Deploy coverage to GitHub Pages
+      if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/master'
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./coverage-report
