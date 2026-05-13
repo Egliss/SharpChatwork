@@ -18,4 +18,5 @@ public class Room
     public int task_num { get; set; } = 0;
     public string icon_path { get; set; } = string.Empty;
     public int last_update_time { get; set; } = 0;
+    public string description { get; set; } = string.Empty;
 }

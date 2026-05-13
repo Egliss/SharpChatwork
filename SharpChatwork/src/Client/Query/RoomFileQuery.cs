@@ -20,7 +20,7 @@ internal sealed class RoomFileQuery(IChatworkClient client) : ClientQuery(client
 
     public async ValueTask<UserFile> GetAsync(long roomId, long fileId, bool createDownloadLink, CancellationToken token = default)
     {
-        var uri = $"{EndPoints.RoomFiles(roomId)}?create_download_url={UrlArgEncoder.BoolToInt(createDownloadLink)}";
+        var uri = $"{EndPoints.RoomFilesOf(roomId, fileId)}?create_download_url={UrlArgEncoder.BoolToInt(createDownloadLink)}";
         return await this.chatworkClient.QueryAsync<UserFile>(new Uri(uri), HttpMethod.Get, new Dictionary<string, string>(), token);
     }
     public async ValueTask<FileId> UploadAsync(long roomId, Stream stream, string filePath, string message, CancellationToken token = default)

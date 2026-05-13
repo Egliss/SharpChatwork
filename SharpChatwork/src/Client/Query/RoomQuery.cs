@@ -17,13 +17,16 @@ internal sealed class RoomQuery(IChatworkClient client) : ClientQuery(client), I
 
     public async ValueTask<RoomId> CreateAsync(CancellationToken token = default)
     {
-        return await this.chatworkClient.QueryAsync<RoomId>(EndPoints.Rooms, HttpMethod.Get, new Dictionary<string, string>(), token);
+        return await this.chatworkClient.QueryAsync<RoomId>(EndPoints.Rooms, HttpMethod.Post, new Dictionary<string, string>(), token);
     }
 
     public async ValueTask DeleteAsync(long roomId, CancellationToken token = default)
     {
-        var uri = $"{EndPoints.RoomMessages(roomId)}?action_type=delete";
-        await this.chatworkClient.QueryAsync<RoomId>(new Uri(uri), HttpMethod.Post, new Dictionary<string, string>(), token);
+        var data = new Dictionary<string, string>
+        {
+            {"action_type", "delete"},
+        };
+        await this.chatworkClient.QueryAsync(EndPoints.RoomOf(roomId), HttpMethod.Delete, data, token);
     }
 
     public async ValueTask<IEnumerable<Room>> GetAllAsync(CancellationToken token = default)
@@ -38,8 +41,11 @@ internal sealed class RoomQuery(IChatworkClient client) : ClientQuery(client), I
 
     public async ValueTask LeaveAsync(long roomId, CancellationToken token = default)
     {
-        var uri = $"{EndPoints.RoomMessages(roomId)}?action_type=leave";
-        await this.chatworkClient.QueryAsync<RoomId>(new Uri(uri), HttpMethod.Post, new Dictionary<string, string>(), token);
+        var data = new Dictionary<string, string>
+        {
+            {"action_type", "leave"},
+        };
+        await this.chatworkClient.QueryAsync(EndPoints.RoomOf(roomId), HttpMethod.Delete, data, token);
     }
 
     public async ValueTask<RoomId> UpdateAsync(
@@ -49,16 +55,10 @@ internal sealed class RoomQuery(IChatworkClient client) : ClientQuery(client), I
     {
         var data = new Dictionary<string, string>
         {
-            {
-                "name", roomName
-            },
-            {
-                "description", roomName
-            },
-            {
-                "icon_preset", preset.ToAliasOrDefault()
-            },
+            {"name", roomName},
+            {"description", description},
+            {"icon_preset", preset.ToAliasOrDefault()},
         };
-        return await this.chatworkClient.QueryAsync<RoomId>(EndPoints.RoomOf(roomId), HttpMethod.Post, data, token);
+        return await this.chatworkClient.QueryAsync<RoomId>(EndPoints.RoomOf(roomId), HttpMethod.Put, data, token);
     }
 }

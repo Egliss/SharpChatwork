@@ -10,4 +10,5 @@ public class UserFile
     public string filename { get; set; }
     public int filesize { get; set; }
     public int upload_time { get; set; }
+    public string download_url { get; set; }
 }

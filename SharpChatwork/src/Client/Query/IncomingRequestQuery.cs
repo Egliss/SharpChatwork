@@ -10,7 +10,7 @@ internal sealed class IncomingRequestQuery(IChatworkClient client) : ClientQuery
 {
     public async ValueTask<IncomingRequest> AcceptAsync(long requestId, CancellationToken token = default)
     {
-        return await this.chatworkClient.QueryAsync<IncomingRequest>(EndPoints.IncomingRequestsOf(requestId), HttpMethod.Post, new Dictionary<string, string>(), token);
+        return await this.chatworkClient.QueryAsync<IncomingRequest>(EndPoints.IncomingRequestsOf(requestId), HttpMethod.Put, new Dictionary<string, string>(), token);
     }
 
     public async ValueTask CancelAsync(long requestId, CancellationToken token = default)

@@ -9,7 +9,7 @@ public class EndPoints
     public static readonly Uri Me = new Uri(@"https://api.chatwork.com/v2/me");
     public static readonly Uri MyStatus = new Uri(@"https://api.chatwork.com/v2/my/status");
     public static readonly Uri MyTasks = new Uri(@"https://api.chatwork.com/v2/my/tasks");
-    public static readonly Uri Rooms = new Uri(@"https://api.chatwork.com/v2/Rooms");
+    public static readonly Uri Rooms = new Uri(@"https://api.chatwork.com/v2/rooms");
     public static readonly Uri Contacts = new Uri(@"https://api.chatwork.com/v2/contacts");
     public static readonly Uri IncomingRequests = new Uri(@"https://api.chatwork.com/v2/incoming_requests");
 
@@ -60,7 +60,12 @@ public class EndPoints
 
     public static Uri RoomFilesOf(long roomId, long fileId)
     {
-        return new Uri($@"https://api.chatwork.com/v    2/rooms/{roomId}/files/{fileId}");
+        return new Uri($@"https://api.chatwork.com/v2/rooms/{roomId}/files/{fileId}");
+    }
+
+    public static Uri RoomTasksOfStatus(long roomId, long taskId)
+    {
+        return new Uri($@"https://api.chatwork.com/v2/rooms/{roomId}/tasks/{taskId}/status");
     }
 
     public static Uri RoomLink(long roomId)

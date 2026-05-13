@@ -1,1 +1,16 @@
-global using Xunit;
+global using System;
+global using System.Collections.Generic;
+global using System.Linq;
+global using System.Net;
+global using System.Net.Http;
+global using System.Threading;
+global using System.Threading.Tasks;
+global using NSubstitute;
+global using RichardSzalay.MockHttp;
+global using SharpChatwork;
+global using SharpChatwork.Query;
+global using SharpChatwork.Query.Types;
+global using TUnit.Assertions;
+global using TUnit.Assertions.Conditions;
+global using TUnit.Assertions.Extensions;
+global using TUnit.Core;

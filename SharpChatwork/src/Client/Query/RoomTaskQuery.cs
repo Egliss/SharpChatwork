@@ -30,21 +30,20 @@ internal sealed class RoomTaskQuery(IChatworkClient client) : ClientQuery(client
 
     public async ValueTask<IEnumerable<UserTask>> GetAllAsync(long roomId, long accountId, long autherId, bool isDone = false, CancellationToken token = default)
     {
-        var doneString = "done";
-        if(!isDone)
-            doneString = "open";
-        var data = new Dictionary<string, string>
-        {
-            {"account_id", accountId.ToString(CultureInfo.InvariantCulture)},
-            {"assigned_by_account_id", autherId.ToString(CultureInfo.InvariantCulture)},
-            {"status", doneString},
-        };
-        return await this.chatworkClient.QueryAsync<List<UserTask>>(EndPoints.RoomTasks(roomId), HttpMethod.Get, data, token);
+        var doneString = isDone ? "done" : "open";
+        var uri = $"{EndPoints.RoomTasks(roomId)}"
+            + $"?account_id={accountId.ToString(CultureInfo.InvariantCulture)}"
+            + $"&assigned_by_account_id={autherId.ToString(CultureInfo.InvariantCulture)}"
+            + $"&status={doneString}";
+        return await this.chatworkClient.QueryAsync<List<UserTask>>(new Uri(uri), HttpMethod.Get, new Dictionary<string, string>(), token);
     }
 
     public async ValueTask<TaskId> UpdateAsync(long roomId, long taskId, TaskStateType state, CancellationToken token = default)
     {
-        var uri = $"{EndPoints.RoomTasksOf(roomId, taskId)}?body={state.ToAliasOrDefault()}";
-        return await this.chatworkClient.QueryAsync<TaskId>(new Uri(uri), HttpMethod.Post, new Dictionary<string, string>(), token);
+        var data = new Dictionary<string, string>
+        {
+            {"body", state.ToAliasOrDefault()},
+        };
+        return await this.chatworkClient.QueryAsync<TaskId>(EndPoints.RoomTasksOfStatus(roomId, taskId), HttpMethod.Put, data, token);
     }
 }

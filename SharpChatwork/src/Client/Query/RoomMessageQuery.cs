@@ -25,8 +25,11 @@ internal sealed class RoomMessageQuery(IChatworkClient client) : ClientQuery(cli
 
     public async ValueTask<MessageReadUnread> ReadAsync(long roomId, long messageId, CancellationToken token = default)
     {
-        var uri = $"{EndPoints.RoomMessages(roomId)}?message_id={messageId}";
-        return await this.chatworkClient.QueryAsync<MessageReadUnread>(new Uri(uri), HttpMethod.Post, new Dictionary<string, string>(), token);
+        var data = new Dictionary<string, string>
+        {
+            {"message_id", messageId.ToString(CultureInfo.InvariantCulture)},
+        };
+        return await this.chatworkClient.QueryAsync<MessageReadUnread>(EndPoints.RoomMessagesRead(roomId), HttpMethod.Put, data, token);
     }
 
     public async ValueTask<MessageId> RemoveAsync(long roomId, long messageId, CancellationToken token = default)
@@ -46,13 +49,19 @@ internal sealed class RoomMessageQuery(IChatworkClient client) : ClientQuery(cli
 
     public async ValueTask<MessageReadUnread> UnReadAsync(long roomId, long messageId, CancellationToken token = default)
     {
-        var uri = $"{EndPoints.RoomMessages(roomId)}?message_id={messageId}";
-        return await this.chatworkClient.QueryAsync<MessageReadUnread>(new Uri(uri), HttpMethod.Post, new Dictionary<string, string>(), token);
+        var data = new Dictionary<string, string>
+        {
+            {"message_id", messageId.ToString(CultureInfo.InvariantCulture)},
+        };
+        return await this.chatworkClient.QueryAsync<MessageReadUnread>(EndPoints.RoomMessagesUnread(roomId), HttpMethod.Put, data, token);
     }
 
     public async ValueTask<MessageId> UpdateAsync(long roomId, long messageId, string message, CancellationToken token = default)
     {
-        var uri = $"{EndPoints.RoomMessagesOf(roomId, messageId)}?body={message}";
-        return await this.chatworkClient.QueryAsync<MessageId>(new Uri(uri), HttpMethod.Post, new Dictionary<string, string>(), token);
+        var data = new Dictionary<string, string>
+        {
+            {"body", message},
+        };
+        return await this.chatworkClient.QueryAsync<MessageId>(EndPoints.RoomMessagesOf(roomId, messageId), HttpMethod.Put, data, token);
     }
 }
